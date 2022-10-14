@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       theme: laappTheme(),
       routes: {
         '/': (context) => const TestView(),
-        '/meinLernenD': (context) => const MeinLernenD(),
+        '/meinLernenD': (context) => MeinLernenD(),
         '/meinProfilD': (context) => const MeinProfilD(),
         '/meineKurseD': (context) => const MeineKurseD(),
         '/meinLernenS': (context) => const MeinLernenS(),

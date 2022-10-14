@@ -9,6 +9,7 @@ ThemeData laappTheme() {
     primaryColor: const Color(0xffE30613),
     primaryColorLight: const Color(0xffF54F59),
     accentColor: const Color(0xffD9D9D9),
+    secondaryHeaderColor: const Color(0xfff0f0f0),
 
     highlightColor: Colors.grey[300],
     // Buttons
