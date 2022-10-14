@@ -73,7 +73,7 @@ class CustomAppBar extends StatelessWidget {
   }
 
   Widget getSide(String calledPage) {
-    StatelessWidget goToSide;
+    Widget goToSide;
     switch (calledPage) {
       case "MeinLernenD":
         {

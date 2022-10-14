@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgtes/lernen/frage.dart';
 import '../widgtes/lernen/umfrage.dart';
 import '../data/antwort.dart';
+import '../widgtes/customappbar.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 class MeinLernenS extends StatefulWidget {
@@ -29,6 +30,7 @@ class _MeinLernenSState extends State<MeinLernenS> {
 
     return Scaffold(
       body: Column(children: [
+        const CustomAppBar(title: "Mein Lernen", backToPage: ''),
         Row(children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
