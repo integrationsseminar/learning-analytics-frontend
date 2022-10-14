@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         '/meineKurseD': (context) => const MeineKurseD(),
         '/meinLernenS': (context) => const MeinLernenS(),
         '/meinProfilS': (context) => const MeinProfilS(),
-        '/meinFortschrittS': (context) => const MeinFortschrittS(),
+        '/meinFortschrittS': (context) => MeinFortschrittS(),
       },
     );
   }

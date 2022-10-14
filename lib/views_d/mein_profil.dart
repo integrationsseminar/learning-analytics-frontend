@@ -6,7 +6,7 @@ class MeinProfilD extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const Text('NTH but we\'ll see'),
+      body: const Text('MeinProfilD'),
     );
   }
 }

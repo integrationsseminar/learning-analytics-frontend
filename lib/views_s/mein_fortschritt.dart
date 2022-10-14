@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import '../widgtes/customappbar.dart';
 
 class MeinFortschrittS extends StatelessWidget {
   const MeinFortschrittS({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Hier Icon einfügen')),
-      body: Text('NTH but we\'ll see'),
-    );
+    return const Scaffold(
+        body: CustomAppBar(title: "Mein Fortschritt", backToPage: ""));
   }
 }
