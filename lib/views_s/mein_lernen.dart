@@ -30,6 +30,12 @@ class _MeinLernenSState extends State<MeinLernenS> {
 
     return Scaffold(
       body: Column(children: [
+        const Positioned(
+          child: SizedBox(
+              height: 160,
+              child: CustomAppBar(
+                  title: "Mein Lernen", backToPage: "MeinLernenD")),
+        ),
         Row(children: [
           Padding(
             padding: const EdgeInsets.all(8.0),

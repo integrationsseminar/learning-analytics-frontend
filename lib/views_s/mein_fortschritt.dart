@@ -6,7 +6,8 @@ class MeinFortschrittS extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-        body: CustomAppBar(title: "Mein Fortschritt", backToPage: ""));
+    return Scaffold(
+      body: const CustomAppBar(title: "Mein Lernen", backToPage: "MeinProfilD"),
+    );
   }
 }
