@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 ThemeData laappTheme() {
   return ThemeData(
+    fontFamily: 'Raleway',
+
     // Colors
     backgroundColor: Colors.white,
     primaryColor: const Color(0xffE30613),
@@ -34,80 +36,82 @@ ThemeData laappTheme() {
     textTheme: const TextTheme(
       // Headlines
       headlineLarge: TextStyle(
-        fontSize: 32,
-        fontFamily: 'Proxima Nova Bold',
+        fontSize: 36,
+        fontFamily: 'Raleway Bold',
         color: Color(0xffE30613),
         letterSpacing: -0.5,
       ),
       headlineMedium: TextStyle(
-        fontSize: 28,
-        fontFamily: 'Proxima Nova Bold',
+        fontSize: 22,
+        fontFamily: 'Raleway Bold',
         color: Color(0xffE30613),
         letterSpacing: -0.5,
       ),
       headlineSmall: TextStyle(
-        fontSize: 24,
-        fontFamily: 'Proxima Nova Bold',
+        fontSize: 16,
+        fontFamily: 'Raleway Bold',
         color: Color(0xffE30613),
         letterSpacing: -0.5,
       ),
 
       // Title
       titleLarge: TextStyle(
-        fontSize: 22,
-        fontFamily: 'Proxima Nova Bold',
+        fontSize: 20,
+        fontFamily: 'Raleway Bold',
         color: Color(0xffE30613),
         letterSpacing: -0.5,
       ),
       titleMedium: TextStyle(
         fontSize: 16,
-        fontFamily: 'Proxima Nova Bold',
+        fontFamily: 'Raleway Bold',
         color: Color(0xffE30613),
         letterSpacing: -0.5,
       ),
       titleSmall: TextStyle(
         fontSize: 14,
-        fontFamily: 'Proxima Nova Bold',
+        fontFamily: 'Raleway Bold',
         color: Color(0xffE30613),
         letterSpacing: -0.5,
       ),
 
       // Labels
       labelLarge: TextStyle(
-        fontSize: 14,
-        fontFamily: 'Proxima Nova',
+        fontSize: 20,
+        fontFamily: 'Raleway',
         color: Colors.white,
         letterSpacing: -0.5,
       ),
       labelMedium: TextStyle(
         fontSize: 12,
-        fontFamily: 'Proxima Nova',
+        fontFamily: 'Raleway',
         color: Colors.white,
         letterSpacing: -0.5,
       ),
       labelSmall: TextStyle(
         fontSize: 11,
-        fontFamily: 'Proxima Nova',
+        fontFamily: 'Raleway',
         color: Colors.white,
         letterSpacing: -0.5,
       ),
 
       // Body
       bodyLarge: TextStyle(
-        fontSize: 16,
-        fontFamily: 'Proxima Nova',
+        fontSize: 20,
+        fontFamily: 'Raleway',
+        fontWeight: FontWeight.w900,
         color: Colors.black,
         letterSpacing: -0.5,
       ),
       bodyMedium: TextStyle(
-        fontSize: 12,
-        fontFamily: 'Proxima Nova',
+        fontSize: 16,
+        fontFamily: 'Raleway',
+        fontWeight: FontWeight.bold,
         color: Colors.black,
         letterSpacing: -0.5,
       ),
       bodySmall: TextStyle(
         fontSize: 12,
-        fontFamily: 'Proxima Nova',
+        fontFamily: 'Raleway',
         color: Colors.black,
         letterSpacing: -0.5,
       ),
