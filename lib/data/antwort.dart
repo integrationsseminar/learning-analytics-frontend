@@ -1,7 +1,7 @@
 /// Sample ordinal data type.
-class Antwort {
+class AntwortClass {
   final String text;
   final int anzahl;
 
-  Antwort(this.text, this.anzahl);
+  AntwortClass(this.text, this.anzahl);
 }

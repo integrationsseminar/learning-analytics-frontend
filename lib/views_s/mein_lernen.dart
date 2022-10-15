@@ -33,7 +33,7 @@ class _MeinLernenSState extends State<MeinLernenS> {
       body: Column(children: [
         const Positioned(
           child: SizedBox(
-              height: 160,
+              height: 140,
               child: CustomAppBar(
                   title: "Mein Lernen", backToPage: "MeinLernenD")),
         ),
@@ -85,42 +85,57 @@ class _MeinLernenSState extends State<MeinLernenS> {
                 child: const Text("Fragen")),
           )
         ]),
-        FloatingActionButton.extended(
-            onPressed: () {}, label: const Text("Neuen Eintrag hinzufügen")),
-        Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Column(children: [
-            Frage(
-                frage:
-                    "Könnten Sie die Lösungen für Aufgabe vier zur Verfügung stellen?",
-                tags: const ["Integrationsseminar", "Frage"],
-                answers: 1),
-            Umfrage(
-              frage:
-                  "Könnten Sie die Lösungen für Aufgabe vier zur Verfügung stellen?",
-              tags: const ["Integrationsseminar", "Umfrage"],
-              answers: 15,
-              seriesList: createSeriesList(),
-            )
+        Expanded(
+          child: ListView(children: [
+            Column(
+              children: [
+                FloatingActionButton.extended(
+                    icon: Icon(Icons.add),
+                    onPressed: () {},
+                    label: const Text("Neuen Eintrag hinzufügen")),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Column(children: [
+                    Frage(
+                        frage:
+                            "Könnten Sie die Lösungen für Aufgabe vier zur Verfügung stellen?",
+                        tags: const ["Integrationsseminar", "Frage"],
+                        answers: 1),
+                    Umfrage(
+                      frage:
+                          "Könnten Sie die Lösungen für Aufgabe vier zur Verfügung stellen?",
+                      tags: const ["Integrationsseminar", "Umfrage"],
+                      answers: 15,
+                      seriesList: createSeriesList(),
+                    ),
+                    Frage(
+                        frage:
+                            "Könnten Sie die Lösungen für Aufgabe vier zur Verfügung stellen?",
+                        tags: const ["Integrationsseminar", "Frage"],
+                        answers: 1),
+                  ]),
+                ),
+              ],
+            ),
           ]),
         )
       ]),
     );
   }
 
-  static List<charts.Series<Antwort, String>> createSeriesList() {
+  static List<charts.Series<AntwortClass, String>> createSeriesList() {
     final data = [
-      Antwort('ja schon', 5),
-      Antwort('eher nicht', 9),
-      Antwort('bisschen', 6),
+      AntwortClass('ja schon', 5),
+      AntwortClass('eher nicht', 9),
+      AntwortClass('bisschen', 6),
     ];
 
     return [
-      charts.Series<Antwort, String>(
+      charts.Series<AntwortClass, String>(
         id: 'Antwort',
         colorFn: (_, __) => charts.MaterialPalette.gray.shadeDefault,
-        domainFn: (Antwort antwort, _) => antwort.text,
-        measureFn: (Antwort antwort, _) => antwort.anzahl,
+        domainFn: (AntwortClass antwort, _) => antwort.text,
+        measureFn: (AntwortClass antwort, _) => antwort.anzahl,
         data: data,
       )
     ];

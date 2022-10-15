@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../widgtes/lernen/frage.dart';
+import '../widgtes/lernen/antwort.dart';
+import '../widgtes/customappbar.dart';
 import '../data/antwort.dart';
 
 class FragenView extends StatefulWidget {
@@ -14,9 +15,9 @@ class _FragenViewState extends State<FragenView> {
 
   bool fragen = true;
 
-  List<Antwort> antworten = [
-    Antwort("ja das wäre sehr wichtig", 0),
-    Antwort("ja das wäre sehr wichtig", 1),
+  List<AntwortClass> antworten = [
+    AntwortClass("ja das wäre sehr wichtig", 0),
+    AntwortClass("ja das wäre sehr wichtig", 1),
   ];
 
   List<String> tags = ["Integrationsseminar", "Frage"];
@@ -25,6 +26,16 @@ class _FragenViewState extends State<FragenView> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Column(children: [
+      Positioned(
+        child: Container(
+          child: SizedBox(
+              height: 140,
+              child: Container(
+                  color: Theme.of(context).secondaryHeaderColor,
+                  child: CustomAppBar(
+                      title: "Mein Lernen", backToPage: "MeinLernenS"))),
+        ),
+      ),
       Container(
         decoration: BoxDecoration(
             borderRadius: const BorderRadius.only(
@@ -54,8 +65,24 @@ class _FragenViewState extends State<FragenView> {
           ]),
         ]),
       ),
-      FloatingActionButton.extended(
-          onPressed: () {}, label: const Text("Neue Nachricht")),
+      Expanded(
+        child: ListView(children: [
+          Column(children: [
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(children: [
+                Antwort(answer: "Ja das wäre super", type: "s"),
+                Antwort(answer: "Ja kann ich machen", type: "d"),
+                Antwort(answer: "Vielen Dank, das hat geholfen", type: "s")
+              ]),
+            ),
+            FloatingActionButton.extended(
+                icon: Icon(Icons.add),
+                onPressed: () {},
+                label: const Text("Neue Nachricht")),
+          ]),
+        ]),
+      )
     ]));
   }
 }

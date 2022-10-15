@@ -13,7 +13,7 @@ class Umfrage extends StatefulWidget {
   final String frage;
   final List<String> tags;
   final int answers;
-  final List<charts.Series<Antwort, String>> seriesList;
+  final List<charts.Series<AntwortClass, String>> seriesList;
 
   @override
   State<Umfrage> createState() => _UmfrageState();
