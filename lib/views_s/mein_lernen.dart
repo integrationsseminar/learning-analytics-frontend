@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgtes/lernen/frage.dart';
 import '../widgtes/lernen/umfrage.dart';
 import '../data/antwort.dart';
+import './fragen_view.dart';
 import '../widgtes/customappbar.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
@@ -51,15 +52,29 @@ class _MeinLernenSState extends State<MeinLernenS> {
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
                 onPressed: () {
-                  umfragen = !umfragen;
+                  setState(() {
+                    umfragen = !umfragen;
+                  });
                 },
+                style: umfragen
+                    ? Theme.of(context).elevatedButtonTheme.style
+                    : ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            const Color(0xffD9D9D9))),
                 child: const Text("Umfragen")),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
+                style: fragen
+                    ? Theme.of(context).elevatedButtonTheme.style
+                    : ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            const Color(0xffD9D9D9))),
                 onPressed: () {
-                  umfragen = !umfragen;
+                  setState(() {
+                    fragen = !fragen;
+                  });
                 },
                 child: const Text("Fragen")),
           )
@@ -77,9 +92,9 @@ class _MeinLernenSState extends State<MeinLernenS> {
             Umfrage(
               frage:
                   "Könnten Sie die Lösungen für Aufgabe vier zur Verfügung stellen?",
-              tags: const ["Integrationsseminar", "Frage"],
-              answers: 1,
-              seriesList: _createSampleData(),
+              tags: const ["Integrationsseminar", "Umfrage"],
+              answers: 15,
+              seriesList: createSeriesList(),
             )
           ]),
         )
@@ -87,7 +102,7 @@ class _MeinLernenSState extends State<MeinLernenS> {
     );
   }
 
-  static List<charts.Series<Antwort, String>> _createSampleData() {
+  static List<charts.Series<Antwort, String>> createSeriesList() {
     final data = [
       Antwort('ja schon', 5),
       Antwort('eher nicht', 9),
@@ -97,7 +112,7 @@ class _MeinLernenSState extends State<MeinLernenS> {
     return [
       charts.Series<Antwort, String>(
         id: 'Antwort',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        colorFn: (_, __) => charts.MaterialPalette.gray.shadeDefault,
         domainFn: (Antwort antwort, _) => antwort.text,
         measureFn: (Antwort antwort, _) => antwort.anzahl,
         data: data,
