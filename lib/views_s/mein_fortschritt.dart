@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learning_analytics/widgtes/customappbar.dart';
-import 'package:learning_analytics/widgtes/profil/angaben.dart';
-import 'package:learning_analytics/widgtes/profil/divider.dart';
+import 'package:learning_analytics/widgtes/fortschritt/angaben.dart';
+import 'package:learning_analytics/widgtes/shared/divider.dart';
 
 class MeinFortschrittS extends StatefulWidget {
   const MeinFortschrittS({Key? key}) : super(key: key);

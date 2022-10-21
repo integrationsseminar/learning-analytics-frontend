@@ -61,18 +61,21 @@ ThemeData laappTheme() {
         fontFamily: 'Raleway',
         color: Colors.black,
         fontWeight: FontWeight.bold,
+        letterSpacing: -0.5,
       ),
       titleMedium: TextStyle(
         fontSize: 20,
         fontFamily: 'Raleway',
         color: Colors.black,
         fontWeight: FontWeight.bold,
+        letterSpacing: -0.5,
       ),
       titleSmall: TextStyle(
         fontSize: 13,
         fontFamily: 'Raleway',
         color: Colors.black,
         fontWeight: FontWeight.bold,
+        letterSpacing: -0.5,
       ),
 
       // Labels
@@ -81,18 +84,21 @@ ThemeData laappTheme() {
         fontFamily: 'Raleway',
         color: Color.fromARGB(255, 142, 142, 142),
         fontWeight: FontWeight.bold,
+        letterSpacing: -0.5,
       ),
       labelMedium: TextStyle(
         fontSize: 20,
         fontFamily: 'Raleway',
         color: Color.fromARGB(255, 142, 142, 142),
         fontWeight: FontWeight.bold,
+        letterSpacing: -0.5,
       ),
       labelSmall: TextStyle(
         fontSize: 13,
         fontFamily: 'Raleway',
         color: Color.fromARGB(255, 142, 142, 142),
         fontWeight: FontWeight.bold,
+        letterSpacing: -0.5,
       ),
 
       // Body
@@ -101,18 +107,21 @@ ThemeData laappTheme() {
         fontFamily: 'Raleway',
         color: Color(0xffE30613),
         fontWeight: FontWeight.bold,
+        letterSpacing: -0.5,
       ),
       bodyMedium: TextStyle(
         fontSize: 20,
         fontFamily: 'Raleway',
         color: Color(0xffE30613),
         fontWeight: FontWeight.bold,
+        letterSpacing: -0.5,
       ),
       bodySmall: TextStyle(
         fontSize: 13,
         fontFamily: 'Raleway',
         color: Color(0xffE30613),
         fontWeight: FontWeight.bold,
+        letterSpacing: -0.5,
       ),
     ),
   );

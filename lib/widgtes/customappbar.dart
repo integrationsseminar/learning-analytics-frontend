@@ -58,12 +58,7 @@ class CustomAppBar extends StatelessWidget {
                     child: Text(
                       title,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 30,
-                        color: Colors.white,
-                        fontFamily: 'Raleway',
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Theme.of(context).textTheme.headlineLarge,
                     ),
                   ),
                 ),

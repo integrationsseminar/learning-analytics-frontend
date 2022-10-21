@@ -1,10 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:learning_analytics/widgtes/customappbar.dart';
-import 'package:learning_analytics/widgtes/profil/angaben.dart';
-import 'package:learning_analytics/widgtes/profil/divider.dart';
-import 'package:learning_analytics/widgtes/profil/trophaeen.dart';
+import 'package:learning_analytics/widgtes/shared/divider.dart';
+import 'package:learning_analytics/widgtes/profil/trophaeenView.dart';
+import 'package:learning_analytics/widgtes/profil/editierbaresItemProfil.dart';
 
 class MeinProfilS extends StatefulWidget {
   const MeinProfilS({Key? key}) : super(key: key);
@@ -14,19 +13,8 @@ class MeinProfilS extends StatefulWidget {
 }
 
 class _MeinProfilSState extends State<MeinProfilS> {
-  List<String> list = <String>[
-    'Sehr hoch',
-    'Hoch',
-    'Mittel',
-    'Gering',
-    'Sehr gering'
-  ];
-
   @override
   Widget build(BuildContext context) {
-    String dropdownValue = list.first;
-    Color? highlightColor = Theme.of(context).highlightColor;
-
     return Scaffold(
       body: Column(children: [
         Stack(children: const [
@@ -60,23 +48,20 @@ class _MeinProfilSState extends State<MeinProfilS> {
                             Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                children: const [
+                                children: [
                                   Text(
                                     "UserID",
-                                    style: TextStyle(
-                                        fontFamily: 'Raleway',
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold),
+                                    style:
+                                        Theme.of(context).textTheme.titleSmall,
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.fromLTRB(
+                                    padding: const EdgeInsets.fromLTRB(
                                         0.0, 0.0, 20.0, 0.0),
                                     child: Text(
                                       "25910",
-                                      style: TextStyle(
-                                          fontFamily: 'Raleway',
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.bold),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleSmall,
                                     ),
                                   ),
                                 ]),
@@ -86,12 +71,10 @@ class _MeinProfilSState extends State<MeinProfilS> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Text(
+                                  Text(
                                     "Username",
-                                    style: TextStyle(
-                                        fontFamily: 'Raleway',
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold),
+                                    style:
+                                        Theme.of(context).textTheme.titleSmall,
                                   ),
                                   SizedBox(
                                       width: 180,
@@ -104,13 +87,9 @@ class _MeinProfilSState extends State<MeinProfilS> {
                                             text: WidgetSpan(
                                               child: Text(
                                                 "Loop",
-                                                style: TextStyle(
-                                                  fontFamily: 'Raleway',
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Theme.of(context)
-                                                      .splashColor,
-                                                ),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .labelSmall,
                                                 textAlign: TextAlign.end,
                                               ),
                                             ),
@@ -124,37 +103,32 @@ class _MeinProfilSState extends State<MeinProfilS> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Text(
+                                  Text(
                                     "Hochschule",
-                                    style: TextStyle(
-                                        fontFamily: 'Raleway',
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold),
+                                    style:
+                                        Theme.of(context).textTheme.titleSmall,
                                   ),
                                   SizedBox(
-                                      width: 180,
-                                      child: Align(
-                                        alignment: Alignment.centerRight,
-                                        child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              0.0, 0.0, 20.0, 0.0),
-                                          child: RichText(
-                                            text: WidgetSpan(
-                                              child: Text(
-                                                "DHBW Mannheim",
-                                                style: TextStyle(
-                                                  fontFamily: 'Raleway',
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Theme.of(context)
-                                                      .splashColor,
-                                                ),
-                                                textAlign: TextAlign.end,
-                                              ),
+                                    width: 180,
+                                    child: Align(
+                                      alignment: Alignment.centerRight,
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0.0, 0.0, 20.0, 0.0),
+                                        child: RichText(
+                                          text: WidgetSpan(
+                                            child: Text(
+                                              "DHBW Mannheim",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .labelSmall,
+                                              textAlign: TextAlign.end,
                                             ),
                                           ),
                                         ),
-                                      )),
+                                      ),
+                                    ),
+                                  ),
                                 ]),
                             const DividerWidget(),
                             //------------------------------------------
@@ -162,12 +136,10 @@ class _MeinProfilSState extends State<MeinProfilS> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Text(
+                                  Text(
                                     "Studiengang",
-                                    style: TextStyle(
-                                        fontFamily: 'Raleway',
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold),
+                                    style:
+                                        Theme.of(context).textTheme.titleSmall,
                                   ),
                                   SizedBox(
                                       width: 180,
@@ -180,13 +152,9 @@ class _MeinProfilSState extends State<MeinProfilS> {
                                             text: WidgetSpan(
                                               child: Text(
                                                 "Bachelor Software Engineering",
-                                                style: TextStyle(
-                                                  fontFamily: 'Raleway',
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Theme.of(context)
-                                                      .splashColor,
-                                                ),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .labelSmall,
                                                 textAlign: TextAlign.end,
                                               ),
                                             ),
@@ -200,12 +168,10 @@ class _MeinProfilSState extends State<MeinProfilS> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Text(
+                                  Text(
                                     "Semester",
-                                    style: TextStyle(
-                                        fontFamily: 'Raleway',
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold),
+                                    style:
+                                        Theme.of(context).textTheme.titleSmall,
                                   ),
                                   SizedBox(
                                       width: 180,
@@ -218,13 +184,9 @@ class _MeinProfilSState extends State<MeinProfilS> {
                                             text: WidgetSpan(
                                               child: Text(
                                                 "4",
-                                                style: TextStyle(
-                                                  fontFamily: 'Raleway',
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Theme.of(context)
-                                                      .splashColor,
-                                                ),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .labelSmall,
                                                 textAlign: TextAlign.end,
                                               ),
                                             ),
@@ -238,12 +200,10 @@ class _MeinProfilSState extends State<MeinProfilS> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Text(
+                                  Text(
                                     "Branche",
-                                    style: TextStyle(
-                                        fontFamily: 'Raleway',
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold),
+                                    style:
+                                        Theme.of(context).textTheme.titleSmall,
                                   ),
                                   SizedBox(
                                       width: 180,
@@ -256,13 +216,9 @@ class _MeinProfilSState extends State<MeinProfilS> {
                                             text: WidgetSpan(
                                               child: Text(
                                                 "IT",
-                                                style: TextStyle(
-                                                  fontFamily: 'Raleway',
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Theme.of(context)
-                                                      .splashColor,
-                                                ),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .labelSmall,
                                                 textAlign: TextAlign.end,
                                               ),
                                             ),
@@ -284,15 +240,14 @@ class _MeinProfilSState extends State<MeinProfilS> {
                                   textColor: Colors.black,
                                   onPressed: () => {},
                                   splashColor: Colors.redAccent,
-                                  child: const Text(
+                                  child: Text(
                                     "Speichern",
-                                    style: TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold),
+                                    style:
+                                        Theme.of(context).textTheme.titleSmall,
                                   ),
                                 ),
                               ),
-                            ),
+                            )
                           ],
                         ),
                       ),
@@ -317,19 +272,14 @@ class _MeinProfilSState extends State<MeinProfilS> {
                         child: RichText(
                             text: TextSpan(
                                 text: "Deine Trophäen",
-                                style: const TextStyle(
-                                  fontFamily: 'Raleway',
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                ),
+                                style: Theme.of(context).textTheme.titleMedium,
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const Trophaeen()));
+                                                const TrophaeenWidget()));
                                   })),
                       ),
                     ),
