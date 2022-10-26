@@ -50,8 +50,8 @@ class _MeineKurseDState extends State<MeineKurseD> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => NeuerKurs(
-                                            kursname: exampleList[0])));
+                                        builder: (context) =>
+                                            const NeuerKurs()));
                               })),
                   ),
                 ),

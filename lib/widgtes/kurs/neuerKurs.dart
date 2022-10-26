@@ -5,15 +5,16 @@ import 'package:learning_analytics/widgtes/profil/eineTrophaeen.dart';
 import 'package:learning_analytics/widgtes/shared/divider.dart';
 
 class NeuerKurs extends StatefulWidget {
-  final String kursname;
-  const NeuerKurs({Key? key, required this.kursname}) : super(key: key);
+  const NeuerKurs({Key? key}) : super(key: key);
 
   @override
   State<NeuerKurs> createState() => _NeuerKursState();
 }
 
 class _NeuerKursState extends State<NeuerKurs> {
-  final text = TextEditingController();
+  final kursname = TextEditingController();
+  final hochschule = TextEditingController();
+  final studiengang = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,7 @@ class _NeuerKursState extends State<NeuerKurs> {
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.9,
-                  height: 300,
+                  height: 460,
                   child: Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
@@ -67,10 +68,10 @@ class _NeuerKursState extends State<NeuerKurs> {
                                           style: Theme.of(context)
                                               .textTheme
                                               .labelSmall,
-                                          controller: text,
+                                          controller: kursname,
                                           decoration: const InputDecoration(
                                             border: OutlineInputBorder(),
-                                            hintText: 'Moin',
+                                            hintText: 'Kursname',
                                           ),
                                         ),
                                       ),
@@ -86,26 +87,26 @@ class _NeuerKursState extends State<NeuerKurs> {
                                   style: Theme.of(context).textTheme.titleSmall,
                                 ),
                                 SizedBox(
-                                  width: 180,
-                                  child: Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          0.0, 0.0, 20.0, 0.0),
-                                      child: RichText(
-                                        text: WidgetSpan(
-                                          child: Text(
-                                            "DHBW Mannheim",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .labelSmall,
-                                            textAlign: TextAlign.end,
+                                    height: 70,
+                                    width: 200,
+                                    child: Align(
+                                      alignment: Alignment.centerRight,
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0.0, 0.0, 20.0, 0.0),
+                                        child: TextField(
+                                          cursorHeight: 5,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelSmall,
+                                          controller: hochschule,
+                                          decoration: const InputDecoration(
+                                            border: OutlineInputBorder(),
+                                            hintText: 'Hochschule',
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                ),
+                                    )),
                               ]),
                           const DividerWidget(),
                           //------------------------------------------
@@ -117,21 +118,22 @@ class _NeuerKursState extends State<NeuerKurs> {
                                   style: Theme.of(context).textTheme.titleSmall,
                                 ),
                                 SizedBox(
-                                    width: 180,
+                                    height: 70,
+                                    width: 200,
                                     child: Align(
                                       alignment: Alignment.centerRight,
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(
                                             0.0, 0.0, 20.0, 0.0),
-                                        child: RichText(
-                                          text: WidgetSpan(
-                                            child: Text(
-                                              "Bachelor Software Engineering",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .labelSmall,
-                                              textAlign: TextAlign.end,
-                                            ),
+                                        child: TextField(
+                                          cursorHeight: 5,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelSmall,
+                                          controller: studiengang,
+                                          decoration: const InputDecoration(
+                                            border: OutlineInputBorder(),
+                                            hintText: 'Kursname',
                                           ),
                                         ),
                                       ),
@@ -153,16 +155,12 @@ class _NeuerKursState extends State<NeuerKurs> {
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(
                                             0.0, 0.0, 20.0, 0.0),
-                                        child: RichText(
-                                          text: WidgetSpan(
-                                            child: Text(
-                                              "https://learning.25910.de",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .labelSmall,
-                                              textAlign: TextAlign.end,
-                                            ),
-                                          ),
+                                        child: Text(
+                                          "https://learning.25910.de",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelSmall,
+                                          textAlign: TextAlign.end,
                                         ),
                                       ),
                                     )),
@@ -209,7 +207,7 @@ class _NeuerKursState extends State<NeuerKurs> {
                                       onPressed: () => {},
                                       splashColor: Colors.redAccent,
                                       child: Text(
-                                        "Kurs löschen",
+                                        "Kurs erstellen",
                                         style: Theme.of(context)
                                             .textTheme
                                             .headlineSmall,

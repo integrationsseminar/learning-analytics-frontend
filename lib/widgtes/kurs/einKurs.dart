@@ -49,7 +49,7 @@ class _EinKursState extends State<EinKurs> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  widget.kursname,
+                                  "Kursname",
                                   style: Theme.of(context).textTheme.titleSmall,
                                 ),
                                 SizedBox(
@@ -62,7 +62,7 @@ class _EinKursState extends State<EinKurs> {
                                         child: RichText(
                                           text: WidgetSpan(
                                             child: Text(
-                                              "WWISEA2020",
+                                              widget.kursname,
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .labelSmall,

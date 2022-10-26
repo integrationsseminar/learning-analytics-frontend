@@ -16,6 +16,7 @@ class _TestViewState extends State<TestView> {
     '/meinFortschrittS',
     '/meinLernenS',
     '/meinProfilS',
+    '/login',
   ];
 
   @override
