@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:learning_analytics/data/threadwithcomments.dart';
 import '../../views_s/fragen_view.dart';
+import '../../data/threadwithcomments.dart';
 
 class Frage extends StatefulWidget {
-  Frage(
-      {super.key,
-      required this.frage,
-      required this.tags,
-      required this.answers});
-  final String frage;
-  final List<String> tags;
-  final int answers;
+  Frage({super.key, required this.threadwithcomments});
+  final Threadwithcomments threadwithcomments;
 
   @override
   State<Frage> createState() => _FrageState();
@@ -22,7 +18,8 @@ class _FrageState extends State<Frage> {
           await Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => FragenView(),
+                builder: (context) =>
+                    FragenView(threadwithcomments: widget.threadwithcomments),
               ));
         },
         child: Card(
@@ -38,7 +35,7 @@ class _FrageState extends State<Frage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
-                  child: Text(widget.frage,
+                  child: Text(widget.threadwithcomments.thread.title,
                       style: Theme.of(context).textTheme.bodyLarge),
                 ),
               ),
@@ -49,7 +46,7 @@ class _FrageState extends State<Frage> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Row(children: [
-                    for (var tag in widget.tags)
+                    for (var tag in widget.threadwithcomments.thread.tags)
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
@@ -73,7 +70,9 @@ class _FrageState extends State<Frage> {
                                   color: Theme.of(context).highlightColor),
                               child: Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: Text(widget.answers.toString()))),
+                                  child: Text(widget
+                                      .threadwithcomments.threadcomments.length
+                                      .toString()))),
                         ),
                       ),
                     ),

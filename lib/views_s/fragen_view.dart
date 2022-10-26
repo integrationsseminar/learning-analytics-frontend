@@ -2,39 +2,30 @@ import 'package:flutter/material.dart';
 import '../widgtes/lernen/antwort.dart';
 import '../widgtes/customappbar.dart';
 import '../data/antwort.dart';
+import '../data/threadwithcomments.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FragenView extends StatefulWidget {
-  const FragenView({Key? key}) : super(key: key);
+  const FragenView({Key? key, required this.threadwithcomments})
+      : super(key: key);
+  final Threadwithcomments threadwithcomments;
 
   @override
   State<FragenView> createState() => _FragenViewState();
 }
 
 class _FragenViewState extends State<FragenView> {
-  bool umfragen = true;
-
-  bool fragen = true;
-
-  List<AntwortClass> antworten = [
-    AntwortClass("ja das wäre sehr wichtig", 0),
-    AntwortClass("ja das wäre sehr wichtig", 1),
-  ];
-
-  List<String> tags = ["Integrationsseminar", "Frage"];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Column(children: [
       Positioned(
-        child: Container(
-          child: SizedBox(
-              height: 140,
-              child: Container(
-                  color: Theme.of(context).secondaryHeaderColor,
-                  child: CustomAppBar(
-                      title: "Mein Lernen", backToPage: "MeinLernenS"))),
-        ),
+        child: SizedBox(
+            height: 140,
+            child: Container(
+                color: Theme.of(context).secondaryHeaderColor,
+                child: const CustomAppBar(
+                    title: "Mein Lernen", backToPage: "MeinLernenS"))),
       ),
       Container(
         decoration: BoxDecoration(
@@ -45,12 +36,11 @@ class _FragenViewState extends State<FragenView> {
         child: Column(children: [
           Padding(
             padding: const EdgeInsets.all(20.0),
-            child: Text(
-                "Könnten Sie die Lösungen für Aufgabe vier zur Verfügung stellen?",
+            child: Text(widget.threadwithcomments.thread.title,
                 style: Theme.of(context).textTheme.bodyLarge),
           ),
           Row(children: [
-            for (var tag in tags)
+            for (var tag in widget.threadwithcomments.thread.tags)
               Padding(
                 padding: const EdgeInsets.only(left: 10.0, bottom: 10.0),
                 child: Container(
@@ -71,18 +61,25 @@ class _FragenViewState extends State<FragenView> {
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: Column(children: [
-                Antwort(answer: "Ja das wäre super", type: "s"),
-                Antwort(answer: "Ja kann ich machen", type: "d"),
-                Antwort(answer: "Vielen Dank, das hat geholfen", type: "s")
+                for (var antwort in widget.threadwithcomments.threadcomments)
+                  Antwort(answer: antwort.message, type: antwort.type),
               ]),
             ),
             FloatingActionButton.extended(
                 icon: Icon(Icons.add),
-                onPressed: () {},
+                onPressed: () {
+                  newMessage();
+                },
                 label: const Text("Neue Nachricht")),
           ]),
         ]),
       )
     ]));
+  }
+
+  void newMessage() async {
+    final prefs = await SharedPreferences.getInstance();
+    var jwt = prefs.getString("jwt");
+    jwt ??= "634dad62663403c8063adc41";
   }
 }

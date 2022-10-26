@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:learning_analytics/data/threadwithcomments.dart';
 import '../widgtes/lernen/frage.dart';
 import '../widgtes/lernen/umfrage.dart';
 import '../data/antwort.dart';
+import '../data/thread.dart';
+import '../data/threadcomment.dart';
+import '../data/http_helper.dart';
 import './fragen_view.dart';
+import './add_fragen_view.dart';
 import '../widgtes/customappbar.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MeinLernenS extends StatefulWidget {
   const MeinLernenS({Key? key}) : super(key: key);
@@ -25,6 +31,18 @@ class _MeinLernenSState extends State<MeinLernenS> {
     'Marketing'
   ];
 
+  List<Threadwithcomments> threads = [];
+
+  late HttpHelper httpHelper;
+  bool fetching = true;
+
+  @override
+  initState() {
+    httpHelper = HttpHelper();
+    fetchData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     String dropdownValue = list.first;
@@ -34,8 +52,7 @@ class _MeinLernenSState extends State<MeinLernenS> {
         const Positioned(
           child: SizedBox(
               height: 140,
-              child: CustomAppBar(
-                  title: "Mein Lernen", backToPage: "MeinLernenD")),
+              child: CustomAppBar(title: "Mein Lernen", backToPage: "")),
         ),
         Row(children: [
           Padding(
@@ -91,16 +108,18 @@ class _MeinLernenSState extends State<MeinLernenS> {
               children: [
                 FloatingActionButton.extended(
                     icon: Icon(Icons.add),
-                    onPressed: () {},
+                    onPressed: () async {
+                      await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddFrage(),
+                          ));
+                    },
                     label: const Text("Neuen Eintrag hinzufügen")),
                 Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Column(children: [
-                    Frage(
-                        frage:
-                            "Könnten Sie die Lösungen für Aufgabe vier zur Verfügung stellen?",
-                        tags: const ["Integrationsseminar", "Frage"],
-                        answers: 1),
+                    for (var frage in threads) Frage(threadwithcomments: frage),
                     Umfrage(
                       frage:
                           "Könnten Sie die Lösungen für Aufgabe vier zur Verfügung stellen?",
@@ -108,11 +127,6 @@ class _MeinLernenSState extends State<MeinLernenS> {
                       answers: 15,
                       seriesList: createSeriesList(),
                     ),
-                    Frage(
-                        frage:
-                            "Könnten Sie die Lösungen für Aufgabe vier zur Verfügung stellen?",
-                        tags: const ["Integrationsseminar", "Frage"],
-                        answers: 1),
                   ]),
                 ),
               ],
@@ -139,5 +153,18 @@ class _MeinLernenSState extends State<MeinLernenS> {
         data: data,
       )
     ];
+  }
+
+  void fetchData() async {
+    //Laden der Trainingspläne eines Nutzers
+    final prefs = await SharedPreferences.getInstance();
+    var jwt = prefs.getString("jwt");
+    jwt ??= "634dad62663403c8063adc41";
+    List<Threadwithcomments> initThreads =
+        await httpHelper.getThreadswithcomments(jwt);
+    setState(() {
+      threads = initThreads;
+      fetching = false;
+    });
   }
 }

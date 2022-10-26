@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:learning_analytics/widgtes/lernen/balkendiagramm.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import '../../data/antwort.dart';
+import '../../views_s/umfragen_view.dart';
 
 class Umfrage extends StatefulWidget {
   const Umfrage(
@@ -21,7 +22,15 @@ class Umfrage extends StatefulWidget {
 
 class _UmfrageState extends State<Umfrage> {
   @override
-  Widget build(BuildContext context) => Card(
+  Widget build(BuildContext context) => GestureDetector(
+      onTap: () async {
+        await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => UmfragenView(),
+            ));
+      },
+      child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
           side: BorderSide(
@@ -81,5 +90,5 @@ class _UmfrageState extends State<Umfrage> {
                 ])),
           ],
         ),
-      );
+      ));
 }
