@@ -4,8 +4,10 @@ import '../../views_s/fragen_view.dart';
 import '../../data/threadwithcomments.dart';
 
 class Frage extends StatefulWidget {
-  Frage({super.key, required this.threadwithcomments});
+  Frage(
+      {super.key, required this.threadwithcomments, required this.courseName});
   final Threadwithcomments threadwithcomments;
+  final String courseName;
 
   @override
   State<Frage> createState() => _FrageState();
@@ -18,8 +20,9 @@ class _FrageState extends State<Frage> {
           await Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    FragenView(threadwithcomments: widget.threadwithcomments),
+                builder: (context) => FragenView(
+                    threadwithcomments: widget.threadwithcomments,
+                    courseName: widget.courseName),
               ));
         },
         child: Card(
@@ -46,7 +49,7 @@ class _FrageState extends State<Frage> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Row(children: [
-                    for (var tag in widget.threadwithcomments.thread.tags)
+                    for (var tag in [widget.courseName, "Frage"])
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
@@ -70,9 +73,15 @@ class _FrageState extends State<Frage> {
                                   color: Theme.of(context).highlightColor),
                               child: Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: Text(widget
-                                      .threadwithcomments.threadcomments.length
-                                      .toString()))),
+                                  child: SizedBox(
+                                    width: 15,
+                                    child: Text(
+                                      widget.threadwithcomments.threadcomments
+                                          .length
+                                          .toString(),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ))),
                         ),
                       ),
                     ),

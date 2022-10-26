@@ -1,12 +1,14 @@
-import 'package:learning_analytics/data/threadwithcomments.dart';
-
 import './thread.dart';
 import './threadcomment.dart';
+import './threadwithcomments.dart';
+import './survey.dart';
+import './course.dart';
+import './user.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class HttpHelper {
-  final String authority = 'learninganalytics.gang-of-fork.de';
+  final String authority = 'api.learning-analytics.gang-of-fork.de';
 
   Future<List<Thread>> getThreads(String jwt) async {
     List<Thread> threads = [];
@@ -16,17 +18,16 @@ class HttpHelper {
 
     var headers = {
       "Content-Type": "application/json",
-      "Authorization": "Bearer ${jwt}"
+      "Authorization": "Bearer $jwt"
     };
 
     http.Response res = await http.get(uri, headers: headers);
 
     if (res.statusCode == 200) {
-      var response = jsonDecode(res.body);
-      for (var threadRes in response) {
-        Thread thread = Thread.fromJSON(threadRes);
-        threads.add(thread);
-      }
+      var response = jsonDecode(res.body)['data'];
+      threads = response
+          .map<Thread>((threadMap) => Thread.fromJSON(threadMap))
+          .toList();
     } else {
       throw Exception('Failed to load threads');
     }
@@ -47,22 +48,24 @@ class HttpHelper {
   Future<List<Threadcomment>> getThreadcomments(String threadId, jwt) async {
     List<Threadcomment> threadcomments = [];
 
-    String newPath = '/threadcomments\$filter=thread eq ${threadId}';
-    Uri uri = Uri.https(authority, newPath);
+    String newPath = '/threadcomments';
 
     var headers = {
       "Content-Type": "application/json",
-      "Authorization": "Bearer ${jwt}"
+      "Authorization": "Bearer $jwt"
     };
+
+    Uri uri = Uri.parse(
+        "https://$authority$newPath?\$filter=thread+eq+cast('$threadId', ObjectId)");
 
     http.Response res = await http.get(uri, headers: headers);
 
     if (res.statusCode == 200) {
-      var response = jsonDecode(res.body);
-      for (var threadcommentsRes in response) {
-        Threadcomment threadcomment = Threadcomment.fromJSON(threadcommentsRes);
-        threadcomments.add(threadcomment);
-      }
+      var response = jsonDecode(res.body)['data'];
+      threadcomments = response
+          .map<Threadcomment>(
+              (commentMap) => Threadcomment.fromJSON(commentMap))
+          .toList();
     } else {
       throw Exception('Failed to load threadcomments');
     }
@@ -77,12 +80,12 @@ class HttpHelper {
 
     var headers = {
       "Content-Type": "application/json",
-      "Authorization": "Bearer ${jwt}"
+      "Authorization": "Bearer $jwt"
     };
 
     http.Response response = await http.post(uri, headers: headers, body: body);
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       return true;
     } else {
       return false;
@@ -98,15 +101,106 @@ class HttpHelper {
 
     var headers = {
       "Content-Type": "application/json",
-      "Authorization": "Bearer ${jwt}"
+      "Authorization": "Bearer $jwt"
     };
 
     http.Response response = await http.post(uri, headers: headers, body: body);
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       return true;
     } else {
       return false;
     }
+  }
+
+  Future<List<Survey>> getSurveys(String jwt) async {
+    List<Survey> surveys = [];
+
+    String newPath = '/surveys';
+    Uri uri = Uri.https(authority, newPath);
+
+    var headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $jwt"
+    };
+
+    http.Response res = await http.get(uri, headers: headers);
+    print(jsonDecode(res.body));
+
+    if (res.statusCode == 200) {
+      var response = jsonDecode(res.body)['data'];
+      surveys = response
+          .map<Survey>((surveyMap) => Survey.fromJSON(surveyMap))
+          .toList();
+    } else {
+      throw Exception('Failed to load surveys');
+    }
+    return surveys;
+  }
+
+  Future<bool> postSurvey(String jwt, Survey survey) async {
+    String newPath = '/surveys';
+    Uri uri = Uri.https(authority, newPath);
+
+    var body = jsonEncode(survey.toJson());
+
+    var headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $jwt"
+    };
+
+    http.Response response = await http.post(uri, headers: headers, body: body);
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<List<Course>> getCourses(String jwt) async {
+    List<Course> courses = [];
+
+    String newPath = '/courses';
+    Uri uri = Uri.https(authority, newPath);
+
+    var headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $jwt"
+    };
+
+    http.Response res = await http.get(uri, headers: headers);
+
+    if (res.statusCode == 200) {
+      var response = jsonDecode(res.body)['data'];
+      courses = response
+          .map<Course>((courseMap) => Course.fromJSON(courseMap))
+          .toList();
+    } else {
+      throw Exception('Failed to load courses');
+    }
+    return courses;
+  }
+
+  Future<User> getUser(String jwt) async {
+    User user;
+
+    String newPath = '/users/my';
+    Uri uri = Uri.https(authority, newPath);
+
+    var headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $jwt"
+    };
+
+    http.Response res = await http.get(uri, headers: headers);
+
+    if (res.statusCode == 200) {
+      var response = jsonDecode(res.body);
+      user = User.fromJSON(response);
+    } else {
+      throw Exception('Failed to load user');
+    }
+    return user;
   }
 }

@@ -1,18 +1,16 @@
 class Thread {
   late String _id, course, createdAt, createdBy, title, description;
-  late List<String> tags;
 
   Thread(this._id, this.course, this.createdAt, this.createdBy, this.title,
-      this.description, this.tags);
+      this.description);
 
   Thread.fromJSON(Map<String, dynamic> importMap) {
-    _id = importMap['_id'] ?? 0;
+    _id = importMap['_id'] ?? '';
     course = importMap['course'] ?? '';
     createdAt = importMap['createdAt'] ?? '';
     createdBy = importMap['createdBy'] ?? '';
     title = importMap['title'] ?? '';
     description = importMap['description'] ?? '';
-    tags = importMap['description'] ?? [];
   }
 
   String get getId {

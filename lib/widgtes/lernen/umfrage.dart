@@ -2,19 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:learning_analytics/widgtes/lernen/balkendiagramm.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import '../../data/antwort.dart';
+import '../../data/survey.dart';
 import '../../views_s/umfragen_view.dart';
 
 class Umfrage extends StatefulWidget {
-  const Umfrage(
-      {super.key,
-      required this.frage,
-      required this.tags,
-      required this.answers,
-      required this.seriesList});
-  final String frage;
-  final List<String> tags;
-  final int answers;
-  final List<charts.Series<AntwortClass, String>> seriesList;
+  const Umfrage({super.key, required this.survey, required this.courseName});
+  final Survey survey;
+  final String courseName;
 
   @override
   State<Umfrage> createState() => _UmfrageState();
@@ -27,7 +21,10 @@ class _UmfrageState extends State<Umfrage> {
         await Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => UmfragenView(),
+              builder: (context) => UmfragenView(
+                survey: widget.survey,
+                courseName: widget.courseName,
+              ),
             ));
       },
       child: Card(
@@ -45,11 +42,12 @@ class _UmfrageState extends State<Umfrage> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
-                    child: Text(widget.frage,
+                    child: Text(widget.survey.title,
                         style: Theme.of(context).textTheme.bodyLarge),
                   ),
                 ),
-                SimpleBarChart(seriesList: widget.seriesList, animate: true)
+                SimpleBarChart(
+                    seriesList: createSeriesList(widget.survey), animate: true)
               ],
             ),
             Card(
@@ -59,7 +57,7 @@ class _UmfrageState extends State<Umfrage> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Row(children: [
-                  for (var tag in widget.tags)
+                  for (var tag in [widget.courseName, "Umfrage"])
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
@@ -83,7 +81,8 @@ class _UmfrageState extends State<Umfrage> {
                                 color: Theme.of(context).highlightColor),
                             child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text(widget.answers.toString()))),
+                                child: Text(
+                                    widget.survey.answers.length.toString()))),
                       ),
                     ),
                   ),
@@ -91,4 +90,29 @@ class _UmfrageState extends State<Umfrage> {
           ],
         ),
       ));
+
+  static List<charts.Series<AntwortClass, String>> createSeriesList(
+      Survey survey) {
+    List<String> answerTypes = survey.answerType.answers;
+    List<AntwortClass> data = [];
+    for (var types in answerTypes) {
+      var countSameAnswers = 0;
+      for (var ans in survey.answers) {
+        if (ans.answer == types) {
+          countSameAnswers++;
+        }
+      }
+      data.add(AntwortClass(types, countSameAnswers));
+    }
+
+    return [
+      charts.Series<AntwortClass, String>(
+        id: 'Antwort',
+        colorFn: (_, __) => charts.MaterialPalette.gray.shadeDefault,
+        domainFn: (AntwortClass antwort, _) => antwort.text,
+        measureFn: (AntwortClass antwort, _) => antwort.anzahl,
+        data: data,
+      )
+    ];
+  }
 }

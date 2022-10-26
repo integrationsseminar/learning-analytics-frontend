@@ -1,8 +1,9 @@
 class Threadcomment {
-  late String _id, createdAt, createdBy, message, thread, type;
+  late String _id, createdAt, createdBy, message, thread;
+  late bool createdByOwner;
 
   Threadcomment(this._id, this.createdAt, this.createdBy, this.message,
-      this.thread, this.type);
+      this.thread, this.createdByOwner);
 
   Threadcomment.fromJSON(Map<String, dynamic> importMap) {
     _id = importMap['_id'] ?? '';
@@ -10,7 +11,7 @@ class Threadcomment {
     createdBy = importMap['createdBy'] ?? '';
     message = importMap['message'] ?? '';
     thread = importMap['thread'] ?? '';
-    type = importMap['type'] ?? '';
+    createdByOwner = importMap['createdByOwner'] ?? false;
   }
 
   String get getId {
