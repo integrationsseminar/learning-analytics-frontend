@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 
 ThemeData laappTheme() {
   return ThemeData(
+    fontFamily: 'Raleway',
+
     // Colors
     backgroundColor: Colors.white,
     primaryColor: const Color(0xffE30613),
     primaryColorLight: const Color(0xffF54F59),
     accentColor: const Color(0xffD9D9D9),
     secondaryHeaderColor: const Color(0xfff0f0f0),
+    splashColor: const Color.fromARGB(255, 142, 142, 142),
 
     highlightColor: Colors.grey[300],
     // Buttons
@@ -34,81 +37,90 @@ ThemeData laappTheme() {
     textTheme: const TextTheme(
       // Headlines
       headlineLarge: TextStyle(
-        fontSize: 32,
-        fontFamily: 'Proxima Nova Bold',
-        color: Color(0xffE30613),
-        letterSpacing: -0.5,
+        fontSize: 30,
+        fontFamily: 'Raleway',
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
       ),
       headlineMedium: TextStyle(
-        fontSize: 28,
-        fontFamily: 'Proxima Nova Bold',
-        color: Color(0xffE30613),
-        letterSpacing: -0.5,
+        fontSize: 20,
+        fontFamily: 'Raleway',
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
       ),
       headlineSmall: TextStyle(
-        fontSize: 24,
-        fontFamily: 'Proxima Nova Bold',
-        color: Color(0xffE30613),
-        letterSpacing: -0.5,
+        fontSize: 13,
+        fontFamily: 'Raleway',
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
       ),
 
       // Title
       titleLarge: TextStyle(
-        fontSize: 22,
-        fontFamily: 'Proxima Nova Bold',
-        color: Color(0xffE30613),
+        fontSize: 30,
+        fontFamily: 'Raleway',
+        color: Colors.black,
+        fontWeight: FontWeight.bold,
         letterSpacing: -0.5,
       ),
       titleMedium: TextStyle(
-        fontSize: 16,
-        fontFamily: 'Proxima Nova Bold',
-        color: Color(0xffE30613),
+        fontSize: 20,
+        fontFamily: 'Raleway',
+        color: Colors.black,
+        fontWeight: FontWeight.bold,
         letterSpacing: -0.5,
       ),
       titleSmall: TextStyle(
-        fontSize: 14,
-        fontFamily: 'Proxima Nova Bold',
-        color: Color(0xffE30613),
+        fontSize: 13,
+        fontFamily: 'Raleway',
+        color: Colors.black,
+        fontWeight: FontWeight.bold,
         letterSpacing: -0.5,
       ),
 
       // Labels
       labelLarge: TextStyle(
-        fontSize: 14,
-        fontFamily: 'Proxima Nova',
-        color: Colors.white,
+        fontSize: 30,
+        fontFamily: 'Raleway',
+        color: Color.fromARGB(255, 142, 142, 142),
+        fontWeight: FontWeight.bold,
         letterSpacing: -0.5,
       ),
       labelMedium: TextStyle(
-        fontSize: 12,
-        fontFamily: 'Proxima Nova',
-        color: Colors.white,
+        fontSize: 20,
+        fontFamily: 'Raleway',
+        color: Color.fromARGB(255, 142, 142, 142),
+        fontWeight: FontWeight.bold,
         letterSpacing: -0.5,
       ),
       labelSmall: TextStyle(
-        fontSize: 11,
-        fontFamily: 'Proxima Nova',
-        color: Colors.white,
+        fontSize: 13,
+        fontFamily: 'Raleway',
+        color: Color.fromARGB(255, 142, 142, 142),
+        fontWeight: FontWeight.bold,
         letterSpacing: -0.5,
       ),
 
       // Body
       bodyLarge: TextStyle(
-        fontSize: 16,
-        fontFamily: 'Proxima Nova',
-        color: Colors.black,
+        fontSize: 30,
+        fontFamily: 'Raleway',
+        color: Color(0xffE30613),
+        fontWeight: FontWeight.bold,
         letterSpacing: -0.5,
       ),
       bodyMedium: TextStyle(
-        fontSize: 12,
-        fontFamily: 'Proxima Nova',
-        color: Colors.black,
+        fontSize: 20,
+        fontFamily: 'Raleway',
+        color: Color(0xffE30613),
+        fontWeight: FontWeight.bold,
         letterSpacing: -0.5,
       ),
       bodySmall: TextStyle(
-        fontSize: 12,
-        fontFamily: 'Proxima Nova',
-        color: Colors.black,
+        fontSize: 13,
+        fontFamily: 'Raleway',
+        color: Color(0xffE30613),
+        fontWeight: FontWeight.bold,
         letterSpacing: -0.5,
       ),
     ),
