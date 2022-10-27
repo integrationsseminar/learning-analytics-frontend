@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgtes/lernen/frage.dart';
 import '../widgtes/lernen/umfrage.dart';
 import '../data/antwort.dart';
+import './fragen_view.dart';
 import '../widgtes/customappbar.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
@@ -32,7 +33,7 @@ class _MeinLernenSState extends State<MeinLernenS> {
       body: Column(children: [
         const Positioned(
           child: SizedBox(
-              height: 160,
+              height: 140,
               child: CustomAppBar(
                   title: "Mein Lernen", backToPage: "MeinLernenD")),
         ),
@@ -57,55 +58,84 @@ class _MeinLernenSState extends State<MeinLernenS> {
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
                 onPressed: () {
-                  umfragen = !umfragen;
+                  setState(() {
+                    umfragen = !umfragen;
+                  });
                 },
+                style: umfragen
+                    ? Theme.of(context).elevatedButtonTheme.style
+                    : ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            const Color(0xffD9D9D9))),
                 child: const Text("Umfragen")),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
+                style: fragen
+                    ? Theme.of(context).elevatedButtonTheme.style
+                    : ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            const Color(0xffD9D9D9))),
                 onPressed: () {
-                  umfragen = !umfragen;
+                  setState(() {
+                    fragen = !fragen;
+                  });
                 },
                 child: const Text("Fragen")),
           )
         ]),
-        FloatingActionButton.extended(
-            onPressed: () {}, label: const Text("Neuen Eintrag hinzufügen")),
-        Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Column(children: [
-            Frage(
-                frage:
-                    "Könnten Sie die Lösungen für Aufgabe vier zur Verfügung stellen?",
-                tags: const ["Integrationsseminar", "Frage"],
-                answers: 1),
-            Umfrage(
-              frage:
-                  "Könnten Sie die Lösungen für Aufgabe vier zur Verfügung stellen?",
-              tags: const ["Integrationsseminar", "Frage"],
-              answers: 1,
-              seriesList: _createSampleData(),
-            )
+        Expanded(
+          child: ListView(children: [
+            Column(
+              children: [
+                FloatingActionButton.extended(
+                    icon: Icon(Icons.add),
+                    onPressed: () {},
+                    label: const Text("Neuen Eintrag hinzufügen")),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Column(children: [
+                    Frage(
+                        frage:
+                            "Könnten Sie die Lösungen für Aufgabe vier zur Verfügung stellen?",
+                        tags: const ["Integrationsseminar", "Frage"],
+                        answers: 1),
+                    Umfrage(
+                      frage:
+                          "Könnten Sie die Lösungen für Aufgabe vier zur Verfügung stellen?",
+                      tags: const ["Integrationsseminar", "Umfrage"],
+                      answers: 15,
+                      seriesList: createSeriesList(),
+                    ),
+                    Frage(
+                        frage:
+                            "Könnten Sie die Lösungen für Aufgabe vier zur Verfügung stellen?",
+                        tags: const ["Integrationsseminar", "Frage"],
+                        answers: 1),
+                  ]),
+                ),
+              ],
+            ),
           ]),
         )
       ]),
     );
   }
 
-  static List<charts.Series<Antwort, String>> _createSampleData() {
+  static List<charts.Series<AntwortClass, String>> createSeriesList() {
     final data = [
-      Antwort('ja schon', 5),
-      Antwort('eher nicht', 9),
-      Antwort('bisschen', 6),
+      AntwortClass('ja schon', 5),
+      AntwortClass('eher nicht', 9),
+      AntwortClass('bisschen', 6),
     ];
 
     return [
-      charts.Series<Antwort, String>(
+      charts.Series<AntwortClass, String>(
         id: 'Antwort',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (Antwort antwort, _) => antwort.text,
-        measureFn: (Antwort antwort, _) => antwort.anzahl,
+        colorFn: (_, __) => charts.MaterialPalette.gray.shadeDefault,
+        domainFn: (AntwortClass antwort, _) => antwort.text,
+        measureFn: (AntwortClass antwort, _) => antwort.anzahl,
         data: data,
       )
     ];

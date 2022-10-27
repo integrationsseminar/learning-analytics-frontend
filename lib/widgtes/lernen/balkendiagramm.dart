@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../data/antwort.dart';
 
 class SimpleBarChart extends StatelessWidget {
-  final List<charts.Series<Antwort, String>> seriesList;
+  final List<charts.Series<AntwortClass, String>> seriesList;
   final bool animate;
 
   const SimpleBarChart(

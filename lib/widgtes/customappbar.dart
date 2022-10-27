@@ -26,7 +26,7 @@ class CustomAppBar extends StatelessWidget {
         body: Stack(
       children: <Widget>[
         Positioned(
-          top: 50.0,
+          top: 30.0,
           child: Container(
               width: size.width * 0.8,
               height: 110.0,
