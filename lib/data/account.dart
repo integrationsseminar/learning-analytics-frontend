@@ -15,11 +15,6 @@ class Account {
     };
   }
 
-  Map toJsonNewActivePlan(String newActivePlan) => {
-        'email': email,
-        'password': password,
-      };
-
   String getEmail() {
     return email;
   }
