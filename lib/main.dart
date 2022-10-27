@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import './test_view.dart';
 import 'package:learning_analytics/widgtes/shared/theme.dart';
 
+import './views/login.dart';
+
 import './views_d/mein_lernen.dart';
 import './views_d/mein_profil.dart';
 import './views_d/meine_kurse.dart';
@@ -26,6 +28,7 @@ class MyApp extends StatelessWidget {
       theme: laappTheme(),
       routes: {
         '/': (context) => const TestView(),
+        '/login': (context) => LoginView(),
         '/meinLernenD': (context) => MeinLernenD(),
         '/meinProfilD': (context) => const MeinProfilD(),
         '/meineKurseD': (context) => const MeineKurseD(),
