@@ -122,7 +122,7 @@ class _AddFrageState extends State<AddFrage> {
                               ),
                             ),
                           Container(
-                            height: 450,
+                            height: tabsAmount == 2 ? 410 : 470,
                             child: TabBarView(children: [
                               //Fragen
                               Padding(
@@ -356,13 +356,13 @@ class _AddFrageState extends State<AddFrage> {
                                                         setState(() {
                                                           if (answerControllers
                                                                   .length <
-                                                              5) {
+                                                              3) {
                                                             answerControllers.add(
                                                                 TextEditingController());
                                                           } else {
                                                             showInSnackbar(
                                                                 context,
-                                                                "Maximal 5 Antwortmöglichkeiten");
+                                                                "Maximal 3 Antwortmöglichkeiten");
                                                           }
                                                         });
                                                       },
@@ -463,7 +463,7 @@ class _AddFrageState extends State<AddFrage> {
                           )
                         ]))
               ]),
-              bottomNavigationBar: BottomMenu(index: 1));
+        bottomNavigationBar: BottomMenu(index: 1));
   }
 
   void fetchData() async {
