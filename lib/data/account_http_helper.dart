@@ -46,8 +46,8 @@ class AccountHttpHelper {
     };
 
     http.Response response = await http.post(uri, headers: headers, body: body);
-
-    await prefs.setString("jwt", json.decode(response.body)["token"]["token"]);
+    var login = json.decode(response.body)["token"]["token"];
+    await prefs.setString("jwt", login);
 
     if (response.statusCode == 201) {
       return true;

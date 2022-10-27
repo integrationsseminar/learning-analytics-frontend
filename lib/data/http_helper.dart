@@ -125,7 +125,6 @@ class HttpHelper {
     };
 
     http.Response res = await http.get(uri, headers: headers);
-    print(jsonDecode(res.body));
 
     if (res.statusCode == 200) {
       var response = jsonDecode(res.body)['data'];

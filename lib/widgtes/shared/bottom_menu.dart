@@ -15,9 +15,9 @@ class BottomMenu extends StatefulWidget {
 
 class _BottomMenuState extends State<BottomMenu> {
   Widget build(context) {
-    return FutureBuilder<User>(
+    return FutureBuilder<String>(
         future: fetchData(),
-        builder: (context, AsyncSnapshot<User> snapshot) {
+        builder: (context, AsyncSnapshot<String> snapshot) {
           if (snapshot.hasData) {
             return CurvedNavigationBar(
                 height: 50,
@@ -30,7 +30,7 @@ class _BottomMenuState extends State<BottomMenu> {
                   Icon(Icons.account_circle, color: Colors.black),
                   Icon(Icons.menu_book_sharp, color: Colors.black),
                   Icon(
-                    snapshot.data?.role == "Student"
+                    snapshot.data == "Student"
                         ? Icons.bar_chart
                         : Icons.add_circle_outline_outlined,
                     color: Colors.black,
@@ -38,7 +38,7 @@ class _BottomMenuState extends State<BottomMenu> {
                 ],
                 onTap: (int index) {
                   String view = '';
-                  String role = snapshot.data?.role == "Student" ? "S" : "D";
+                  String role = snapshot.data == "Student" ? "S" : "D";
                   switch (index) {
                     case 0:
                       view = '/meinProfil$role';
@@ -60,12 +60,17 @@ class _BottomMenuState extends State<BottomMenu> {
         });
   }
 
-  Future<User> fetchData() async {
+  Future<String> fetchData() async {
     final prefs = await SharedPreferences.getInstance();
-    var jwt = prefs.getString("jwt");
-    jwt ??=
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzQ5NjI1YzRkMjRlODlhZTJkZjg0NzUiLCJyb2xlIjoiTGVjdHVyZXIiLCJpYXQiOjE2NjY4MDkzNTksImV4cCI6MTY2NjgyMzc1OX0.hPw63fzL_GP_hYpMwuaxpYbyxqSCtw4Su91s9ge51Qk";
-    User initUser = await HttpHelper().getUser(jwt);
-    return initUser;
+    var role = prefs.getString("role");
+    if (role == null) {
+      var jwt = prefs.getString("jwt");
+      jwt ??=
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzQ5NjI1YzRkMjRlODlhZTJkZjg0NzUiLCJyb2xlIjoiTGVjdHVyZXIiLCJpYXQiOjE2NjY4MDkzNTksImV4cCI6MTY2NjgyMzc1OX0.hPw63fzL_GP_hYpMwuaxpYbyxqSCtw4Su91s9ge51Qk";
+
+      role = (await HttpHelper().getUser(jwt)).role;
+      await prefs.setString("role", role);
+    }
+    return role;
   }
 }
