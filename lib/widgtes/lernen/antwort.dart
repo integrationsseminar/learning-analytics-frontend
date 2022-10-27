@@ -25,6 +25,6 @@ class _AntwortState extends State<Antwort> {
         padding: const EdgeInsets.all(8.0),
         child: Text(widget.answer,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyLarge),
+            style: Theme.of(context).textTheme.titleMedium),
       ));
 }

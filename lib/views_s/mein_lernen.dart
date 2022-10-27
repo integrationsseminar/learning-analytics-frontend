@@ -2,16 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:learning_analytics/data/threadwithcomments.dart';
 import '../widgtes/lernen/frage.dart';
 import '../widgtes/lernen/umfrage.dart';
-import '../data/antwort.dart';
-import '../data/thread.dart';
 import '../data/course.dart';
 import '../data/survey.dart';
-import '../data/threadcomment.dart';
 import '../data/http_helper.dart';
-import './fragen_view.dart';
 import './add_fragen_view.dart';
 import '../widgtes/customappbar.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
+import '../widgtes/shared/bottom_menu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MeinLernenS extends StatefulWidget {
@@ -53,24 +49,40 @@ class _MeinLernenSState extends State<MeinLernenS> {
                     height: 140,
                     child: CustomAppBar(title: "Mein Lernen", backToPage: "")),
               ),
-              Row(children: [
+              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: DropdownButton(
-                      value: dropdownValue,
-                      items: courses
-                          .map<DropdownMenuItem<Course>>((Course course) {
-                        return DropdownMenuItem<Course>(
-                          value: course,
-                          child: Text(course.name),
-                        );
-                      }).toList(),
-                      onChanged: (Course? course) {
-                        print(course?.getId);
-                        setState(() {
-                          dropdownValue = course!;
-                        });
-                      }),
+                  child: Container(
+                    height: 28,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        borderRadius: BorderRadius.circular(5)),
+                    child: DropdownButton(
+                        underline: SizedBox(),
+                        style: Theme.of(context).textTheme.headlineSmall,
+                        icon: const Icon(Icons.arrow_drop_down_rounded,
+                            color: Colors.white),
+                        iconSize: 15,
+                        dropdownColor: Theme.of(context).primaryColor,
+                        borderRadius: BorderRadius.circular(5),
+                        value: dropdownValue,
+                        items: courses
+                            .map<DropdownMenuItem<Course>>((Course course) {
+                          return DropdownMenuItem<Course>(
+                            value: course,
+                            child: Text(course.name,
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall),
+                          );
+                        }).toList(),
+                        onChanged: (Course? course) {
+                          setState(() {
+                            dropdownValue = course!;
+                          });
+                        }),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -83,9 +95,14 @@ class _MeinLernenSState extends State<MeinLernenS> {
                       style: umfragen
                           ? Theme.of(context).elevatedButtonTheme.style
                           : ButtonStyle(
+                              shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(5.0))),
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   const Color(0xffD9D9D9))),
-                      child: const Text("Umfragen")),
+                      child: Text("Umfragen",
+                          style: Theme.of(context).textTheme.headlineSmall)),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -93,6 +110,10 @@ class _MeinLernenSState extends State<MeinLernenS> {
                       style: fragen
                           ? Theme.of(context).elevatedButtonTheme.style
                           : ButtonStyle(
+                              shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(5.0))),
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   const Color(0xffD9D9D9))),
                       onPressed: () {
@@ -100,23 +121,26 @@ class _MeinLernenSState extends State<MeinLernenS> {
                           fragen = !fragen;
                         });
                       },
-                      child: const Text("Fragen")),
+                      child: Text("Fragen",
+                          style: Theme.of(context).textTheme.headlineSmall)),
                 )
               ]),
               Expanded(
                 child: ListView(children: [
                   Column(
                     children: [
+                      const SizedBox(height: 15),
                       FloatingActionButton.extended(
-                          icon: Icon(Icons.add),
+                          icon: const Icon(Icons.add),
                           onPressed: () async {
                             await Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => AddFrage(),
+                                  builder: (context) => const AddFrage(),
                                 ));
                           },
-                          label: const Text("Neuen Eintrag hinzufügen")),
+                          label: Text("Neuen Eintrag hinzufügen",
+                              style: Theme.of(context).textTheme.titleSmall)),
                       Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: Column(children: [
@@ -148,6 +172,7 @@ class _MeinLernenSState extends State<MeinLernenS> {
                 ]),
               )
             ]),
+      bottomNavigationBar: BottomMenu(index: 1),
     );
   }
 
@@ -169,6 +194,5 @@ class _MeinLernenSState extends State<MeinLernenS> {
       surveys = initSurveys;
       fetching = false;
     });
-    print(threads.length);
   }
 }

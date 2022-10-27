@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:learning_analytics/widgtes/customappbar.dart';
 import 'package:learning_analytics/widgtes/kurs/einKurs.dart';
 import 'package:learning_analytics/widgtes/kurs/neuerKurs.dart';
+import 'package:learning_analytics/widgtes/shared/bottom_menu.dart';
 
 class MeineKurseD extends StatefulWidget {
   const MeineKurseD({Key? key}) : super(key: key);
@@ -124,6 +125,7 @@ class _MeineKurseDState extends State<MeineKurseD> {
           ),
         )
       ]),
+      bottomNavigationBar: BottomMenu(index: 2),
     );
   }
 }

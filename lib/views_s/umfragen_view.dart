@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import '../widgtes/lernen/antwort.dart';
-import '../widgtes/customappbar.dart';
+import '../widgtes/shared/bottom_menu.dart';
 import '../data/survey.dart';
 import '../data/antwort.dart';
-import 'package:flutter/material.dart';
 import 'package:learning_analytics/widgtes/lernen/balkendiagramm.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
@@ -24,50 +22,52 @@ class _UmfragenViewState extends State<UmfragenView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(children: [
-      Container(
-        decoration: BoxDecoration(
-            borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20)),
-            color: Theme.of(context).secondaryHeaderColor),
-        child: Column(children: [
-          Padding(
-              padding: const EdgeInsets.only(top: 15.0),
-              child: Text(getDate(widget.survey.createdAt),
-                  style: Theme.of(context).textTheme.bodySmall)),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Text(widget.survey.title,
-                style: Theme.of(context).textTheme.bodyLarge),
-          ),
-          SimpleBarChart(
-              seriesList: createSeriesList(widget.survey), animate: true),
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            const Text("Meine Antwort"),
-            DropdownButton(
-                value: dropdownValue,
-                items: answers.map<DropdownMenuItem<String>>((String answer) {
-                  return DropdownMenuItem<String>(
-                    value: answer,
-                    child: Text(answer),
-                  );
-                }).toList(),
-                onChanged: (String? answer) {
-                  setState(() {
-                    dropdownValue = answer!;
-                  });
+      body: Column(children: [
+        Container(
+          decoration: BoxDecoration(
+              borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20)),
+              color: Theme.of(context).secondaryHeaderColor),
+          child: Column(children: [
+            Padding(
+                padding: const EdgeInsets.only(top: 15.0),
+                child: Text(getDate(widget.survey.createdAt),
+                    style: Theme.of(context).textTheme.bodySmall)),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Text(widget.survey.title,
+                  style: Theme.of(context).textTheme.bodyLarge),
+            ),
+            SimpleBarChart(
+                seriesList: createSeriesList(widget.survey), animate: true),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              const Text("Meine Antwort"),
+              DropdownButton(
+                  value: dropdownValue,
+                  items: answers.map<DropdownMenuItem<String>>((String answer) {
+                    return DropdownMenuItem<String>(
+                      value: answer,
+                      child: Text(answer),
+                    );
+                  }).toList(),
+                  onChanged: (String? answer) {
+                    setState(() {
+                      dropdownValue = answer!;
+                    });
+                  })
+            ]),
+            Spacer(),
+            FloatingActionButton.extended(
+                label: const Text("Antwort einreichen"),
+                onPressed: () {
+                  newAnswer();
                 })
           ]),
-          Spacer(),
-          FloatingActionButton.extended(
-              label: const Text("Antwort einreichen"),
-              onPressed: () {
-                newAnswer();
-              })
-        ]),
-      ),
-    ]));
+        ),
+      ]),
+      bottomNavigationBar: BottomMenu(index: 1),
+    );
   }
 
   static List<charts.Series<AntwortClass, String>> createSeriesList(

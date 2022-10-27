@@ -42,8 +42,10 @@ class _UmfrageState extends State<Umfrage> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
-                    child: Text(widget.survey.title,
-                        style: Theme.of(context).textTheme.bodyLarge),
+                    child: Text(
+                        textAlign: TextAlign.center,
+                        widget.survey.title,
+                        style: Theme.of(context).textTheme.headlineMedium),
                   ),
                 ),
                 SimpleBarChart(
@@ -66,7 +68,9 @@ class _UmfrageState extends State<Umfrage> {
                               color: Theme.of(context).highlightColor),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text(tag),
+                            child: Text(tag,
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall),
                           )),
                     ),
                   Flexible(
@@ -81,8 +85,14 @@ class _UmfrageState extends State<Umfrage> {
                                 color: Theme.of(context).highlightColor),
                             child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                    widget.survey.answers.length.toString()))),
+                                child: SizedBox(
+                                  width: 15,
+                                  child: Text(
+                                      widget.survey.answers.length.toString(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineSmall),
+                                ))),
                       ),
                     ),
                   ),

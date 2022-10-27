@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:learning_analytics/widgtes/customappbar.dart';
 import 'package:learning_analytics/widgtes/shared/divider.dart';
+import 'package:learning_analytics/widgtes/shared/bottom_menu.dart';
 import 'package:learning_analytics/widgtes/profil/trophaeenView.dart';
 import 'package:learning_analytics/widgtes/profil/editierbaresItemProfil.dart';
 
@@ -288,6 +289,7 @@ class _MeinProfilSState extends State<MeinProfilS> {
               )
             ]))
       ]),
+      bottomNavigationBar: BottomMenu(index: 0),
     );
   }
 }

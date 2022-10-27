@@ -1,10 +1,9 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:learning_analytics/data/stringEnumAnswerType.dart';
 import 'package:learning_analytics/views_s/mein_lernen.dart';
-import '../widgtes/lernen/antwort.dart';
 import '../widgtes/customappbar.dart';
+import '../widgtes/shared/divider.dart';
+import '../widgtes/shared/bottom_menu.dart';
 import '../data/thread.dart';
 import '../data/user.dart';
 import '../data/course.dart';
@@ -27,6 +26,7 @@ class _AddFrageState extends State<AddFrage> {
   late Course kursFrage = courses.first;
   late Course kursUmfrage = courses.first;
   late User user;
+  late int tabsAmount = (user.role == "Student" ? 2 : 2);
   bool fetching = true;
   late List<TextEditingController> answerControllers = [
     TextEditingController()
@@ -65,25 +65,64 @@ class _AddFrageState extends State<AddFrage> {
                                 backToPage: "MeinLernenS"))),
                   ),
                 ),
-                //if (user.role != "Student")
                 DefaultTabController(
-                    length: 2, // length of tabs
+                    length: tabsAmount,
                     initialIndex: 0,
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
-                          Container(
-                            child: TabBar(
-                              labelColor: Theme.of(context).primaryColor,
-                              unselectedLabelColor: Colors.black,
-                              tabs: [
-                                const Tab(text: 'Frage'),
-                                const Tab(text: 'Umfrage'),
-                              ],
+                          if (tabsAmount == 2)
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(8, 10, 8, 0),
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  side: BorderSide(
+                                      width: 2.0,
+                                      color: Theme.of(context).highlightColor,
+                                      style: BorderStyle.solid),
+                                ),
+                                child: TabBar(
+                                  indicator: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Theme.of(context).highlightColor),
+                                  labelColor: Theme.of(context).primaryColor,
+                                  unselectedLabelColor: Colors.black,
+                                  tabs: [
+                                    Tab(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text("Frage",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleMedium),
+                                        ),
+                                      ),
+                                    ),
+                                    Tab(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text("Umfrage",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleMedium),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
-                          ),
                           Container(
-                            height: 500,
+                            height: 450,
                             child: TabBarView(children: [
                               //Fragen
                               Padding(
@@ -100,9 +139,16 @@ class _AddFrageState extends State<AddFrage> {
                                     child: Padding(
                                         padding: const EdgeInsets.all(15.0),
                                         child: Column(children: [
-                                          const Align(
+                                          Align(
                                               alignment: Alignment.bottomLeft,
-                                              child: Text("Frage")),
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 13.0),
+                                                child: Text("Frage",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .titleSmall),
+                                              )),
                                           Card(
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
@@ -115,179 +161,309 @@ class _AddFrageState extends State<AddFrage> {
                                                 child: TextField(
                                                   controller: _controllerFrage,
                                                   maxLines: 6,
-                                                  decoration: const InputDecoration
-                                                          .collapsed(
-                                                      hintText:
-                                                          "Bitte geben Sie hier Ihre Frage ein"),
+                                                  decoration:
+                                                      const InputDecoration
+                                                              .collapsed(
+                                                          hintText:
+                                                              "Frage eingeben"),
                                                 )),
                                           ),
+                                          SizedBox(height: 10),
                                           Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                const Text("Kurs"),
-                                                DropdownButton(
-                                                    value: kursFrage,
-                                                    items: courses.map<
-                                                            DropdownMenuItem<
-                                                                Course>>(
-                                                        (Course course) {
-                                                      return DropdownMenuItem<
-                                                          Course>(
-                                                        value: course,
-                                                        child:
-                                                            Text(course.name),
-                                                      );
-                                                    }).toList(),
-                                                    onChanged:
-                                                        (Course? course) {
-                                                      setState(() {
-                                                        kursFrage = course!;
-                                                      });
-                                                    })
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 13.0),
+                                                  child: Text("Kurs",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .titleSmall),
+                                                ),
+                                                Container(
+                                                    height: 28,
+                                                    padding:
+                                                        const EdgeInsets.symmetric(
+                                                            horizontal: 10,
+                                                            vertical: 5),
+                                                    decoration: BoxDecoration(
+                                                        color:
+                                                            Colors.transparent,
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                5)),
+                                                    child: DropdownButton(
+                                                        underline:
+                                                            const SizedBox(),
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .labelSmall,
+                                                        icon: const Icon(Icons
+                                                            .arrow_drop_down_rounded),
+                                                        iconSize: 15,
+                                                        dropdownColor:
+                                                            Theme.of(context)
+                                                                .backgroundColor,
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                5),
+                                                        value: kursFrage,
+                                                        items: courses
+                                                            .map<DropdownMenuItem<Course>>(
+                                                                (Course
+                                                                    course) {
+                                                          return DropdownMenuItem<
+                                                              Course>(
+                                                            value: course,
+                                                            child: Text(
+                                                                course.name),
+                                                          );
+                                                        }).toList(),
+                                                        onChanged:
+                                                            (Course? course) {
+                                                          setState(() {
+                                                            kursFrage = course!;
+                                                          });
+                                                        }))
                                               ]),
                                           Spacer(),
                                           FloatingActionButton.extended(
-                                              label: const Text("Erstellen"),
+                                              label: Text("Erstellen",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleMedium),
                                               onPressed: () {
                                                 newThread();
                                               })
                                         ]))),
                               ),
-                              //if (user.role != "Student")
                               //Umfragen
-                              Container(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Card(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                        side: BorderSide(
-                                            width: 2.0,
-                                            color: Theme.of(context)
-                                                .highlightColor,
-                                            style: BorderStyle.solid),
-                                      ),
-                                      child: Padding(
-                                          padding: const EdgeInsets.all(15.0),
-                                          child: Column(children: [
-                                            const Align(
-                                                alignment: Alignment.bottomLeft,
-                                                child: Text("Frage")),
-                                            Card(
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15)),
+                              if (tabsAmount == 2)
+                                Container(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Card(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          side: BorderSide(
+                                              width: 2.0,
                                               color: Theme.of(context)
-                                                  .secondaryHeaderColor,
-                                              child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: TextField(
-                                                    controller:
-                                                        _controllerUmfrage,
-                                                    maxLines: 3, //or null
-                                                    decoration:
-                                                        const InputDecoration
-                                                                .collapsed(
-                                                            hintText:
-                                                                "Bitte geben Sie hier Ihre Frage ein"),
+                                                  .highlightColor,
+                                              style: BorderStyle.solid),
+                                        ),
+                                        child: Padding(
+                                            padding: const EdgeInsets.all(15.0),
+                                            child: Column(children: [
+                                              Align(
+                                                  alignment:
+                                                      Alignment.bottomLeft,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 13.0),
+                                                    child: Text("Frage",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .titleSmall),
                                                   )),
-                                            ),
-                                            for (var i = 0;
-                                                i < answerControllers.length;
-                                                i++)
+                                              Card(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15)),
+                                                color: Theme.of(context)
+                                                    .secondaryHeaderColor,
+                                                child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: TextField(
+                                                      controller:
+                                                          _controllerUmfrage,
+                                                      maxLines: 3, //or null
+                                                      decoration:
+                                                          const InputDecoration
+                                                                  .collapsed(
+                                                              hintText:
+                                                                  "Frage eingeben"),
+                                                    )),
+                                              ),
+                                              for (var i = 0;
+                                                  i < answerControllers.length;
+                                                  i++)
+                                                Column(
+                                                  children: [
+                                                    SizedBox(height: 10),
+                                                    Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 13.0),
+                                                            child: Text(
+                                                                "Antwort ${i + 1}",
+                                                                style: Theme.of(
+                                                                        context)
+                                                                    .textTheme
+                                                                    .titleSmall),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    right:
+                                                                        13.0),
+                                                            child: SizedBox(
+                                                              width: 220,
+                                                              child: TextField(
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .end,
+                                                                style: Theme.of(
+                                                                        context)
+                                                                    .textTheme
+                                                                    .labelSmall,
+                                                                controller:
+                                                                    answerControllers[
+                                                                        i],
+                                                                maxLines:
+                                                                    1, //or null
+                                                                decoration: const InputDecoration
+                                                                        .collapsed(
+                                                                    hintText:
+                                                                        "Fragemöglichkeit eingeben"),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ]),
+                                                  ],
+                                                ),
+                                              SizedBox(height: 10),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  IconButton(
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          if (answerControllers
+                                                                  .length <
+                                                              5) {
+                                                            answerControllers.add(
+                                                                TextEditingController());
+                                                          } else {
+                                                            showInSnackbar(
+                                                                context,
+                                                                "Maximal 5 Antwortmöglichkeiten");
+                                                          }
+                                                        });
+                                                      },
+                                                      icon: const Icon(
+                                                          Icons
+                                                              .add_circle_outline,
+                                                          color: Colors.black)),
+                                                  IconButton(
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          answerControllers
+                                                              .removeLast();
+                                                        });
+                                                      },
+                                                      icon: const Icon(
+                                                          Icons
+                                                              .remove_circle_outline,
+                                                          color: Colors.black)),
+                                                ],
+                                              ),
+                                              DividerWidget(),
                                               Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment
                                                           .spaceBetween,
                                                   children: [
-                                                    Text("Antwort ${i + 1}"),
-                                                    SizedBox(
-                                                      width: 180,
-                                                      child: TextField(
-                                                        controller:
-                                                            answerControllers[
-                                                                i],
-                                                        maxLines: 1, //or null
-                                                        decoration:
-                                                            const InputDecoration
-                                                                    .collapsed(
-                                                                hintText:
-                                                                    "Fragemöglichkeit eingeben"),
-                                                      ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 13.0),
+                                                      child: Text("Kurs",
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .titleSmall),
                                                     ),
-                                                    IconButton(
-                                                        onPressed: () {
-                                                          setState(() {
-                                                            answerControllers
-                                                                .removeWhere(
-                                                                    (item) =>
-                                                                        item ==
-                                                                        answerControllers[
-                                                                            i]);
-                                                          });
-                                                        },
-                                                        icon: Icon(Icons
-                                                            .remove_circle_outline))
+                                                    Container(
+                                                        height: 28,
+                                                        padding:
+                                                            const EdgeInsets.symmetric(
+                                                                horizontal: 10,
+                                                                vertical: 5),
+                                                        decoration: BoxDecoration(
+                                                            color: Colors
+                                                                .transparent,
+                                                            borderRadius:
+                                                                BorderRadius.circular(
+                                                                    5)),
+                                                        child: DropdownButton(
+                                                            underline:
+                                                                const SizedBox(),
+                                                            style: Theme.of(context)
+                                                                .textTheme
+                                                                .labelSmall,
+                                                            icon: const Icon(Icons
+                                                                .arrow_drop_down_rounded),
+                                                            iconSize: 15,
+                                                            dropdownColor:
+                                                                Theme.of(context)
+                                                                    .backgroundColor,
+                                                            borderRadius:
+                                                                BorderRadius.circular(
+                                                                    5),
+                                                            value: kursUmfrage,
+                                                            items: courses
+                                                                .map<DropdownMenuItem<Course>>(
+                                                                    (Course
+                                                                        course) {
+                                                              return DropdownMenuItem<
+                                                                  Course>(
+                                                                value: course,
+                                                                child: Text(
+                                                                    course
+                                                                        .name),
+                                                              );
+                                                            }).toList(),
+                                                            onChanged:
+                                                                (Course? course) {
+                                                              setState(() {
+                                                                kursUmfrage =
+                                                                    course!;
+                                                              });
+                                                            }))
                                                   ]),
-                                            IconButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    if (answerControllers
-                                                            .length <
-                                                        5) {
-                                                      answerControllers.add(
-                                                          TextEditingController());
-                                                    } else {
-                                                      showInSnackbar(context,
-                                                          "Maximal 5 Antwortmöglichkeiten");
-                                                    }
-                                                  });
-                                                },
-                                                icon: const Icon(
-                                                    Icons.add_circle_outline)),
-                                            Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  const Text("Kurs"),
-                                                  DropdownButton(
-                                                      value: kursUmfrage,
-                                                      items: courses.map<
-                                                              DropdownMenuItem<
-                                                                  Course>>(
-                                                          (Course course) {
-                                                        return DropdownMenuItem<
-                                                            Course>(
-                                                          value: course,
-                                                          child:
-                                                              Text(course.name),
-                                                        );
-                                                      }).toList(),
-                                                      onChanged:
-                                                          (Course? course) {
-                                                        setState(() {
-                                                          kursUmfrage = course!;
-                                                        });
-                                                      })
-                                                ]),
-                                            Spacer(),
-                                            FloatingActionButton.extended(
-                                                label: const Text("Erstellen"),
-                                                onPressed: () {
-                                                  newSurvey();
-                                                })
-                                          ]))),
+                                              Spacer(),
+                                              FloatingActionButton.extended(
+                                                  label: Text("Erstellen",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .titleMedium),
+                                                  onPressed: () {
+                                                    newSurvey();
+                                                  })
+                                            ]))),
+                                  ),
                                 ),
-                              ),
                             ]),
                           )
                         ]))
-              ]));
+              ]),
+              bottomNavigationBar: BottomMenu(index: 1));
   }
 
   void fetchData() async {
@@ -327,28 +503,40 @@ class _AddFrageState extends State<AddFrage> {
     var jwt = prefs.getString("jwt");
     jwt ??=
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzQ5NjI1YzRkMjRlODlhZTJkZjg0NzUiLCJyb2xlIjoiTGVjdHVyZXIiLCJpYXQiOjE2NjY4MDkzNTksImV4cCI6MTY2NjgyMzc1OX0.hPw63fzL_GP_hYpMwuaxpYbyxqSCtw4Su91s9ge51Qk";
-
     List<String> answerTypes = [];
     for (var controller in answerControllers) {
       answerTypes.add(controller.text);
     }
-    Survey survey = Survey(
-        "",
-        _controllerUmfrage.text,
-        "descr",
-        kursUmfrage.getId,
-        StringEnumAnswerType("string", answerTypes),
-        user.getId,
-        [],
-        false,
-        "");
-    var success = await httpHelper.postSurvey(jwt, survey);
-    if (success) {
-      await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const MeinLernenS(),
-          ));
+    List checkDuplicates = [];
+    var postSurvey = true;
+    answerTypes.forEach((u) {
+      if (checkDuplicates.contains(u)) {
+        postSurvey = false;
+        showInSnackbar(context,
+            "$u ist ein Duplikat. Es können keine Umfragen mit identischen Antworten erstellt werden.");
+      } else {
+        checkDuplicates.add(u);
+      }
+    });
+    if (postSurvey) {
+      Survey survey = Survey(
+          "",
+          _controllerUmfrage.text,
+          "descr",
+          kursUmfrage.getId,
+          StringEnumAnswerType("string", answerTypes),
+          user.getId,
+          [],
+          false,
+          "");
+      var success = await httpHelper.postSurvey(jwt, survey);
+      if (success) {
+        await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const MeinLernenS(),
+            ));
+      }
     }
   }
 

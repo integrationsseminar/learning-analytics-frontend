@@ -38,8 +38,10 @@ class _FrageState extends State<Frage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
-                  child: Text(widget.threadwithcomments.thread.title,
-                      style: Theme.of(context).textTheme.bodyLarge),
+                  child: Text(
+                      textAlign: TextAlign.center,
+                      widget.threadwithcomments.thread.title,
+                      style: Theme.of(context).textTheme.titleMedium),
                 ),
               ),
               Card(
@@ -58,7 +60,9 @@ class _FrageState extends State<Frage> {
                                 color: Theme.of(context).highlightColor),
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Text(tag),
+                              child: Text(tag,
+                                  style:
+                                      Theme.of(context).textTheme.titleSmall),
                             )),
                       ),
                     Flexible(
@@ -76,11 +80,13 @@ class _FrageState extends State<Frage> {
                                   child: SizedBox(
                                     width: 15,
                                     child: Text(
-                                      widget.threadwithcomments.threadcomments
-                                          .length
-                                          .toString(),
-                                      textAlign: TextAlign.center,
-                                    ),
+                                        widget.threadwithcomments.threadcomments
+                                            .length
+                                            .toString(),
+                                        textAlign: TextAlign.center,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleSmall),
                                   ))),
                         ),
                       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgtes/lernen/antwort.dart';
 import '../widgtes/customappbar.dart';
+import '../widgtes/shared/bottom_menu.dart';
 import '../data/http_helper.dart';
 import '../data/threadwithcomments.dart';
 import '../data/threadcomment.dart';
@@ -38,96 +39,104 @@ class _FragenViewState extends State<FragenView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(children: [
-      Container(
-        decoration: BoxDecoration(
-            borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20)),
-            color: Theme.of(context).secondaryHeaderColor),
-        child: Column(children: [
-          Padding(
-              padding: const EdgeInsets.only(top: 15.0),
-              child: Text(getDate(widget.threadwithcomments.thread.createdAt),
-                  style: Theme.of(context).textTheme.bodySmall)),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Text(widget.threadwithcomments.thread.title,
-                style: Theme.of(context).textTheme.bodyLarge),
-          ),
-          Row(children: [
-            for (var tag in [widget.courseName, "Frage"])
+      body: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20)),
+                color: Theme.of(context).secondaryHeaderColor),
+            child: Column(children: [
               Padding(
-                padding: const EdgeInsets.only(left: 10.0, bottom: 10.0),
-                child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Theme.of(context).highlightColor),
-                    child: Padding(
+                  padding: const EdgeInsets.only(top: 15.0),
+                  child: Text(
+                      getDate(widget.threadwithcomments.thread.createdAt),
+                      style: Theme.of(context).textTheme.titleSmall)),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Text(widget.threadwithcomments.thread.title,
+                    style: Theme.of(context).textTheme.titleLarge),
+              ),
+              Row(children: [
+                for (var tag in [widget.courseName, "Frage"])
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10.0, bottom: 10.0),
+                    child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Theme.of(context).highlightColor),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(tag,
+                              style: Theme.of(context).textTheme.titleSmall),
+                        )),
+                  )
+              ]),
+            ]),
+          ),
+          Expanded(
+            child: ListView(children: [
+              Column(children: [
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Column(children: [
+                    for (var antwort
+                        in widget.threadwithcomments.threadcomments)
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Antwort(
+                                answer: antwort.message,
+                                type: antwort.createdByOwner),
+                          ),
+                        ],
+                      ),
+                  ]),
+                ),
+              ]),
+            ]),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
+              color: Theme.of(context).secondaryHeaderColor,
+              child: Column(
+                children: [
+                  Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(tag),
-                    )),
-              )
-          ]),
-        ]),
-      ),
-      Expanded(
-        child: ListView(children: [
-          Column(children: [
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Column(children: [
-                for (var antwort in widget.threadwithcomments.threadcomments)
+                      child: TextField(
+                        controller: _controller,
+                        maxLines: 3,
+                        decoration: const InputDecoration.collapsed(
+                            hintText: "Nachricht eingeben"),
+                      )),
                   Row(
                     children: [
                       Expanded(
-                        child: Antwort(
-                            answer: antwort.message,
-                            type: antwort.createdByOwner),
-                      ),
+                        child: FloatingActionButton.extended(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)),
+                            icon: const Icon(Icons.add),
+                            onPressed: () {
+                              newMessage();
+                            },
+                            label: Text("Nachricht Versenden",
+                                style:
+                                    Theme.of(context).textTheme.titleMedium)),
+                      )
                     ],
                   ),
-              ]),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                color: Theme.of(context).secondaryHeaderColor,
-                child: Column(
-                  children: [
-                    Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextField(
-                          controller: _controller,
-                          maxLines: 3,
-                          decoration: const InputDecoration.collapsed(
-                              hintText:
-                                  "Bitte geben Sie hier Ihre Nachricht ein"),
-                        )),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: FloatingActionButton.extended(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15)),
-                              icon: Icon(Icons.add),
-                              onPressed: () {
-                                newMessage();
-                              },
-                              label: const Text("Nachricht Versenden")),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
+                ],
               ),
             ),
-          ]),
-        ]),
-      )
-    ]));
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomMenu(index: 1),
+    );
   }
 
   void newMessage() async {

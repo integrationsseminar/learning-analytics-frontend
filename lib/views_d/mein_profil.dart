@@ -4,6 +4,7 @@ import 'package:learning_analytics/widgtes/customappbar.dart';
 import 'package:learning_analytics/widgtes/shared/divider.dart';
 import 'package:learning_analytics/widgtes/profil/trophaeenView.dart';
 import 'package:learning_analytics/widgtes/profil/editierbaresItemProfil.dart';
+import 'package:learning_analytics/widgtes/shared/bottom_menu.dart';
 
 class MeinProfilD extends StatefulWidget {
   const MeinProfilD({Key? key}) : super(key: key);
@@ -160,6 +161,7 @@ class _MeinProfilDState extends State<MeinProfilD> {
               ),
             ]))
       ]),
+      bottomNavigationBar: BottomMenu(index: 0),
     );
   }
 }
