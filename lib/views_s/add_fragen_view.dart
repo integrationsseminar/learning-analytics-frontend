@@ -26,10 +26,11 @@ class _AddFrageState extends State<AddFrage> {
   late Course kursFrage = courses.first;
   late Course kursUmfrage = courses.first;
   late User user;
-  late int tabsAmount = (user.role == "Student" ? 2 : 2);
+  late int tabsAmount = (user.role == "Student" ? 1 : 2);
   bool fetching = true;
   late List<TextEditingController> answerControllers = [
-    TextEditingController()
+    TextEditingController(),
+    TextEditingController(),
   ];
 
   @override
@@ -122,7 +123,7 @@ class _AddFrageState extends State<AddFrage> {
                               ),
                             ),
                           Container(
-                            height: tabsAmount == 2 ? 410 : 470,
+                            height: tabsAmount == 2 ? 500 : 550,
                             child: TabBarView(children: [
                               //Fragen
                               Padding(
@@ -157,7 +158,7 @@ class _AddFrageState extends State<AddFrage> {
                                                 .secondaryHeaderColor,
                                             child: Padding(
                                                 padding:
-                                                    const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.all(15.0),
                                                 child: TextField(
                                                   controller: _controllerFrage,
                                                   maxLines: 6,
@@ -280,7 +281,7 @@ class _AddFrageState extends State<AddFrage> {
                                                 child: Padding(
                                                     padding:
                                                         const EdgeInsets.all(
-                                                            8.0),
+                                                            15.0),
                                                     child: TextField(
                                                       controller:
                                                           _controllerUmfrage,
@@ -339,7 +340,7 @@ class _AddFrageState extends State<AddFrage> {
                                                                 decoration: const InputDecoration
                                                                         .collapsed(
                                                                     hintText:
-                                                                        "Fragemöglichkeit eingeben"),
+                                                                        "Antwortmöglichkeit"),
                                                               ),
                                                             ),
                                                           ),
@@ -356,13 +357,13 @@ class _AddFrageState extends State<AddFrage> {
                                                         setState(() {
                                                           if (answerControllers
                                                                   .length <
-                                                              3) {
+                                                              6) {
                                                             answerControllers.add(
                                                                 TextEditingController());
                                                           } else {
                                                             showInSnackbar(
                                                                 context,
-                                                                "Maximal 3 Antwortmöglichkeiten");
+                                                                "Maximal sechs Antwortmöglichkeiten");
                                                           }
                                                         });
                                                       },
@@ -373,8 +374,16 @@ class _AddFrageState extends State<AddFrage> {
                                                   IconButton(
                                                       onPressed: () {
                                                         setState(() {
-                                                          answerControllers
-                                                              .removeLast();
+                                                          if (answerControllers
+                                                                  .length >
+                                                              2) {
+                                                            answerControllers
+                                                                .removeLast();
+                                                          } else {
+                                                            showInSnackbar(
+                                                                context,
+                                                                "Eine Umfrage braucht mindestens zwei Antwortmöglichkeiten");
+                                                          }
                                                         });
                                                       },
                                                       icon: const Icon(
@@ -485,16 +494,20 @@ class _AddFrageState extends State<AddFrage> {
     var jwt = prefs.getString("jwt");
     jwt ??=
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzQ5NjI1YzRkMjRlODlhZTJkZjg0NzUiLCJyb2xlIjoiTGVjdHVyZXIiLCJpYXQiOjE2NjY4MDkzNTksImV4cCI6MTY2NjgyMzc1OX0.hPw63fzL_GP_hYpMwuaxpYbyxqSCtw4Su91s9ge51Qk";
-    Thread thread =
-        Thread("", kursFrage.getId, "", "", _controllerFrage.text, "");
-    var success = await httpHelper.postThread(jwt, thread);
-    print(success);
-    if (success) {
-      await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const MeinLernenS(),
-          ));
+    if (_controllerFrage.text == "") {
+      showInSnackbar(context, "Bitte Text für Frage eingeben.");
+    } else {
+      Thread thread =
+          Thread("", kursFrage.getId, "", "", _controllerFrage.text, "");
+      var success = await httpHelper.postThread(jwt, thread);
+      print(success);
+      if (success) {
+        await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const MeinLernenS(),
+            ));
+      }
     }
   }
 
@@ -504,20 +517,31 @@ class _AddFrageState extends State<AddFrage> {
     jwt ??=
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzQ5NjI1YzRkMjRlODlhZTJkZjg0NzUiLCJyb2xlIjoiTGVjdHVyZXIiLCJpYXQiOjE2NjY4MDkzNTksImV4cCI6MTY2NjgyMzc1OX0.hPw63fzL_GP_hYpMwuaxpYbyxqSCtw4Su91s9ge51Qk";
     List<String> answerTypes = [];
-    for (var controller in answerControllers) {
-      answerTypes.add(controller.text);
-    }
-    List checkDuplicates = [];
     var postSurvey = true;
-    answerTypes.forEach((u) {
-      if (checkDuplicates.contains(u)) {
-        postSurvey = false;
-        showInSnackbar(context,
-            "$u ist ein Duplikat. Es können keine Umfragen mit identischen Antworten erstellt werden.");
-      } else {
-        checkDuplicates.add(u);
+    if (_controllerUmfrage.text == "") {
+      showInSnackbar(context, "Bitte Text für Umfrage eingeben.");
+      postSurvey = false;
+    } else {
+      for (var controller in answerControllers) {
+        if (controller.text == "") {
+          showInSnackbar(context, "Bitte alle Antworten füllen.");
+          postSurvey = false;
+        }
+        answerTypes.add(controller.text);
       }
-    });
+    }
+    if (postSurvey) {
+      List checkDuplicates = [];
+      answerTypes.forEach((u) {
+        if (checkDuplicates.contains(u)) {
+          postSurvey = false;
+          showInSnackbar(context,
+              "$u ist ein Duplikat. Es können keine Umfragen mit identischen Antworten erstellt werden.");
+        } else {
+          checkDuplicates.add(u);
+        }
+      });
+    }
     if (postSurvey) {
       Survey survey = Survey(
           "",

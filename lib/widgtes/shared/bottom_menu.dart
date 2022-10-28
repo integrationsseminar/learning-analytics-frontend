@@ -25,7 +25,7 @@ class _BottomMenuState extends State<BottomMenu> {
                 letIndexChange: (index) => true,
                 backgroundColor: Colors.transparent,
                 color: Colors.transparent,
-                buttonBackgroundColor: Theme.of(context).primaryColor,
+                buttonBackgroundColor: Theme.of(context).primaryColorLight,
                 items: [
                   Icon(Icons.account_circle, color: Colors.black),
                   Icon(Icons.menu_book_sharp, color: Colors.black),

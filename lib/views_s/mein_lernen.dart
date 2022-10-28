@@ -57,7 +57,7 @@ class _MeinLernenSState extends State<MeinLernenS> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
+                        color: Theme.of(context).primaryColorLight,
                         borderRadius: BorderRadius.circular(5)),
                     child: DropdownButton(
                         underline: SizedBox(),
@@ -65,7 +65,7 @@ class _MeinLernenSState extends State<MeinLernenS> {
                         icon: const Icon(Icons.arrow_drop_down_rounded,
                             color: Colors.white),
                         iconSize: 15,
-                        dropdownColor: Theme.of(context).primaryColor,
+                        dropdownColor: Theme.of(context).primaryColorLight,
                         borderRadius: BorderRadius.circular(5),
                         value: dropdownValue,
                         items: courses
@@ -148,23 +148,33 @@ class _MeinLernenSState extends State<MeinLernenS> {
                             for (var thread in threads)
                               if (dropdownValue.getId == "0" ||
                                   thread.thread.course == dropdownValue.getId)
-                                Frage(
-                                    threadwithcomments: thread,
-                                    courseName: courses
-                                        .firstWhere((course) =>
-                                            course.getId ==
-                                            thread.thread.course)
-                                        .name),
+                                Column(
+                                  children: [
+                                    Frage(
+                                        threadwithcomments: thread,
+                                        courseName: courses
+                                            .firstWhere((course) =>
+                                                course.getId ==
+                                                thread.thread.course)
+                                            .name),
+                                    const SizedBox(height: 10)
+                                  ],
+                                ),
                           if (umfragen)
                             for (var survey in surveys)
                               if (dropdownValue.getId == "0" ||
                                   survey.course == dropdownValue.getId)
-                                Umfrage(
-                                    survey: survey,
-                                    courseName: courses
-                                        .firstWhere((course) =>
-                                            course.getId == survey.course)
-                                        .name)
+                                Column(
+                                  children: [
+                                    Umfrage(
+                                        survey: survey,
+                                        courseName: courses
+                                            .firstWhere((course) =>
+                                                course.getId == survey.course)
+                                            .name),
+                                    const SizedBox(height: 10)
+                                  ],
+                                )
                         ]),
                       ),
                     ],
