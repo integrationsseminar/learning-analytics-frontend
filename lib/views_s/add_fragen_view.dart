@@ -55,16 +55,20 @@ class _AddFrageState extends State<AddFrage> {
         body: fetching
             ? const Center(child: CircularProgressIndicator())
             : Column(children: [
-                Positioned(
-                  child: Container(
-                    child: SizedBox(
-                        height: 140,
-                        child: Container(
-                            color: Theme.of(context).secondaryHeaderColor,
-                            child: const CustomAppBar(
-                                title: "Mein Lernen",
-                                backToPage: "MeinLernenS"))),
-                  ),
+                Stack(
+                  children: [
+                    Positioned(
+                      child: Container(
+                        child: SizedBox(
+                            height: 140,
+                            child: Container(
+                                color: Theme.of(context).secondaryHeaderColor,
+                                child: const CustomAppBar(
+                                    title: "Mein Lernen",
+                                    backToPage: "MeinLernenS"))),
+                      ),
+                    )
+                  ],
                 ),
                 DefaultTabController(
                     length: tabsAmount,
