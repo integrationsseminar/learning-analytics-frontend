@@ -131,7 +131,7 @@ class _MeinLernenSState extends State<MeinLernenS> {
                 )
               ]),
               Container(
-                height: MediaQuery.of(context).size.height - 234,
+                height: MediaQuery.of(context).size.height - 250,
                 child: ListView(children: [
                   Column(
                     children: [
