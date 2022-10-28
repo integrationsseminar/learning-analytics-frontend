@@ -155,14 +155,14 @@ class _MeinLernenSState extends State<MeinLernenS> {
                                   thread.thread.course == dropdownValue.getId)
                                 Column(
                                   children: [
-                                    Frage(
-                                        threadwithcomments: thread,
-                                        courseName: courses
-                                            .firstWhere((course) =>
-                                                course.getId ==
-                                                thread.thread.course)
-                                            .name),
-                                    const SizedBox(height: 10)
+                                    // Frage(
+                                    //     threadwithcomments: thread,
+                                    //     courseName: courses
+                                    //         .firstWhere((course) =>
+                                    //             course.getId ==
+                                    //             thread.thread.course)
+                                    //         .name),
+                                    // const SizedBox(height: 10)
                                   ],
                                 ),
                           if (umfragen)
@@ -171,13 +171,13 @@ class _MeinLernenSState extends State<MeinLernenS> {
                                   survey.course == dropdownValue.getId)
                                 Column(
                                   children: [
-                                    Umfrage(
-                                        survey: survey,
-                                        courseName: courses
-                                            .firstWhere((course) =>
-                                                course.getId == survey.course)
-                                            .name),
-                                    const SizedBox(height: 10)
+                                    // Umfrage(
+                                    //     survey: survey,
+                                    //     courseName: courses
+                                    //         .firstWhere((course) =>
+                                    //             course.getId == survey.course)
+                                    //         .name),
+                                    // const SizedBox(height: 10)
                                   ],
                                 )
                         ]),
