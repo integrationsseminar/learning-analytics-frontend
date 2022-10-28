@@ -130,62 +130,62 @@ class _MeinLernenSState extends State<MeinLernenS> {
                           style: Theme.of(context).textTheme.headlineSmall)),
                 )
               ]),
-              Expanded(
-                child: ListView(children: [
-                  Column(
-                    children: [
-                      const SizedBox(height: 15),
-                      FloatingActionButton.extended(
-                          icon: const Icon(Icons.add),
-                          onPressed: () async {
-                            await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const AddFrage(),
-                                ));
-                          },
-                          label: Text("Neuen Eintrag hinzufügen",
-                              style: Theme.of(context).textTheme.titleSmall)),
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Column(children: [
-                          if (fragen)
-                            for (var thread in threads)
-                              if (dropdownValue.getId == "0" ||
-                                  thread.thread.course == dropdownValue.getId)
-                                Column(
-                                  children: [
-                                    // Frage(
-                                    //     threadwithcomments: thread,
-                                    //     courseName: courses
-                                    //         .firstWhere((course) =>
-                                    //             course.getId ==
-                                    //             thread.thread.course)
-                                    //         .name),
-                                    // const SizedBox(height: 10)
-                                  ],
-                                ),
-                          if (umfragen)
-                            for (var survey in surveys)
-                              if (dropdownValue.getId == "0" ||
-                                  survey.course == dropdownValue.getId)
-                                Column(
-                                  children: [
-                                    // Umfrage(
-                                    //     survey: survey,
-                                    //     courseName: courses
-                                    //         .firstWhere((course) =>
-                                    //             course.getId == survey.course)
-                                    //         .name),
-                                    // const SizedBox(height: 10)
-                                  ],
-                                )
-                        ]),
-                      ),
-                    ],
-                  ),
-                ]),
-              )
+              // Expanded(
+              //   child: ListView(children: [
+              //     Column(
+              //       children: [
+              //         const SizedBox(height: 15),
+              //         FloatingActionButton.extended(
+              //             icon: const Icon(Icons.add),
+              //             onPressed: () async {
+              //               await Navigator.push(
+              //                   context,
+              //                   MaterialPageRoute(
+              //                     builder: (context) => const AddFrage(),
+              //                   ));
+              //             },
+              //             label: Text("Neuen Eintrag hinzufügen",
+              //                 style: Theme.of(context).textTheme.titleSmall)),
+              //         Padding(
+              //           padding: const EdgeInsets.all(15.0),
+              //           child: Column(children: [
+              //             if (fragen)
+              //               for (var thread in threads)
+              //                 if (dropdownValue.getId == "0" ||
+              //                     thread.thread.course == dropdownValue.getId)
+              //                   Column(
+              //                     children: [
+              //                       Frage(
+              //                           threadwithcomments: thread,
+              //                           courseName: courses
+              //                               .firstWhere((course) =>
+              //                                   course.getId ==
+              //                                   thread.thread.course)
+              //                               .name),
+              //                       const SizedBox(height: 10)
+              //                     ],
+              //                   ),
+              //             if (umfragen)
+              //               for (var survey in surveys)
+              //                 if (dropdownValue.getId == "0" ||
+              //                     survey.course == dropdownValue.getId)
+              //                   Column(
+              //                     children: [
+              //                       Umfrage(
+              //                           survey: survey,
+              //                           courseName: courses
+              //                               .firstWhere((course) =>
+              //                                   course.getId == survey.course)
+              //                               .name),
+              //                       const SizedBox(height: 10)
+              //                     ],
+              //                   )
+              //           ]),
+              //         ),
+              //       ],
+              //     ),
+              //   ]),
+              // )
             ]),
       bottomNavigationBar: BottomMenu(index: 1),
     );
