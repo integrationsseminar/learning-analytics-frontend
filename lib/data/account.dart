@@ -45,3 +45,19 @@ class RegisterAccount {
     return email;
   }
 }
+
+class AccountName {
+  late String? name;
+
+  AccountName(this.name);
+
+  AccountName.fromJSON(Map<String, dynamic> importMap) {
+    name = importMap['name'] ?? '';
+  }
+
+  Map toJson() {
+    return {
+      'name': name,
+    };
+  }
+}

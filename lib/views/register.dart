@@ -6,16 +6,15 @@ import 'package:learning_analytics/widgtes/profil/eineTrophaeen.dart';
 import 'package:learning_analytics/widgtes/shared/divider.dart';
 import 'package:learning_analytics/data/account_http_helper.dart';
 import 'package:learning_analytics/data/account.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+class Register extends StatefulWidget {
+  const Register({Key? key}) : super(key: key);
 
   @override
-  State<Login> createState() => _LoginState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _LoginState extends State<Login> {
+class _RegisterState extends State<Register> {
   final name = TextEditingController();
   final email = TextEditingController();
   final passwort = TextEditingController();
@@ -40,6 +39,19 @@ class _LoginState extends State<Login> {
                           "Willkommen zu Learning Analytics",
                           style: Theme.of(context).textTheme.titleMedium,
                           textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(15.0, 0, 15, 5),
+                      child: TextField(
+                        autofocus: true,
+                        cursorHeight: 20,
+                        style: Theme.of(context).textTheme.titleSmall,
+                        controller: name,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Name',
                         ),
                       ),
                     ),
@@ -75,7 +87,7 @@ class _LoginState extends State<Login> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 20.0),
                       child: Text(
-                        "Du hast noch keinen Account?",
+                        "Du hast schon einen Account?",
                         style: Theme.of(context).textTheme.titleSmall,
                       ),
                     ),
@@ -83,23 +95,6 @@ class _LoginState extends State<Login> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: MaterialButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)),
-                            height: MediaQuery.of(context).size.height * 0.05,
-                            minWidth: MediaQuery.of(context).size.height * 0.15,
-                            color: Theme.of(context).highlightColor,
-                            textColor: Colors.black,
-                            onPressed: () => {},
-                            splashColor: Colors.redAccent,
-                            child: Text(
-                              "Passwort vergessen",
-                              style: Theme.of(context).textTheme.titleSmall,
-                            ),
-                          ),
-                        ),
                         Padding(
                           padding: const EdgeInsets.only(left: 8.0),
                           child: MaterialButton(
@@ -109,10 +104,10 @@ class _LoginState extends State<Login> {
                             minWidth: MediaQuery.of(context).size.height * 0.15,
                             color: Theme.of(context).primaryColorLight,
                             textColor: Colors.white,
-                            onPressed: () => {login()},
+                            onPressed: () => {register()},
                             splashColor: Colors.redAccent,
                             child: Text(
-                              "Einloggen",
+                              "Registrieren",
                               style: Theme.of(context).textTheme.headlineSmall,
                             ),
                           ),
@@ -123,9 +118,10 @@ class _LoginState extends State<Login> {
                 ))));
   }
 
-  void login() async {
-    Account account = Account(email.text, passwort.text);
-    if (await AccountHttpHelper().loginAccount(account)) {
+  void register() async {
+    RegisterAccount newAccout =
+        RegisterAccount(name.text, email.text, passwort.text, "leer");
+    if (await AccountHttpHelper().postAccount(newAccout)) {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const MeinLernenS()));
     }
