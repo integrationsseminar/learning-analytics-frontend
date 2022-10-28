@@ -1,0 +1,26 @@
+name: check-build-health
+
+on:
+  pull_request:
+    branches: [dev, main]
+
+
+jobs:
+  check-build-health:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-java@v2
+      with:
+        distribution: 'zulu'
+        java-version: '11'
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.3.4'
+    - run: flutter pub get
+    - run: flutter build apk
+    - run: flutter build web
