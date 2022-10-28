@@ -44,10 +44,15 @@ class _MeinLernenSState extends State<MeinLernenS> {
       body: fetching
           ? const Center(child: CircularProgressIndicator())
           : Column(children: [
-              const Positioned(
-                child: SizedBox(
-                    height: 140,
-                    child: CustomAppBar(title: "Mein Lernen", backToPage: "")),
+              Stack(
+                children: const [
+                  Positioned(
+                    child: SizedBox(
+                        height: 140,
+                        child:
+                            CustomAppBar(title: "Mein Lernen", backToPage: "")),
+                  )
+                ],
               ),
               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
                 Padding(
