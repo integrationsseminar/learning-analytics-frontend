@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: laappTheme(),
       routes: {
-        '/': (context) => const TestView(),
+        '/': (context) => const Login(),
         '/login': (context) => const Login(),
         '/register': (context) => const Register(),
         '/meinLernenD': (context) => MeinLernenD(),

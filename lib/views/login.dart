@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:learning_analytics/views/register.dart';
 import 'package:learning_analytics/views_s/mein_lernen.dart';
 import 'package:learning_analytics/widgtes/customappbar.dart';
 import 'package:learning_analytics/widgtes/profil/eineTrophaeen.dart';
@@ -74,9 +75,18 @@ class _LoginState extends State<Login> {
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 20.0),
-                      child: Text(
-                        "Du hast noch keinen Account?",
-                        style: Theme.of(context).textTheme.titleSmall,
+                      child: RichText(
+                        text: TextSpan(
+                            text: "Du hast noch keinen Account?",
+                            style: Theme.of(context).textTheme.titleSmall,
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const Register()));
+                              }),
                       ),
                     ),
                     Row(

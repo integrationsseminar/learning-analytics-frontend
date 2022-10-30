@@ -20,6 +20,8 @@ class _MeinFortschrittSState extends State<MeinFortschrittS> {
     'Sehr gering'
   ];
 
+  int tabsAmount = 2;
+
   @override
   Widget build(BuildContext context) {
     String dropdownValue = list.first;
@@ -34,66 +36,146 @@ class _MeinFortschrittSState extends State<MeinFortschrittS> {
           ),
         ]),
         Padding(
-          padding: const EdgeInsets.only(top: 35.0),
+          padding: const EdgeInsets.only(top: 0.0),
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  height: 323,
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      side: BorderSide(
-                          color: Theme.of(context).highlightColor,
-                          style: BorderStyle.solid,
-                          width: 3),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Column(
-                        children: [
-                          const Angaben(text: "Lernmotivation"),
-                          const DividerWidget(),
-                          //----
-                          const Angaben(text: "Lernaufwand"),
-                          const DividerWidget(),
-                          //------------------------------------------
-                          const Angaben(text: "Lernerfolg"),
-                          const DividerWidget(),
-                          //------------------------------------------
-                          const Angaben(text: "Stresslevel"),
-                          const DividerWidget(),
-                          //------------------------------------------
-                          const Angaben(text: "Hochschulbindung"),
-                          Padding(
-                            padding:
-                                const EdgeInsets.fromLTRB(8.0, 40.0, 8.0, 0.0),
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: MaterialButton(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8)),
-                                height: 32.0,
-                                minWidth: 120.0,
-                                color: Theme.of(context).highlightColor,
-                                textColor: Colors.black,
-                                onPressed: () => {},
-                                splashColor: Colors.redAccent,
-                                child: const Text(
-                                  "Speichern",
-                                  style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold),
+            DefaultTabController(
+                length: tabsAmount,
+                initialIndex: 0,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      if (tabsAmount == 2)
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(8, 10, 8, 0),
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              side: BorderSide(
+                                  width: 2.0,
+                                  color: Theme.of(context).highlightColor,
+                                  style: BorderStyle.solid),
+                            ),
+                            child: TabBar(
+                              indicator: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Theme.of(context).highlightColor),
+                              labelColor: Theme.of(context).primaryColor,
+                              unselectedLabelColor: Colors.black,
+                              tabs: [
+                                Tab(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Text("Tracker",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium),
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                Tab(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Text("Statistik",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  )),
-            ),
+                        ),
+                      Container(
+                        height: tabsAmount == 2 ? 410 : 470,
+                        child: TabBarView(children: [
+                          //Fragen
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.9,
+                                height: 323,
+                                child: Card(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                    side: BorderSide(
+                                        color: Theme.of(context).highlightColor,
+                                        style: BorderStyle.solid,
+                                        width: 3),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Column(
+                                      children: [
+                                        const Angaben(text: "Lernmotivation"),
+                                        const DividerWidget(),
+                                        //----
+                                        const Angaben(text: "Lernaufwand"),
+                                        const DividerWidget(),
+                                        //------------------------------------------
+                                        const Angaben(text: "Lernerfolg"),
+                                        const DividerWidget(),
+                                        //------------------------------------------
+                                        const Angaben(text: "Stresslevel"),
+                                        const DividerWidget(),
+                                        //------------------------------------------
+                                        const Angaben(text: "Hochschulbindung"),
+
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              8.0, 40.0, 8.0, 0.0),
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: MaterialButton(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8)),
+                                              height: 32.0,
+                                              minWidth: 120.0,
+                                              color: Theme.of(context)
+                                                  .highlightColor,
+                                              textColor: Colors.black,
+                                              onPressed: () => {},
+                                              splashColor: Colors.redAccent,
+                                              child: const Text(
+                                                "Speichern",
+                                                style: TextStyle(
+                                                    fontSize: 13,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )),
+                          ), //Umfragen
+                          if (tabsAmount == 2)
+                            Container(
+                                child: Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                      side: BorderSide(
+                                          color:
+                                              Theme.of(context).highlightColor,
+                                          style: BorderStyle.solid,
+                                          width: 3),
+                                    ),
+                                    child: const Center(
+                                        child: Text("Noch in Arbeit.")))),
+                        ]),
+                      )
+                    ])),
           ]),
         ),
       ]),
