@@ -28,7 +28,7 @@ class AccountHttpHelper {
     await prefs.setString("role", role);
 
     if (response.statusCode == 201) {
-      loginAccount(Account(email, password));
+      await loginAccount(Account(email, password));
       return true;
     } else {
       return false;

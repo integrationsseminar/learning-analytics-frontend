@@ -94,7 +94,7 @@ class _MeinFortschrittSState extends State<MeinFortschrittS> {
                             ),
                           ),
                         ),
-                      Container(
+                      SizedBox(
                         height: tabsAmount == 2 ? 410 : 470,
                         child: TabBarView(children: [
                           //Fragen
@@ -161,18 +161,16 @@ class _MeinFortschrittSState extends State<MeinFortschrittS> {
                                 )),
                           ), //Umfragen
                           if (tabsAmount == 2)
-                            Container(
-                                child: Card(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                      side: BorderSide(
-                                          color:
-                                              Theme.of(context).highlightColor,
-                                          style: BorderStyle.solid,
-                                          width: 3),
-                                    ),
-                                    child: const Center(
-                                        child: Text("Noch in Arbeit.")))),
+                            Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  side: BorderSide(
+                                      color: Theme.of(context).highlightColor,
+                                      style: BorderStyle.solid,
+                                      width: 3),
+                                ),
+                                child: const Center(
+                                    child: Text("Noch in Arbeit."))),
                         ]),
                       )
                     ])),
