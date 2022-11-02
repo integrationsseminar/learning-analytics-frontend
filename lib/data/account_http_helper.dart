@@ -55,7 +55,7 @@ class AccountHttpHelper {
     var role = (await HttpHelper().getUser(loginToken)).role;
     await prefs.setString("role", role);
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       return true;
     } else {
       return false;

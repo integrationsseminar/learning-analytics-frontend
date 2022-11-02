@@ -47,7 +47,7 @@ class _BottomMenuState extends State<BottomMenu> {
                       view = '/meinLernenS';
                       break;
                     case 2:
-                      view = role == "S" ? '/meinFortschrittS' : 'meineKurseD';
+                      view = role == "S" ? '/meinFortschrittS' : '/meineKurseD';
                       break;
                   }
                   String? currentView = ModalRoute.of(context)?.settings.name;
