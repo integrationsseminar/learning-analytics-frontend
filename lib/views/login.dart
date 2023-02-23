@@ -60,6 +60,8 @@ class _LoginState extends State<Login> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(15.0, 0, 15, 15),
                       child: TextField(
+                        textInputAction: TextInputAction.go,
+                        onSubmitted: (value) => {login()},
                         obscureText: true,
                         enableSuggestions: false,
                         autocorrect: false,

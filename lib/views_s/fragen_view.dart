@@ -59,7 +59,7 @@ class _FragenViewState extends State<FragenView> {
                     style: Theme.of(context).textTheme.titleLarge),
               ),
               Row(children: [
-                for (var tag in [widget.courseName, "Frage"])
+                for (var tag in [widget.courseName, "Unterhaltung"])
                   Padding(
                     padding: const EdgeInsets.only(left: 10.0, bottom: 10.0),
                     child: Container(

@@ -12,7 +12,10 @@ import '../data/http_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddFrage extends StatefulWidget {
-  const AddFrage({Key? key}) : super(key: key);
+  final int initialIndex;
+  final String initialText;
+  const AddFrage({Key? key, this.initialIndex = 0, this.initialText = ""})
+      : super(key: key);
 
   @override
   State<AddFrage> createState() => _AddFrageState();
@@ -38,6 +41,21 @@ class _AddFrageState extends State<AddFrage> {
     super.initState();
     _controllerFrage = TextEditingController();
     _controllerUmfrage = TextEditingController();
+    if (widget.initialIndex == 1) {
+      _controllerUmfrage.value = TextEditingValue(
+        text: widget.initialText,
+        selection: TextSelection.fromPosition(
+          TextPosition(offset: widget.initialText.length),
+        ),
+      );
+    } else {
+      _controllerFrage.value = TextEditingValue(
+        text: widget.initialText,
+        selection: TextSelection.fromPosition(
+          TextPosition(offset: widget.initialText.length),
+        ),
+      );
+    }
     httpHelper = HttpHelper();
     fetchData();
   }
@@ -54,84 +72,70 @@ class _AddFrageState extends State<AddFrage> {
     return Scaffold(
         body: fetching
             ? const Center(child: CircularProgressIndicator())
-            : Column(children: [
-                Stack(
-                  children: [
-                    Positioned(
-                      child: Container(
-                        child: SizedBox(
-                            height: 140,
-                            child: Container(
-                                color: Theme.of(context).secondaryHeaderColor,
-                                child: const CustomAppBar(
-                                    title: "Mein Lernen",
-                                    backToPage: "MeinLernenS"))),
-                      ),
-                    )
-                  ],
-                ),
-                DefaultTabController(
-                    length: tabsAmount,
-                    initialIndex: 0,
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          if (tabsAmount == 2)
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 10, 8, 0),
-                              child: Card(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                  side: BorderSide(
-                                      width: 2.0,
-                                      color: Theme.of(context).highlightColor,
-                                      style: BorderStyle.solid),
-                                ),
-                                child: TabBar(
-                                  indicator: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: Theme.of(context).highlightColor),
-                                  labelColor: Theme.of(context).primaryColor,
-                                  unselectedLabelColor: Colors.black,
-                                  tabs: [
-                                    Tab(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(20)),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text("Frage",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleMedium),
-                                        ),
-                                      ),
-                                    ),
-                                    Tab(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(20)),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text("Umfrage",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleMedium),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+            : DefaultTabController(
+                length: tabsAmount,
+                initialIndex: widget.initialIndex,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      if (tabsAmount == 2)
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(8, 10, 8, 0),
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              side: BorderSide(
+                                  width: 2.0,
+                                  color: Theme.of(context).highlightColor,
+                                  style: BorderStyle.solid),
                             ),
+                            child: TabBar(
+                              indicator: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Theme.of(context).highlightColor),
+                              labelColor: Theme.of(context).primaryColor,
+                              unselectedLabelColor: Colors.black,
+                              tabs: [
+                                Tab(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Text("Unterhaltung",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium),
+                                    ),
+                                  ),
+                                ),
+                                Tab(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Text("Umfrage",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      Expanded(
+                        child: TabBarView(children: [
+                          //Fragen
                           Container(
-                            height: tabsAmount == 2 ? 500 : 550,
-                            child: TabBarView(children: [
-                              //Fragen
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
+                            height: 200,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
                                 child: Card(
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(20),
@@ -149,7 +153,7 @@ class _AddFrageState extends State<AddFrage> {
                                               child: Padding(
                                                 padding: const EdgeInsets.only(
                                                     left: 13.0),
-                                                child: Text("Frage",
+                                                child: Text("Unterhaltung",
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .titleSmall),
@@ -166,11 +170,10 @@ class _AddFrageState extends State<AddFrage> {
                                                 child: TextField(
                                                   controller: _controllerFrage,
                                                   maxLines: 6,
-                                                  decoration:
-                                                      const InputDecoration
-                                                              .collapsed(
-                                                          hintText:
-                                                              "Frage eingeben"),
+                                                  decoration: const InputDecoration
+                                                          .collapsed(
+                                                      hintText:
+                                                          "Unterhaltung eingeben"),
                                                 )),
                                           ),
                                           SizedBox(height: 10),
@@ -245,158 +248,58 @@ class _AddFrageState extends State<AddFrage> {
                                               })
                                         ]))),
                               ),
-                              //Umfragen
-                              if (tabsAmount == 2)
-                                Container(
+                            ),
+                          ),
+                          //Umfragen
+                          if (tabsAmount == 2)
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Card(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                    side: BorderSide(
+                                        width: 2.0,
+                                        color: Theme.of(context).highlightColor,
+                                        style: BorderStyle.solid),
+                                  ),
                                   child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Card(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          side: BorderSide(
-                                              width: 2.0,
-                                              color: Theme.of(context)
-                                                  .highlightColor,
-                                              style: BorderStyle.solid),
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: Column(children: [
+                                        Align(
+                                            alignment: Alignment.bottomLeft,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 13.0),
+                                              child: Text("Umfrage",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleSmall),
+                                            )),
+                                        Card(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15)),
+                                          color: Theme.of(context)
+                                              .secondaryHeaderColor,
+                                          child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(15.0),
+                                              child: TextField(
+                                                controller: _controllerUmfrage,
+                                                maxLines: 3, //or null
+                                                decoration:
+                                                    const InputDecoration
+                                                            .collapsed(
+                                                        hintText:
+                                                            "Umfrage eingeben"),
+                                              )),
                                         ),
-                                        child: Padding(
-                                            padding: const EdgeInsets.all(15.0),
-                                            child: Column(children: [
-                                              Align(
-                                                  alignment:
-                                                      Alignment.bottomLeft,
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 13.0),
-                                                    child: Text("Frage",
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .titleSmall),
-                                                  )),
-                                              Card(
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15)),
-                                                color: Theme.of(context)
-                                                    .secondaryHeaderColor,
-                                                child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            15.0),
-                                                    child: TextField(
-                                                      controller:
-                                                          _controllerUmfrage,
-                                                      maxLines: 3, //or null
-                                                      decoration:
-                                                          const InputDecoration
-                                                                  .collapsed(
-                                                              hintText:
-                                                                  "Frage eingeben"),
-                                                    )),
-                                              ),
-                                              for (var i = 0;
-                                                  i < answerControllers.length;
-                                                  i++)
-                                                Column(
-                                                  children: [
-                                                    SizedBox(height: 10),
-                                                    Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    left: 13.0),
-                                                            child: Text(
-                                                                "Antwort ${i + 1}",
-                                                                style: Theme.of(
-                                                                        context)
-                                                                    .textTheme
-                                                                    .titleSmall),
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right:
-                                                                        13.0),
-                                                            child: SizedBox(
-                                                              width: 220,
-                                                              child: TextField(
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .end,
-                                                                style: Theme.of(
-                                                                        context)
-                                                                    .textTheme
-                                                                    .labelSmall,
-                                                                controller:
-                                                                    answerControllers[
-                                                                        i],
-                                                                maxLines:
-                                                                    1, //or null
-                                                                decoration: const InputDecoration
-                                                                        .collapsed(
-                                                                    hintText:
-                                                                        "Antwortmöglichkeit"),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ]),
-                                                  ],
-                                                ),
+                                        for (var i = 0;
+                                            i < answerControllers.length;
+                                            i++)
+                                          Column(
+                                            children: [
                                               SizedBox(height: 10),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  IconButton(
-                                                      onPressed: () {
-                                                        setState(() {
-                                                          if (answerControllers
-                                                                  .length <
-                                                              6) {
-                                                            answerControllers.add(
-                                                                TextEditingController());
-                                                          } else {
-                                                            showInSnackbar(
-                                                                context,
-                                                                "Maximal sechs Antwortmöglichkeiten");
-                                                          }
-                                                        });
-                                                      },
-                                                      icon: const Icon(
-                                                          Icons
-                                                              .add_circle_outline,
-                                                          color: Colors.black)),
-                                                  IconButton(
-                                                      onPressed: () {
-                                                        setState(() {
-                                                          if (answerControllers
-                                                                  .length >
-                                                              2) {
-                                                            answerControllers
-                                                                .removeLast();
-                                                          } else {
-                                                            showInSnackbar(
-                                                                context,
-                                                                "Eine Umfrage braucht mindestens zwei Antwortmöglichkeiten");
-                                                          }
-                                                        });
-                                                      },
-                                                      icon: const Icon(
-                                                          Icons
-                                                              .remove_circle_outline,
-                                                          color: Colors.black)),
-                                                ],
-                                              ),
-                                              DividerWidget(),
                                               Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment
@@ -406,76 +309,153 @@ class _AddFrageState extends State<AddFrage> {
                                                       padding:
                                                           const EdgeInsets.only(
                                                               left: 13.0),
-                                                      child: Text("Kurs",
+                                                      child: Text(
+                                                          "Antwort ${i + 1}",
                                                           style:
                                                               Theme.of(context)
                                                                   .textTheme
                                                                   .titleSmall),
                                                     ),
-                                                    Container(
-                                                        height: 28,
-                                                        padding:
-                                                            const EdgeInsets.symmetric(
-                                                                horizontal: 10,
-                                                                vertical: 5),
-                                                        decoration: BoxDecoration(
-                                                            color: Colors
-                                                                .transparent,
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                                    5)),
-                                                        child: DropdownButton(
-                                                            underline:
-                                                                const SizedBox(),
-                                                            style: Theme.of(context)
-                                                                .textTheme
-                                                                .labelSmall,
-                                                            icon: const Icon(Icons
-                                                                .arrow_drop_down_rounded),
-                                                            iconSize: 15,
-                                                            dropdownColor:
-                                                                Theme.of(context)
-                                                                    .backgroundColor,
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                                    5),
-                                                            value: kursUmfrage,
-                                                            items: courses
-                                                                .map<DropdownMenuItem<Course>>(
-                                                                    (Course
-                                                                        course) {
-                                                              return DropdownMenuItem<
-                                                                  Course>(
-                                                                value: course,
-                                                                child: Text(
-                                                                    course
-                                                                        .name),
-                                                              );
-                                                            }).toList(),
-                                                            onChanged:
-                                                                (Course? course) {
-                                                              setState(() {
-                                                                kursUmfrage =
-                                                                    course!;
-                                                              });
-                                                            }))
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              right: 13.0),
+                                                      child: SizedBox(
+                                                        width: 220,
+                                                        child: TextField(
+                                                          textAlign:
+                                                              TextAlign.end,
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .labelSmall,
+                                                          controller:
+                                                              answerControllers[
+                                                                  i],
+                                                          maxLines: 1, //or null
+                                                          decoration:
+                                                              const InputDecoration
+                                                                      .collapsed(
+                                                                  hintText:
+                                                                      "Antwortmöglichkeit"),
+                                                        ),
+                                                      ),
+                                                    ),
                                                   ]),
-                                              Spacer(),
-                                              FloatingActionButton.extended(
-                                                  label: Text("Erstellen",
+                                            ],
+                                          ),
+                                        SizedBox(height: 10),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    if (answerControllers
+                                                            .length <
+                                                        6) {
+                                                      answerControllers.add(
+                                                          TextEditingController());
+                                                    } else {
+                                                      showInSnackbar(context,
+                                                          "Maximal sechs Antwortmöglichkeiten");
+                                                    }
+                                                  });
+                                                },
+                                                icon: const Icon(
+                                                    Icons.add_circle_outline,
+                                                    color: Colors.black)),
+                                            IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    if (answerControllers
+                                                            .length >
+                                                        2) {
+                                                      answerControllers
+                                                          .removeLast();
+                                                    } else {
+                                                      showInSnackbar(context,
+                                                          "Eine Umfrage braucht mindestens zwei Antwortmöglichkeiten");
+                                                    }
+                                                  });
+                                                },
+                                                icon: const Icon(
+                                                    Icons.remove_circle_outline,
+                                                    color: Colors.black)),
+                                          ],
+                                        ),
+                                        DividerWidget(),
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 13.0),
+                                                child: Text("Kurs",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .titleSmall),
+                                              ),
+                                              Container(
+                                                  height: 28,
+                                                  padding:
+                                                      const EdgeInsets.symmetric(
+                                                          horizontal: 10,
+                                                          vertical: 5),
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.transparent,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5)),
+                                                  child: DropdownButton(
+                                                      underline:
+                                                          const SizedBox(),
                                                       style: Theme.of(context)
                                                           .textTheme
-                                                          .titleMedium),
-                                                  onPressed: () {
-                                                    newSurvey();
-                                                  })
-                                            ]))),
-                                  ),
-                                ),
-                            ]),
-                          )
-                        ]))
-              ]),
+                                                          .labelSmall,
+                                                      icon: const Icon(Icons
+                                                          .arrow_drop_down_rounded),
+                                                      iconSize: 15,
+                                                      dropdownColor:
+                                                          Theme.of(context)
+                                                              .backgroundColor,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                      value: kursUmfrage,
+                                                      items: courses.map<
+                                                              DropdownMenuItem<
+                                                                  Course>>(
+                                                          (Course course) {
+                                                        return DropdownMenuItem<
+                                                            Course>(
+                                                          value: course,
+                                                          child:
+                                                              Text(course.name),
+                                                        );
+                                                      }).toList(),
+                                                      onChanged: (Course? course) {
+                                                        setState(() {
+                                                          kursUmfrage = course!;
+                                                        });
+                                                      }))
+                                            ]),
+                                        Spacer(),
+                                        FloatingActionButton.extended(
+                                            label: Text("Erstellen",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleMedium),
+                                            onPressed: () {
+                                              newSurvey();
+                                            })
+                                      ]))),
+                            ),
+                        ]),
+                      )
+                    ])),
         bottomNavigationBar: BottomMenu(index: 1));
   }
 
@@ -499,7 +479,7 @@ class _AddFrageState extends State<AddFrage> {
     jwt ??=
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzQ5NjI1YzRkMjRlODlhZTJkZjg0NzUiLCJyb2xlIjoiTGVjdHVyZXIiLCJpYXQiOjE2NjY4MDkzNTksImV4cCI6MTY2NjgyMzc1OX0.hPw63fzL_GP_hYpMwuaxpYbyxqSCtw4Su91s9ge51Qk";
     if (_controllerFrage.text == "") {
-      showInSnackbar(context, "Bitte Text für Frage eingeben.");
+      showInSnackbar(context, "Bitte Text für Unterhaltung eingeben.");
     } else {
       Thread thread =
           Thread("", kursFrage.getId, "", "", _controllerFrage.text, "");
