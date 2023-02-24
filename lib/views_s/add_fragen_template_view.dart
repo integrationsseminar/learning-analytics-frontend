@@ -11,6 +11,12 @@ class AddFrageTemplate extends StatefulWidget {
 
 class _AddFrageTemplateState extends State<AddFrageTemplate> {
   var selectedItem = true;
+  var templates = [
+    "Die Vorlesung am ... findet ... statt.",
+    "Haben Sie die Unterlagen erhalten?",
+    "Wie fanden Sie die letzte Vorlesung?",
+    "Brauchen Sie weitere Hilfe für die Vorbereitung auf die anstehende Prüfungsleistung?"
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,50 +25,60 @@ class _AddFrageTemplateState extends State<AddFrageTemplate> {
             child: ListView(
               shrinkWrap: true,
               children: [
-                ListTile(
-                  leading: PopupMenuButton(
-                      icon: const Icon(Icons.arrow_drop_down_outlined),
-                      onSelected: (bool value) async {
-                        setState(() {
-                          selectedItem = value;
-                        });
-                        await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => selectedItem
-                                  ? const AddFrage(
-                                      initialIndex: 0,
-                                      initialText: "UmfrageXY",
-                                    )
-                                  : const AddFrage(
-                                      initialIndex: 1,
-                                      initialText: "UmfrageXY",
-                                    ),
-                            ));
-                      },
-                      itemBuilder: (BuildContext bc) {
-                        return [
-                          PopupMenuItem(
-                            child: Text("Umfrage aus Vorlage erstellen",
-                                style: Theme.of(context).textTheme.titleSmall),
-                            value: false,
-                          ),
-                          PopupMenuItem(
-                            child: Text("Unterhaltung aus Vorlage erstellen",
-                                style: Theme.of(context).textTheme.titleSmall),
-                            value: true,
-                          )
-                        ];
-                      }),
-                  title: const Text("UmfrageXY"),
-                  onTap: () async {
-                    await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const AddFrage(),
-                        ));
-                  },
-                )
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                      child: Text("Vorlagen",
+                          style: Theme.of(context).textTheme.titleLarge)),
+                ),
+                for (var template in templates)
+                  ListTile(
+                    leading: PopupMenuButton(
+                        icon: const Icon(Icons.arrow_drop_down_outlined),
+                        onSelected: (bool value) async {
+                          setState(() {
+                            selectedItem = value;
+                          });
+                          await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => selectedItem
+                                    ? AddFrage(
+                                        initialIndex: 0,
+                                        initialText: template,
+                                      )
+                                    : AddFrage(
+                                        initialIndex: 1,
+                                        initialText: template,
+                                      ),
+                              ));
+                        },
+                        itemBuilder: (BuildContext bc) {
+                          return [
+                            PopupMenuItem(
+                              child: Text("Umfrage aus Vorlage erstellen",
+                                  style:
+                                      Theme.of(context).textTheme.titleSmall),
+                              value: false,
+                            ),
+                            PopupMenuItem(
+                              child: Text("Unterhaltung aus Vorlage erstellen",
+                                  style:
+                                      Theme.of(context).textTheme.titleSmall),
+                              value: true,
+                            )
+                          ];
+                        }),
+                    title: Text(template),
+                    onTap: () async {
+                      await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddFrage(
+                                initialIndex: 0, initialText: template),
+                          ));
+                    },
+                  )
               ],
             )),
         bottomNavigationBar: BottomMenu(index: 1));
