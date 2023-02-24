@@ -3,16 +3,21 @@ import '../widgtes/lernen/antwort.dart';
 import '../widgtes/customappbar.dart';
 import '../widgtes/shared/bottom_menu.dart';
 import '../data/http_helper.dart';
+import '../data/user.dart';
 import '../data/threadwithcomments.dart';
 import '../data/threadcomment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FragenView extends StatefulWidget {
   FragenView(
-      {Key? key, required this.threadwithcomments, required this.courseName})
+      {Key? key,
+      required this.threadwithcomments,
+      required this.courseName,
+      required this.user})
       : super(key: key);
   Threadwithcomments threadwithcomments;
   final String courseName;
+  final User user;
 
   @override
   State<FragenView> createState() => _FragenViewState();
@@ -41,6 +46,17 @@ class _FragenViewState extends State<FragenView> {
     return Scaffold(
       body: Column(
         children: [
+          Stack(children: const [
+            Positioned(
+              child: SizedBox(
+                  height: 140,
+                  child: CustomAppBar(
+                    title: "Mein Lernen",
+                    backToPage: "MeinLernenS",
+                    difColor: true,
+                  )),
+            ),
+          ]),
           Container(
             decoration: BoxDecoration(
                 borderRadius: const BorderRadius.only(
@@ -135,7 +151,6 @@ class _FragenViewState extends State<FragenView> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomMenu(index: 1),
     );
   }
 

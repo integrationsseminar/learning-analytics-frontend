@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:learning_analytics/data/threadwithcomments.dart';
 import '../../views_s/fragen_view.dart';
 import '../../data/threadwithcomments.dart';
+import '../../data/user.dart';
 
 class Frage extends StatefulWidget {
+  final User user;
   Frage(
-      {super.key, required this.threadwithcomments, required this.courseName});
+      {super.key,
+      required this.threadwithcomments,
+      required this.courseName,
+      required this.user});
   final Threadwithcomments threadwithcomments;
   final String courseName;
 
@@ -21,6 +26,7 @@ class _FrageState extends State<Frage> {
               context,
               MaterialPageRoute(
                 builder: (context) => FragenView(
+                    user: widget.user,
                     threadwithcomments: widget.threadwithcomments,
                     courseName: widget.courseName),
               ));
@@ -51,7 +57,7 @@ class _FrageState extends State<Frage> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Row(children: [
-                    for (var tag in [widget.courseName, "Frage"])
+                    for (var tag in [widget.courseName, "Unterhaltung"])
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(

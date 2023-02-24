@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:learning_analytics/app.dart';
 import 'package:learning_analytics/views/login.dart';
 import 'package:learning_analytics/views_s/mein_lernen.dart';
 import 'package:learning_analytics/widgtes/customappbar.dart';
@@ -130,7 +131,7 @@ class _RegisterState extends State<Register> {
         RegisterAccount(name.text, email.text, passwort.text, "leer");
     if (await AccountHttpHelper().postAccount(newAccout)) {
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const MeinLernenS()));
+          MaterialPageRoute(builder: (context) => App(currentIndex: 1)));
     }
     ;
   }

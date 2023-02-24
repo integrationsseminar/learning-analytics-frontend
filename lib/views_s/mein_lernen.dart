@@ -4,6 +4,7 @@ import '../widgtes/lernen/frage.dart';
 import '../widgtes/lernen/umfrage.dart';
 import '../data/course.dart';
 import '../data/survey.dart';
+import '../data/user.dart';
 import '../data/http_helper.dart';
 import './add_fragen_view.dart';
 import './add_fragen_template_view.dart';
@@ -22,6 +23,7 @@ class _MeinLernenSState extends State<MeinLernenS> {
   bool umfragen = true;
   bool fragen = true;
   int counter = 0;
+  late User user;
 
   List<Course> courses = [
     Course("0", "Alle Kurse", "", "", "", "", false),
@@ -151,8 +153,8 @@ class _MeinLernenSState extends State<MeinLernenS> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => selectedItem
-                                          ? const AddFrage()
-                                          : const AddFrageTemplate(),
+                                          ? AddFrage(user: user)
+                                          : AddFrageTemplate(user: user),
                                     ));
                               },
                               itemBuilder: (BuildContext bc) {
@@ -178,7 +180,7 @@ class _MeinLernenSState extends State<MeinLernenS> {
                             await Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const AddFrage(),
+                                  builder: (context) => AddFrage(user: user),
                                 ));
                           },
                           label: Text("Neuen Eintrag hinzufügen",
@@ -193,7 +195,6 @@ class _MeinLernenSState extends State<MeinLernenS> {
                 ]),
               ),
             ]),
-      bottomNavigationBar: BottomMenu(index: 1),
     );
   }
 
@@ -209,8 +210,10 @@ class _MeinLernenSState extends State<MeinLernenS> {
         await httpHelper.getThreadswithcomments(jwt);
     List<Survey> initSurveys = await httpHelper.getSurveys(jwt);
     List<Course> initCourses = await httpHelper.getCourses(jwt);
+    User initUser = await httpHelper.getUser(jwt);
     setState(() {
       courses.addAll(initCourses);
+      user = initUser;
       threads = initThreads;
       surveys = initSurveys;
       fetching = false;
@@ -231,6 +234,7 @@ class _MeinLernenSState extends State<MeinLernenS> {
           learningThreads.add(Column(
             children: [
               Frage(
+                  user: user,
                   threadwithcomments: thread,
                   courseName: courses
                       .firstWhere(
@@ -248,6 +252,7 @@ class _MeinLernenSState extends State<MeinLernenS> {
           learningThreads.add(Column(
             children: [
               Umfrage(
+                  user: user,
                   survey: survey,
                   courseName: courses
                       .firstWhere((course) => course.getId == survey.course)
@@ -265,6 +270,7 @@ class _MeinLernenSState extends State<MeinLernenS> {
         learningThreads.add(Column(
           children: [
             Umfrage(
+                user: user,
                 survey: survey,
                 courseName: courses
                     .firstWhere((course) => course.getId == survey.course)
