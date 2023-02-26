@@ -4,9 +4,15 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import '../../data/antwort.dart';
 import '../../data/survey.dart';
 import '../../views_s/umfragen_view.dart';
+import '../../data/user.dart';
 
 class Umfrage extends StatefulWidget {
-  const Umfrage({super.key, required this.survey, required this.courseName});
+  final User user;
+  const Umfrage(
+      {super.key,
+      required this.survey,
+      required this.courseName,
+      required this.user});
   final Survey survey;
   final String courseName;
 
@@ -22,6 +28,7 @@ class _UmfrageState extends State<Umfrage> {
             context,
             MaterialPageRoute(
               builder: (context) => UmfragenView(
+                user: widget.user,
                 survey: widget.survey,
                 courseName: widget.courseName,
               ),

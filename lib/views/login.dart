@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:learning_analytics/app.dart';
 import 'package:learning_analytics/views/register.dart';
 import 'package:learning_analytics/views_s/mein_lernen.dart';
 import 'package:learning_analytics/widgtes/customappbar.dart';
@@ -60,6 +61,8 @@ class _LoginState extends State<Login> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(15.0, 0, 15, 15),
                       child: TextField(
+                        textInputAction: TextInputAction.go,
+                        onSubmitted: (value) => {login()},
                         obscureText: true,
                         enableSuggestions: false,
                         autocorrect: false,
@@ -137,7 +140,7 @@ class _LoginState extends State<Login> {
     Account account = Account(email.text, passwort.text);
     if (await AccountHttpHelper().loginAccount(account)) {
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const MeinLernenS()));
+          MaterialPageRoute(builder: (context) => App(currentIndex: 1)));
     }
     ;
   }

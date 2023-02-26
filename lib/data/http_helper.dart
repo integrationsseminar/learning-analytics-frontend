@@ -14,7 +14,8 @@ class HttpHelper {
     List<Thread> threads = [];
 
     String newPath = '/threads';
-    Uri uri = Uri.https(authority, newPath);
+
+    Uri uri = Uri.parse("https://$authority$newPath?\$orderby=createdAt desc");
 
     var headers = {
       "Content-Type": "application/json",
@@ -117,7 +118,7 @@ class HttpHelper {
     List<Survey> surveys = [];
 
     String newPath = '/surveys';
-    Uri uri = Uri.https(authority, newPath);
+    Uri uri = Uri.parse("https://$authority$newPath?\$orderby=createdAt desc");
 
     var headers = {
       "Content-Type": "application/json",
