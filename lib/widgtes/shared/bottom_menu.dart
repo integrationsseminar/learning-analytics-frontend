@@ -31,15 +31,17 @@ class _BottomMenuState extends State<BottomMenu> {
         letIndexChange: (index) => true,
         backgroundColor: Colors.transparent,
         color: Colors.transparent,
-        buttonBackgroundColor: Theme.of(context).primaryColorLight,
+        buttonBackgroundColor: Theme.of(context).primaryColor,
         items: [
-          Icon(Icons.account_circle, color: Colors.black),
-          Icon(Icons.menu_book_sharp, color: Colors.black),
+          Icon(Icons.account_circle,
+              color: widget.index == 0 ? Colors.white : Colors.black),
+          Icon(Icons.menu_book_sharp,
+              color: widget.index == 1 ? Colors.white : Colors.black),
           Icon(
             widget.user.role == "Student"
                 ? Icons.bar_chart
                 : Icons.add_circle_outline_outlined,
-            color: Colors.black,
+            color: widget.index == 2 ? Colors.white : Colors.black,
           )
         ],
         onTap: (int index) {

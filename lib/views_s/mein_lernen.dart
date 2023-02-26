@@ -160,19 +160,19 @@ class _MeinLernenSState extends State<MeinLernenS> {
                               itemBuilder: (BuildContext bc) {
                                 return [
                                   PopupMenuItem(
+                                    value: false,
                                     child: Text("Eintrag mit Vorlage erstellen",
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleSmall),
-                                    value: false,
                                   ),
                                   PopupMenuItem(
+                                    value: true,
                                     child: Text(
                                         "Eintrag ohne Vorlage erstellen",
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleSmall),
-                                    value: true,
                                   )
                                 ];
                               }),
@@ -229,8 +229,9 @@ class _MeinLernenSState extends State<MeinLernenS> {
       if (counter == surveys.length ||
           DateTime.parse(thread.thread.createdAt)
               .isAfter(DateTime.parse(surveys[counter].createdAt))) {
-        if (dropdownValue.getId == "0" ||
-            thread.thread.course == dropdownValue.getId) {
+        if ((dropdownValue.getId == "0" ||
+                thread.thread.course == dropdownValue.getId) &&
+            (courses.any((course) => course.getId == thread.thread.course))) {
           learningThreads.add(Column(
             children: [
               Frage(
@@ -247,8 +248,9 @@ class _MeinLernenSState extends State<MeinLernenS> {
         threadCounter++;
       } else if (umfragen) {
         Survey survey = surveys[counter];
-        if (dropdownValue.getId == "0" ||
-            survey.course == dropdownValue.getId) {
+        if ((dropdownValue.getId == "0" ||
+                survey.course == dropdownValue.getId) &&
+            (courses.any((course) => course.getId == survey.course))) {
           learningThreads.add(Column(
             children: [
               Umfrage(
@@ -266,7 +268,9 @@ class _MeinLernenSState extends State<MeinLernenS> {
     }
     while (counter < surveys.length && umfragen) {
       Survey survey = surveys[counter];
-      if (dropdownValue.getId == "0" || survey.course == dropdownValue.getId) {
+      if ((dropdownValue.getId == "0" ||
+              survey.course == dropdownValue.getId) &&
+          (courses.any((course) => course.getId == survey.course))) {
         learningThreads.add(Column(
           children: [
             Umfrage(

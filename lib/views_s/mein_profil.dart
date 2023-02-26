@@ -375,7 +375,7 @@ class _MeinProfilSState extends State<MeinProfilS> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(15.0),
+                            padding: const EdgeInsets.fromLTRB(15.0, 8, 15, 15),
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.9,
                               child: Card(
@@ -391,7 +391,7 @@ class _MeinProfilSState extends State<MeinProfilS> {
                                     data: Theme.of(context).copyWith(
                                       unselectedWidgetColor:
                                           Colors.black, // here for close state
-                                      colorScheme: ColorScheme.dark(
+                                      colorScheme: const ColorScheme.dark(
                                         primary: Colors.black,
                                       ),
                                       dividerColor: Colors.transparent,
@@ -410,7 +410,7 @@ class _MeinProfilSState extends State<MeinProfilS> {
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
-                                            child: UnorderedList([
+                                            child: UnorderedList(const [
                                               "Diskutieren Sie sachlich. Unsachliche und/oder beleidigende Kommentare haben bei uns keinen Platz.",
                                               'Wahren Sie die Regeln der Höflichkeit, wie in einem Gespräch von Angesicht zu Angesicht.',
                                               'Sehen Sie davon ab, andere persönlich zu provozieren.',
