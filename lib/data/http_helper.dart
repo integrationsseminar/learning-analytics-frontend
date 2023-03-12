@@ -1,3 +1,5 @@
+import 'package:learning_analytics/data/progressValues.dart';
+
 import './thread.dart';
 import './threadcomment.dart';
 import './threadwithcomments.dart';
@@ -246,5 +248,53 @@ class HttpHelper {
       throw Exception('Failed to load user');
     }
     return user;
+  }
+
+  Future<bool> postLearningprogress(String jwt, List<int> answer) async {
+    String newPath = '/learningprogress';
+    Uri uri = Uri.https(authority, newPath);
+
+    var body = json.encode({"progressValues": json.encode(answer)});
+
+    var headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $jwt"
+    };
+
+    http.Response response = await http.post(uri, headers: headers, body: body);
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<List<ProgressValues>>? getLearningprogress(String jwt) async {
+    List<ProgressValues> progressValues = [];
+
+    String newPath = '/learningprogress';
+
+    var headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $jwt"
+    };
+
+    Uri uri = Uri.https(authority, newPath);
+
+    http.Response res = await http.get(uri, headers: headers);
+
+    if (res.statusCode == 200) {
+      var response = jsonDecode(res.body)['data'];
+
+      progressValues = response
+          .map<ProgressValues>(
+              (progressMap) => ProgressValues.fromJSON(progressMap))
+          .toList();
+    } else {
+      throw Exception('Failed to load progress Values.');
+    }
+    print(progressValues);
+    return progressValues;
   }
 }

@@ -39,6 +39,7 @@ dependencies:
   curved_navigation_bar: ^1.0.3
   indexed: ^0.0.8
   persistent_bottom_nav_bar: ^5.0.2
+  syncfusion_flutter_charts: ^20.4.52
 
 dev_dependencies:
   flutter_test:

@@ -8,6 +8,7 @@ class EineTrophaee extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
             width: 50,

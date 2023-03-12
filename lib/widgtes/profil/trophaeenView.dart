@@ -26,52 +26,40 @@ class _TrophaeenWidgetState extends State<TrophaeenWidget> {
         ),
       ]),
       Padding(
-          padding: const EdgeInsets.only(top: 35.0),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    height: 150,
-                    child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          side: BorderSide(
-                              color: Theme.of(context).highlightColor,
-                              style: BorderStyle.solid,
-                              width: 3),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: const [
-                                  Center(
-                                    child: Text(
-                                      "Deine Trophäen",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontFamily: 'Raleway',
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                              const Expanded(
-                                  child: EineTrophaee(text: "User anlegen")),
-                            ],
-                          ),
-                        )),
-                  ),
+          padding: const EdgeInsets.fromLTRB(48.0, 8, 8, 8),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.9,
+            height: 500,
+            child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  side: BorderSide(
+                      color: Theme.of(context).highlightColor,
+                      style: BorderStyle.solid,
+                      width: 3),
                 ),
-              ])),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            "Deine Trophäen",
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ],
+                      ),
+                      const EineTrophaee(text: "User anlegen"),
+                      const EineTrophaee(text: "User anlegen"),
+                      const EineTrophaee(text: "User anlegen"),
+                    ],
+                  ),
+                )),
+          )),
     ]);
   }
 }

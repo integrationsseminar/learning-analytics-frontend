@@ -11,6 +11,7 @@ import '../data/user.dart';
 import '../data/http_helper.dart';
 import '../data/account_http_helper.dart';
 import '../data/account.dart';
+import 'package:learning_analytics/widgtes/profil/profilPoint.dart';
 
 class MeinProfilS extends StatefulWidget {
   final User user;
@@ -72,243 +73,32 @@ class _MeinProfilSState extends State<MeinProfilS> {
                                     padding: const EdgeInsets.all(20.0),
                                     child: Column(
                                       children: [
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                "E-Mail",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleSmall,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        0.0, 0.0, 20.0, 0.0),
-                                                child: SizedBox(
-                                                  width: 220,
-                                                  child: TextField(
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .labelSmall,
-                                                    textAlign: TextAlign.end,
-                                                    maxLines: 1,
-                                                    controller: email,
-                                                    decoration:
-                                                        const InputDecoration
-                                                                .collapsed(
-                                                            hintText: ""),
-                                                  ),
-                                                ),
-                                              ),
-                                            ]),
+                                        profilPoint(
+                                            content: email, field: "E-Mail"),
                                         const DividerWidget(),
                                         //----
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                "Username",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleSmall,
-                                              ),
-                                              SizedBox(
-                                                  width: 180,
-                                                  child: Align(
-                                                    alignment:
-                                                        Alignment.centerRight,
-                                                    child: Padding(
-                                                      padding: const EdgeInsets
-                                                              .fromLTRB(
-                                                          0.0, 0.0, 20.0, 0.0),
-                                                      child: SizedBox(
-                                                        width: 220,
-                                                        child: TextField(
-                                                          style:
-                                                              Theme.of(context)
-                                                                  .textTheme
-                                                                  .labelSmall,
-                                                          textAlign:
-                                                              TextAlign.end,
-                                                          maxLines: 1,
-                                                          controller: username,
-                                                          decoration:
-                                                              const InputDecoration
-                                                                      .collapsed(
-                                                                  hintText: ""),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  )),
-                                            ]),
+                                        profilPoint(
+                                            content: username,
+                                            field: "Username"),
                                         const DividerWidget(),
                                         //------------------------------------------
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                "Hochschule",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleSmall,
-                                              ),
-                                              SizedBox(
-                                                width: 180,
-                                                child: Align(
-                                                  alignment:
-                                                      Alignment.centerRight,
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                            .fromLTRB(
-                                                        0.0, 0.0, 20.0, 0.0),
-                                                    child: SizedBox(
-                                                      width: 220,
-                                                      child: TextField(
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .labelSmall,
-                                                        textAlign:
-                                                            TextAlign.end,
-                                                        maxLines: 1,
-                                                        controller: hochschule,
-                                                        decoration:
-                                                            const InputDecoration
-                                                                    .collapsed(
-                                                                hintText: ""),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ]),
+                                        profilPoint(
+                                            content: hochschule,
+                                            field: "Hochschule"),
                                         const DividerWidget(),
                                         //------------------------------------------
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                "Studiengang",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleSmall,
-                                              ),
-                                              SizedBox(
-                                                  width: 180,
-                                                  child: Align(
-                                                    alignment:
-                                                        Alignment.centerRight,
-                                                    child: Padding(
-                                                      padding: const EdgeInsets
-                                                              .fromLTRB(
-                                                          0.0, 0.0, 20.0, 0.0),
-                                                      child: SizedBox(
-                                                        width: 220,
-                                                        child: TextField(
-                                                          style:
-                                                              Theme.of(context)
-                                                                  .textTheme
-                                                                  .labelSmall,
-                                                          textAlign:
-                                                              TextAlign.end,
-                                                          maxLines: 1,
-                                                          controller:
-                                                              studiengang,
-                                                          decoration:
-                                                              const InputDecoration
-                                                                      .collapsed(
-                                                                  hintText: ""),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  )),
-                                            ]),
+                                        profilPoint(
+                                            content: studiengang,
+                                            field: "Studiengang"),
                                         const DividerWidget(),
                                         //------------------------------------------
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                "Semester",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleSmall,
-                                              ),
-                                              SizedBox(
-                                                  width: 180,
-                                                  child: Align(
-                                                    alignment:
-                                                        Alignment.centerRight,
-                                                    child: Padding(
-                                                      padding: const EdgeInsets
-                                                              .fromLTRB(
-                                                          0.0, 0.0, 20.0, 0.0),
-                                                      child: SizedBox(
-                                                        width: 220,
-                                                        child: TextField(
-                                                          style:
-                                                              Theme.of(context)
-                                                                  .textTheme
-                                                                  .labelSmall,
-                                                          textAlign:
-                                                              TextAlign.end,
-                                                          maxLines: 1,
-                                                          controller: semester,
-                                                          decoration:
-                                                              const InputDecoration
-                                                                      .collapsed(
-                                                                  hintText: ""),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  )),
-                                            ]),
+                                        profilPoint(
+                                            content: semester,
+                                            field: "Semester"),
                                         const DividerWidget(),
                                         //------------------------------------------
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                "Branche",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleSmall,
-                                              ),
-                                              SizedBox(
-                                                  width: 180,
-                                                  child: Align(
-                                                    alignment:
-                                                        Alignment.centerRight,
-                                                    child: Padding(
-                                                      padding: const EdgeInsets
-                                                              .fromLTRB(
-                                                          0.0, 0.0, 20.0, 0.0),
-                                                      child: SizedBox(
-                                                        width: 220,
-                                                        child: TextField(
-                                                          style:
-                                                              Theme.of(context)
-                                                                  .textTheme
-                                                                  .labelSmall,
-                                                          textAlign:
-                                                              TextAlign.end,
-                                                          maxLines: 1,
-                                                          controller: branche,
-                                                          decoration:
-                                                              const InputDecoration
-                                                                      .collapsed(
-                                                                  hintText: ""),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  )),
-                                            ]),
+                                        profilPoint(
+                                            content: branche, field: "Branche"),
                                         Padding(
                                           padding: const EdgeInsets.fromLTRB(
                                               8.0, 40.0, 8.0, 0.0),

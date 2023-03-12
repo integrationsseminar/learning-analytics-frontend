@@ -11,6 +11,7 @@ import '../data/user.dart';
 import '../data/http_helper.dart';
 import '../data/account_http_helper.dart';
 import '../data/account.dart';
+import 'package:learning_analytics/widgtes/profil/profilPoint.dart';
 
 class MeinProfilD extends StatefulWidget {
   final User user;
@@ -67,84 +68,16 @@ class _MeinProfilDState extends State<MeinProfilD> {
                                   padding: const EdgeInsets.all(20.0),
                                   child: Column(
                                     children: [
-                                      Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "Username",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleSmall,
-                                            ),
-                                            SizedBox(
-                                                width: 180,
-                                                child: Align(
-                                                  alignment:
-                                                      Alignment.centerRight,
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                            .fromLTRB(
-                                                        0.0, 20.0, 20.0, 0.0),
-                                                    child: SizedBox(
-                                                      width: 220,
-                                                      child: TextField(
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .labelSmall,
-                                                        textAlign:
-                                                            TextAlign.end,
-                                                        maxLines: 1,
-                                                        controller: username,
-                                                        decoration:
-                                                            const InputDecoration
-                                                                    .collapsed(
-                                                                hintText: ""),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )),
-                                          ]),
+                                      profilPoint(
+                                        content: username,
+                                        field: "Username",
+                                      ),
                                       const DividerWidget(),
                                       //------------------------------------------
-                                      Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "Hochschule",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleSmall,
-                                            ),
-                                            SizedBox(
-                                              width: 180,
-                                              child: Align(
-                                                alignment:
-                                                    Alignment.centerRight,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          0.0, 0.0, 20.0, 0.0),
-                                                  child: SizedBox(
-                                                    width: 220,
-                                                    child: TextField(
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .labelSmall,
-                                                      textAlign: TextAlign.end,
-                                                      maxLines: 1,
-                                                      controller: hochschule,
-                                                      decoration:
-                                                          const InputDecoration
-                                                                  .collapsed(
-                                                              hintText: ""),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ]),
+                                      profilPoint(
+                                        content: hochschule,
+                                        field: "Hochschule",
+                                      ),
 
                                       Padding(
                                         padding: const EdgeInsets.fromLTRB(
