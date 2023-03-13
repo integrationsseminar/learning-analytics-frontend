@@ -29,7 +29,6 @@ class _TrophaeenWidgetState extends State<TrophaeenWidget> {
           padding: const EdgeInsets.fromLTRB(48.0, 8, 8, 8),
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.9,
-            height: 500,
             child: Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
@@ -41,7 +40,7 @@ class _TrophaeenWidgetState extends State<TrophaeenWidget> {
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Row(
