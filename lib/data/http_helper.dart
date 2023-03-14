@@ -270,7 +270,7 @@ class HttpHelper {
     }
   }
 
-  Future<List<ProgressValues>>? getLearningprogress(String jwt) async {
+  Future<List<ProgressValues>> getLearningprogress(String jwt) async {
     List<ProgressValues> progressValues = [];
 
     String newPath = '/learningprogress';
@@ -280,7 +280,9 @@ class HttpHelper {
       "Authorization": "Bearer $jwt"
     };
 
-    Uri uri = Uri.https(authority, newPath);
+    Uri uri = Uri.parse("https://$authority$newPath?orderby=data/createdAt");
+
+    //Uri uri = Uri.https(authority, newPath);
 
     http.Response res = await http.get(uri, headers: headers);
 

@@ -26,7 +26,7 @@ class _TrophaeenWidgetState extends State<TrophaeenWidget> {
         ),
       ]),
       Padding(
-          padding: const EdgeInsets.fromLTRB(48.0, 8, 8, 8),
+          padding: const EdgeInsets.fromLTRB(8, 48, 8, 8),
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.9,
             child: Card(

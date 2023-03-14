@@ -24,6 +24,26 @@ class _MeinFortschrittSState extends State<MeinFortschrittS> {
   late String dropDownValue3 = "Sehr hoch";
   late String dropDownValue4 = "Sehr hoch";
 
+  bool fetching = true;
+
+  late List<ProgressValues> chartData = [];
+
+  /*
+  Exampledata
+  [
+    ProgressValues(DateUtils.dateOnly(DateTime.parse("2021-12-23 11:47:00")), 1,
+        1, 1, 1, 1),
+    ProgressValues(DateUtils.dateOnly(DateTime.parse("2021-12-24 11:47:00")), 2,
+        2, 2, 2, 2),
+    ProgressValues(DateUtils.dateOnly(DateTime.parse("2021-12-25 11:47:00")), 3,
+        3, 3, 3, 3),
+    ProgressValues(DateUtils.dateOnly(DateTime.parse("2021-12-26 11:47:00")), 4,
+        4, 4, 4, 4),
+    ProgressValues(DateUtils.dateOnly(DateTime.parse("2021-12-27 11:47:00")), 5,
+        5, 5, 5, 5)
+  ];
+  */
+
   List<String> list = <String>[
     'Sehr hoch',
     'Hoch',
@@ -32,7 +52,6 @@ class _MeinFortschrittSState extends State<MeinFortschrittS> {
     'Sehr gering'
   ];
 
-  late List<ProgressValues> chartData;
   late TooltipBehavior tooltipBehavior;
 
   int tabsAmount = 2;
@@ -40,307 +59,351 @@ class _MeinFortschrittSState extends State<MeinFortschrittS> {
   @override
   initState() {
     tooltipBehavior = TooltipBehavior(enable: true);
-    chartData = getProgressValues() as List<ProgressValues>;
+    getProgressValues();
     httpHelper = HttpHelper();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    List<int> dropdownValues = [1, 0, 0, 0, 0];
-
-    return Column(children: [
-      Stack(children: const [
-        Positioned(
-          child: SizedBox(
-              height: 160,
-              child: CustomAppBar(
-                  title: "Mein Fortschritt", backToPage: "MeinFortschrittS")),
-        ),
-      ]),
-      Padding(
-        padding: const EdgeInsets.only(top: 0.0),
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          DefaultTabController(
-              length: tabsAmount,
-              initialIndex: 0,
+    return fetching
+        ? const Center(child: CircularProgressIndicator())
+        : Column(children: [
+            Stack(children: const [
+              Positioned(
+                child: SizedBox(
+                    height: 160,
+                    child: CustomAppBar(
+                        title: "Mein Fortschritt",
+                        backToPage: "MeinFortschrittS")),
+              ),
+            ]),
+            Padding(
+              padding: const EdgeInsets.only(top: 0.0),
               child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    if (tabsAmount == 2)
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(8, 10, 8, 0),
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            side: BorderSide(
-                                width: 2.0,
-                                color: Theme.of(context).highlightColor,
-                                style: BorderStyle.solid),
-                          ),
-                          child: TabBar(
-                            indicator: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Theme.of(context).highlightColor),
-                            labelColor: Theme.of(context).primaryColor,
-                            unselectedLabelColor: Colors.black,
-                            tabs: [
-                              Tab(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20)),
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text("Tracker",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    DefaultTabController(
+                        length: tabsAmount,
+                        initialIndex: 0,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              if (tabsAmount == 2)
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(8, 10, 8, 0),
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                      side: BorderSide(
+                                          width: 2.0,
+                                          color:
+                                              Theme.of(context).highlightColor,
+                                          style: BorderStyle.solid),
+                                    ),
+                                    child: TabBar(
+                                      indicator: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          color:
+                                              Theme.of(context).highlightColor),
+                                      labelColor:
+                                          Theme.of(context).primaryColor,
+                                      unselectedLabelColor: Colors.black,
+                                      tabs: [
+                                        Tab(
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            child: Align(
+                                              alignment: Alignment.center,
+                                              child: Text("Tracker",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleMedium),
+                                            ),
+                                          ),
+                                        ),
+                                        Tab(
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            child: Align(
+                                              alignment: Alignment.center,
+                                              child: Text("Statistik",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleMedium),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Tab(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20)),
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text("Statistik",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    SizedBox(
-                      height: tabsAmount == 2 ? 410 : 470,
-                      child: TabBarView(children: [
-                        //Fragen
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.9,
-                              height: 323,
-                              child: Card(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                  side: BorderSide(
-                                      color: Theme.of(context).highlightColor,
-                                      style: BorderStyle.solid,
-                                      width: 3),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "Lernmotivation",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleSmall,
-                                            ),
-                                            SizedBox(
-                                              height: 15,
-                                              child: DropdownButton(
-                                                value: dropDownValue0,
-                                                items: list.map<
-                                                        DropdownMenuItem<
-                                                            String>>(
-                                                    (String value) {
-                                                  return DropdownMenuItem<
-                                                      String>(
-                                                    value: value,
-                                                    child: Text(value),
-                                                  );
-                                                }).toList(),
-                                                onChanged: (String? value) {
-                                                  setState(() {
-                                                    dropDownValue0 = value!;
-                                                  });
-                                                },
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleSmall,
-                                                underline: const SizedBox(),
-                                                icon: const Icon(Icons
-                                                    .arrow_drop_down_rounded),
-                                                iconSize: 15,
-                                              ),
-                                            ),
-                                          ]),
-                                      const DividerWidget(),
-                                      //----------------------------------------------------
-                                      Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "Lernaufwand",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleSmall,
-                                            ),
-                                            SizedBox(
-                                              height: 15,
-                                              child: DropdownButton(
-                                                value: dropDownValue1,
-                                                items: list.map<
-                                                        DropdownMenuItem<
-                                                            String>>(
-                                                    (String value) {
-                                                  return DropdownMenuItem<
-                                                      String>(
-                                                    value: value,
-                                                    child: Text(value),
-                                                  );
-                                                }).toList(),
-                                                onChanged: (String? value) {
-                                                  setState(() {
-                                                    dropDownValue1 = value!;
-                                                  });
-                                                },
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleSmall,
-                                                underline: const SizedBox(),
-                                                icon: const Icon(Icons
-                                                    .arrow_drop_down_rounded),
-                                                iconSize: 15,
-                                              ),
-                                            ),
-                                          ]),
-                                      const DividerWidget(),
-                                      //----------------------------------------------------
-                                      Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "Lernerfolg",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleSmall,
-                                            ),
-                                            SizedBox(
-                                              height: 15,
-                                              child: DropdownButton(
-                                                value: dropDownValue2,
-                                                items: list.map<
-                                                        DropdownMenuItem<
-                                                            String>>(
-                                                    (String value) {
-                                                  return DropdownMenuItem<
-                                                      String>(
-                                                    value: value,
-                                                    child: Text(value),
-                                                  );
-                                                }).toList(),
-                                                onChanged: (String? value) {
-                                                  setState(() {
-                                                    dropDownValue2 = value!;
-                                                  });
-                                                },
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleSmall,
-                                                underline: const SizedBox(),
-                                                icon: const Icon(Icons
-                                                    .arrow_drop_down_rounded),
-                                                iconSize: 15,
-                                              ),
-                                            ),
-                                          ]),
-                                      const DividerWidget(),
-                                      //----------------------------------------------------
-                                      Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "Stresslevel",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleSmall,
-                                            ),
-                                            SizedBox(
-                                              height: 15,
-                                              child: DropdownButton(
-                                                value: dropDownValue3,
-                                                items: list.map<
-                                                        DropdownMenuItem<
-                                                            String>>(
-                                                    (String value) {
-                                                  return DropdownMenuItem<
-                                                      String>(
-                                                    value: value,
-                                                    child: Text(value),
-                                                  );
-                                                }).toList(),
-                                                onChanged: (String? value) {
-                                                  setState(() {
-                                                    dropDownValue3 = value!;
-                                                  });
-                                                },
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleSmall,
-                                                underline: const SizedBox(),
-                                                icon: const Icon(Icons
-                                                    .arrow_drop_down_rounded),
-                                                iconSize: 15,
-                                              ),
-                                            ),
-                                          ]),
-                                      const DividerWidget(),
-                                      //----------------------------------------------------
-                                      Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "Hochschulbindung",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleSmall,
-                                            ),
-                                            SizedBox(
-                                              height: 15,
-                                              child: DropdownButton(
-                                                value: dropDownValue4,
-                                                items: list.map<
-                                                        DropdownMenuItem<
-                                                            String>>(
-                                                    (String value) {
-                                                  return DropdownMenuItem<
-                                                      String>(
-                                                    value: value,
-                                                    child: Text(value),
-                                                  );
-                                                }).toList(),
-                                                onChanged: (String? value) {
-                                                  setState(() {
-                                                    dropDownValue4 = value!;
-                                                  });
-                                                },
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleSmall,
-                                                underline: const SizedBox(),
-                                                icon: const Icon(Icons
-                                                    .arrow_drop_down_rounded),
-                                                iconSize: 15,
-                                              ),
-                                            ),
-                                          ]),
+                              SizedBox(
+                                height: tabsAmount == 2 ? 410 : 470,
+                                child: TabBarView(children: [
+                                  //Fragen
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.9,
+                                        height: 323,
+                                        child: Card(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            side: BorderSide(
+                                                color: Theme.of(context)
+                                                    .highlightColor,
+                                                style: BorderStyle.solid,
+                                                width: 3),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(20.0),
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        "Lernmotivation",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .titleSmall,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 15,
+                                                        child: DropdownButton(
+                                                          value: dropDownValue0,
+                                                          items: list.map<
+                                                              DropdownMenuItem<
+                                                                  String>>((String
+                                                              value) {
+                                                            return DropdownMenuItem<
+                                                                String>(
+                                                              value: value,
+                                                              child:
+                                                                  Text(value),
+                                                            );
+                                                          }).toList(),
+                                                          onChanged:
+                                                              (String? value) {
+                                                            setState(() {
+                                                              dropDownValue0 =
+                                                                  value!;
+                                                            });
+                                                          },
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .titleSmall,
+                                                          underline:
+                                                              const SizedBox(),
+                                                          icon: const Icon(Icons
+                                                              .arrow_drop_down_rounded),
+                                                          iconSize: 15,
+                                                        ),
+                                                      ),
+                                                    ]),
+                                                const DividerWidget(),
+                                                //----------------------------------------------------
+                                                Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        "Lernaufwand",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .titleSmall,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 15,
+                                                        child: DropdownButton(
+                                                          value: dropDownValue1,
+                                                          items: list.map<
+                                                              DropdownMenuItem<
+                                                                  String>>((String
+                                                              value) {
+                                                            return DropdownMenuItem<
+                                                                String>(
+                                                              value: value,
+                                                              child:
+                                                                  Text(value),
+                                                            );
+                                                          }).toList(),
+                                                          onChanged:
+                                                              (String? value) {
+                                                            setState(() {
+                                                              dropDownValue1 =
+                                                                  value!;
+                                                            });
+                                                          },
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .titleSmall,
+                                                          underline:
+                                                              const SizedBox(),
+                                                          icon: const Icon(Icons
+                                                              .arrow_drop_down_rounded),
+                                                          iconSize: 15,
+                                                        ),
+                                                      ),
+                                                    ]),
+                                                const DividerWidget(),
+                                                //----------------------------------------------------
+                                                Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        "Lernerfolg",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .titleSmall,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 15,
+                                                        child: DropdownButton(
+                                                          value: dropDownValue2,
+                                                          items: list.map<
+                                                              DropdownMenuItem<
+                                                                  String>>((String
+                                                              value) {
+                                                            return DropdownMenuItem<
+                                                                String>(
+                                                              value: value,
+                                                              child:
+                                                                  Text(value),
+                                                            );
+                                                          }).toList(),
+                                                          onChanged:
+                                                              (String? value) {
+                                                            setState(() {
+                                                              dropDownValue2 =
+                                                                  value!;
+                                                            });
+                                                          },
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .titleSmall,
+                                                          underline:
+                                                              const SizedBox(),
+                                                          icon: const Icon(Icons
+                                                              .arrow_drop_down_rounded),
+                                                          iconSize: 15,
+                                                        ),
+                                                      ),
+                                                    ]),
+                                                const DividerWidget(),
+                                                //----------------------------------------------------
+                                                Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        "Stresslevel",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .titleSmall,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 15,
+                                                        child: DropdownButton(
+                                                          value: dropDownValue3,
+                                                          items: list.map<
+                                                              DropdownMenuItem<
+                                                                  String>>((String
+                                                              value) {
+                                                            return DropdownMenuItem<
+                                                                String>(
+                                                              value: value,
+                                                              child:
+                                                                  Text(value),
+                                                            );
+                                                          }).toList(),
+                                                          onChanged:
+                                                              (String? value) {
+                                                            setState(() {
+                                                              dropDownValue3 =
+                                                                  value!;
+                                                            });
+                                                          },
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .titleSmall,
+                                                          underline:
+                                                              const SizedBox(),
+                                                          icon: const Icon(Icons
+                                                              .arrow_drop_down_rounded),
+                                                          iconSize: 15,
+                                                        ),
+                                                      ),
+                                                    ]),
+                                                const DividerWidget(),
+                                                //----------------------------------------------------
+                                                Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        "Hochschulbindung",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .titleSmall,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 15,
+                                                        child: DropdownButton(
+                                                          value: dropDownValue4,
+                                                          items: list.map<
+                                                              DropdownMenuItem<
+                                                                  String>>((String
+                                                              value) {
+                                                            return DropdownMenuItem<
+                                                                String>(
+                                                              value: value,
+                                                              child:
+                                                                  Text(value),
+                                                            );
+                                                          }).toList(),
+                                                          onChanged:
+                                                              (String? value) {
+                                                            setState(() {
+                                                              dropDownValue4 =
+                                                                  value!;
+                                                            });
+                                                          },
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .titleSmall,
+                                                          underline:
+                                                              const SizedBox(),
+                                                          icon: const Icon(Icons
+                                                              .arrow_drop_down_rounded),
+                                                          iconSize: 15,
+                                                        ),
+                                                      ),
+                                                    ]),
 
-                                      /*
+                                                /*
                                       Angaben(
                                           text: "Lernmotivation",
                                           selectedValue: dropdownValues[0]),
@@ -366,141 +429,175 @@ class _MeinFortschrittSState extends State<MeinFortschrittS> {
                                           text: "Hochschulbindung",
                                           selectedValue: dropdownValues[4]),
 */
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            8.0, 40.0, 8.0, 0.0),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: MaterialButton(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(8)),
-                                            height: 32.0,
-                                            minWidth: 120.0,
-                                            color: Theme.of(context)
-                                                .highlightColor,
-                                            textColor: Colors.black,
-                                            onPressed: () => {
-                                              sendData([
-                                                dropDownValue0,
-                                                dropDownValue1,
-                                                dropDownValue2,
-                                                dropDownValue3,
-                                                dropDownValue4
-                                              ])
-                                            },
-                                            splashColor: Colors.redAccent,
-                                            child: const Text(
-                                              "Speichern",
-                                              style: TextStyle(
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          8.0, 40.0, 8.0, 0.0),
+                                                  child: Align(
+                                                    alignment: Alignment.center,
+                                                    child: MaterialButton(
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          8)),
+                                                      height: 32.0,
+                                                      minWidth: 120.0,
+                                                      color: Theme.of(context)
+                                                          .highlightColor,
+                                                      textColor: Colors.black,
+                                                      onPressed: () => {
+                                                        sendData([
+                                                          dropDownValue0,
+                                                          dropDownValue1,
+                                                          dropDownValue2,
+                                                          dropDownValue3,
+                                                          dropDownValue4
+                                                        ])
+                                                      },
+                                                      splashColor:
+                                                          Colors.redAccent,
+                                                      child: const Text(
+                                                        "Speichern",
+                                                        style: TextStyle(
+                                                            fontSize: 13,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
+                                        )),
+                                  ), //Umfragen
+                                  if (tabsAmount == 2)
+                                    Card(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          side: BorderSide(
+                                              color: Theme.of(context)
+                                                  .highlightColor,
+                                              style: BorderStyle.solid,
+                                              width: 3),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )),
-                        ), //Umfragen
-                        if (tabsAmount == 2)
-                          Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                                side: BorderSide(
-                                    color: Theme.of(context).highlightColor,
-                                    style: BorderStyle.solid,
-                                    width: 3),
-                              ),
-                              child: Center(
-                                  child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: SfCartesianChart(
-                                  title: ChartTitle(
-                                    text: "Fortschritt",
-                                  ),
-                                  legend: Legend(isVisible: true),
-                                  palette: const [
-                                    Color.fromRGBO(236, 7, 163, 1),
-                                    Color.fromRGBO(228, 8, 92, 1),
-                                    Color.fromRGBO(227, 6, 19, 1),
-                                    Color.fromRGBO(237, 65, 22, 1),
-                                    Color.fromRGBO(247, 158, 4, 1),
-                                    Color.fromRGBO(239, 239, 1, 1),
-                                    Color.fromRGBO(6, 231, 10, 1),
-                                    Color.fromRGBO(1, 237, 178, 1),
-                                    Color.fromRGBO(0, 73, 243, 1),
-                                    Color.fromRGBO(93, 0, 255, 1),
-                                    Color.fromRGBO(0, 0, 0, 1)
-                                  ],
-                                  tooltipBehavior: tooltipBehavior,
-                                  primaryXAxis: CategoryAxis(),
-                                  series: <ChartSeries>[
-                                    LineSeries<ProgressValues, String>(
-                                      name: "Lernmotivation",
-                                      markerSettings:
-                                          const MarkerSettings(isVisible: true),
-                                      width: 3,
-                                      dataSource: chartData,
-                                      xValueMapper: (ProgressValues val, _) =>
-                                          "${val.date.day}-${val.date.month}-${val.date.year}",
-                                      yValueMapper: (ProgressValues val, _) =>
-                                          val.lernmotivation,
-                                    ),
-                                    LineSeries<ProgressValues, String>(
-                                      name: "Lernaufwand",
-                                      markerSettings:
-                                          const MarkerSettings(isVisible: true),
-                                      width: 3,
-                                      dataSource: chartData,
-                                      xValueMapper: (ProgressValues val, _) =>
-                                          "${val.date.day}-${val.date.month}-${val.date.year}",
-                                      yValueMapper: (ProgressValues val, _) =>
-                                          val.lernaufwand,
-                                    ),
-                                    LineSeries<ProgressValues, String>(
-                                      name: "Lernerfolg",
-                                      markerSettings:
-                                          const MarkerSettings(isVisible: true),
-                                      width: 3,
-                                      dataSource: chartData,
-                                      xValueMapper: (ProgressValues val, _) =>
-                                          "${val.date.day}-${val.date.month}-${val.date.year}",
-                                      yValueMapper: (ProgressValues val, _) =>
-                                          val.lernerfolg,
-                                    ),
-                                    LineSeries<ProgressValues, String>(
-                                      name: "Stresslevel",
-                                      markerSettings:
-                                          const MarkerSettings(isVisible: true),
-                                      width: 3,
-                                      dataSource: chartData,
-                                      xValueMapper: (ProgressValues val, _) =>
-                                          "${val.date.day}-${val.date.month}-${val.date.year}",
-                                      yValueMapper: (ProgressValues val, _) =>
-                                          val.stresslevel,
-                                    ),
-                                    LineSeries<ProgressValues, String>(
-                                      name: "Hochschulbindung",
-                                      markerSettings:
-                                          const MarkerSettings(isVisible: true),
-                                      width: 3,
-                                      dataSource: chartData,
-                                      xValueMapper: (ProgressValues val, _) =>
-                                          "${val.date.day}-${val.date.month}-${val.date.year}",
-                                      yValueMapper: (ProgressValues val, _) =>
-                                          val.hochschulbindung,
-                                    )
-                                  ],
-                                ),
-                              )))
-                      ]),
-                    )
-                  ])),
-        ]),
-      ),
-    ]);
+                                        child: Center(
+                                            child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: SfCartesianChart(
+                                            title: ChartTitle(
+                                              text: "Fortschritt",
+                                            ),
+                                            legend: Legend(isVisible: true),
+                                            palette: const [
+                                              Color.fromRGBO(236, 7, 163, 1),
+                                              Color.fromRGBO(228, 8, 92, 1),
+                                              Color.fromRGBO(227, 6, 19, 1),
+                                              Color.fromRGBO(237, 65, 22, 1),
+                                              Color.fromRGBO(247, 158, 4, 1),
+                                              Color.fromRGBO(239, 239, 1, 1),
+                                              Color.fromRGBO(6, 231, 10, 1),
+                                              Color.fromRGBO(1, 237, 178, 1),
+                                              Color.fromRGBO(0, 73, 243, 1),
+                                              Color.fromRGBO(93, 0, 255, 1),
+                                              Color.fromRGBO(0, 0, 0, 1)
+                                            ],
+                                            tooltipBehavior: tooltipBehavior,
+                                            primaryXAxis: CategoryAxis(),
+                                            series: <ChartSeries>[
+                                              LineSeries<ProgressValues,
+                                                  String>(
+                                                name: "Lernmotivation",
+                                                markerSettings:
+                                                    const MarkerSettings(
+                                                        isVisible: true),
+                                                width: 3,
+                                                dataSource: chartData,
+                                                xValueMapper: (ProgressValues
+                                                            val,
+                                                        _) =>
+                                                    "${val.date.day}-${val.date.month}-${val.date.year}",
+                                                yValueMapper:
+                                                    (ProgressValues val, _) =>
+                                                        val.lernmotivation,
+                                              ),
+                                              LineSeries<ProgressValues,
+                                                  String>(
+                                                name: "Lernaufwand",
+                                                markerSettings:
+                                                    const MarkerSettings(
+                                                        isVisible: true),
+                                                width: 3,
+                                                dataSource: chartData,
+                                                xValueMapper: (ProgressValues
+                                                            val,
+                                                        _) =>
+                                                    "${val.date.day}-${val.date.month}-${val.date.year}",
+                                                yValueMapper:
+                                                    (ProgressValues val, _) =>
+                                                        val.lernaufwand,
+                                              ),
+                                              LineSeries<ProgressValues,
+                                                  String>(
+                                                name: "Lernerfolg",
+                                                markerSettings:
+                                                    const MarkerSettings(
+                                                        isVisible: true),
+                                                width: 3,
+                                                dataSource: chartData,
+                                                xValueMapper: (ProgressValues
+                                                            val,
+                                                        _) =>
+                                                    "${val.date.day}-${val.date.month}-${val.date.year}",
+                                                yValueMapper:
+                                                    (ProgressValues val, _) =>
+                                                        val.lernerfolg,
+                                              ),
+                                              LineSeries<ProgressValues,
+                                                  String>(
+                                                name: "Stresslevel",
+                                                markerSettings:
+                                                    const MarkerSettings(
+                                                        isVisible: true),
+                                                width: 3,
+                                                dataSource: chartData,
+                                                xValueMapper: (ProgressValues
+                                                            val,
+                                                        _) =>
+                                                    "${val.date.day}-${val.date.month}-${val.date.year}",
+                                                yValueMapper:
+                                                    (ProgressValues val, _) =>
+                                                        val.stresslevel,
+                                              ),
+                                              LineSeries<ProgressValues,
+                                                  String>(
+                                                name: "Hochschulbindung",
+                                                markerSettings:
+                                                    const MarkerSettings(
+                                                        isVisible: true),
+                                                width: 3,
+                                                dataSource: chartData,
+                                                xValueMapper: (ProgressValues
+                                                            val,
+                                                        _) =>
+                                                    "${val.date.day}-${val.date.month}-${val.date.year}",
+                                                yValueMapper:
+                                                    (ProgressValues val, _) =>
+                                                        val.hochschulbindung,
+                                              )
+                                            ],
+                                          ),
+                                        )))
+                                ]),
+                              )
+                            ])),
+                  ]),
+            ),
+          ]);
   }
 
   void sendData(List<String> dropDownValues) async {
@@ -538,15 +635,16 @@ class _MeinFortschrittSState extends State<MeinFortschrittS> {
     setState(() {});
   }
 
-  Future<List<ProgressValues>> getProgressValues() async {
+  void getProgressValues() async {
     final prefs = await SharedPreferences.getInstance();
     var jwt = prefs.getString("jwt");
     jwt ??=
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzQ5NjI1YzRkMjRlODlhZTJkZjg0NzUiLCJyb2xlIjoiTGVjdHVyZXIiLCJpYXQiOjE2NjY4MDkzNTksImV4cCI6MTY2NjgyMzc1OX0.hPw63fzL_GP_hYpMwuaxpYbyxqSCtw4Su91s9ge51Qk";
-    Future<List<ProgressValues>>? resultGetLearningprogress =
-        httpHelper.getLearningprogress(jwt);
-    final List<ProgressValues> chartData =
-        resultGetLearningprogress as List<ProgressValues>;
+    print(jwt);
+    List<ProgressValues> resultGetLearningprogress =
+        await httpHelper.getLearningprogress(jwt);
+
+    //final List<ProgressValues> chartData = resultGetLearningprogress as List<ProgressValues>;
     /*
     final List<ProgressValues> chartData = [
       ProgressValues(DateUtils.dateOnly(DateTime.parse("2021-12-23 11:47:00")),
@@ -561,6 +659,9 @@ class _MeinFortschrittSState extends State<MeinFortschrittS> {
           1, 2, 4, 1, 5)
     ];
     */
-    return chartData;
+    setState(() {
+      chartData = resultGetLearningprogress;
+      fetching = false;
+    });
   }
 }
