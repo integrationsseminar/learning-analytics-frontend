@@ -28,22 +28,6 @@ class _MeinFortschrittSState extends State<MeinFortschrittS> {
 
   late List<ProgressValues> chartData = [];
 
-  /*
-  Exampledata
-  [
-    ProgressValues(DateUtils.dateOnly(DateTime.parse("2021-12-23 11:47:00")), 1,
-        1, 1, 1, 1),
-    ProgressValues(DateUtils.dateOnly(DateTime.parse("2021-12-24 11:47:00")), 2,
-        2, 2, 2, 2),
-    ProgressValues(DateUtils.dateOnly(DateTime.parse("2021-12-25 11:47:00")), 3,
-        3, 3, 3, 3),
-    ProgressValues(DateUtils.dateOnly(DateTime.parse("2021-12-26 11:47:00")), 4,
-        4, 4, 4, 4),
-    ProgressValues(DateUtils.dateOnly(DateTime.parse("2021-12-27 11:47:00")), 5,
-        5, 5, 5, 5)
-  ];
-  */
-
   List<String> list = <String>[
     'Sehr hoch',
     'Hoch',
@@ -403,32 +387,6 @@ class _MeinFortschrittSState extends State<MeinFortschrittS> {
                                                       ),
                                                     ]),
 
-                                                /*
-                                      Angaben(
-                                          text: "Lernmotivation",
-                                          selectedValue: dropdownValues[0]),
-                                          
-                                      const DividerWidget(),
-                                      //----
-                                      Angaben(
-                                          text: "Lernaufwand",
-                                          selectedValue: dropdownValues[1]),
-                                      const DividerWidget(),
-                                      //------------------------------------------
-                                      Angaben(
-                                          text: "Lernerfolg",
-                                          selectedValue: dropdownValues[2]),
-                                      const DividerWidget(),
-                                      //------------------------------------------
-                                      Angaben(
-                                          text: "Stresslevel",
-                                          selectedValue: dropdownValues[3]),
-                                      const DividerWidget(),
-                                      //------------------------------------------
-                                      Angaben(
-                                          text: "Hochschulbindung",
-                                          selectedValue: dropdownValues[4]),
-*/
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.fromLTRB(
@@ -640,25 +598,9 @@ class _MeinFortschrittSState extends State<MeinFortschrittS> {
     var jwt = prefs.getString("jwt");
     jwt ??=
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzQ5NjI1YzRkMjRlODlhZTJkZjg0NzUiLCJyb2xlIjoiTGVjdHVyZXIiLCJpYXQiOjE2NjY4MDkzNTksImV4cCI6MTY2NjgyMzc1OX0.hPw63fzL_GP_hYpMwuaxpYbyxqSCtw4Su91s9ge51Qk";
-    print(jwt);
     List<ProgressValues> resultGetLearningprogress =
         await httpHelper.getLearningprogress(jwt);
 
-    //final List<ProgressValues> chartData = resultGetLearningprogress as List<ProgressValues>;
-    /*
-    final List<ProgressValues> chartData = [
-      ProgressValues(DateUtils.dateOnly(DateTime.parse("2021-12-23 11:47:00")),
-          3, 3, 3, 4, 5),
-      ProgressValues(DateUtils.dateOnly(DateTime.parse("2021-12-24 11:47:00")),
-          1, 2, 4, 5, 5),
-      ProgressValues(DateUtils.dateOnly(DateTime.parse("2021-12-25 11:47:00")),
-          1, 1, 2, 2, 5),
-      ProgressValues(DateUtils.dateOnly(DateTime.parse("2021-12-26 11:47:00")),
-          4, 2, 2, 4, 1),
-      ProgressValues(DateUtils.dateOnly(DateTime.parse("2021-12-27 11:47:00")),
-          1, 2, 4, 1, 5)
-    ];
-    */
     setState(() {
       chartData = resultGetLearningprogress;
       fetching = false;

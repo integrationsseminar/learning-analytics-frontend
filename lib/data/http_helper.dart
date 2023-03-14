@@ -1,4 +1,5 @@
 import 'package:learning_analytics/data/progressValues.dart';
+import 'package:learning_analytics/data/trophy.dart';
 
 import './thread.dart';
 import './threadcomment.dart';
@@ -296,7 +297,32 @@ class HttpHelper {
     } else {
       throw Exception('Failed to load progress Values.');
     }
-    print(progressValues);
     return progressValues;
+  }
+
+  Future<List<Trophy>> getUserTrophys(String jwt) async {
+    List<Trophy> trophies = [];
+
+    String newPath = '/usertrophys';
+
+    var headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $jwt"
+    };
+
+    Uri uri = Uri.https(authority, newPath);
+
+    http.Response res = await http.get(uri, headers: headers);
+
+    if (res.statusCode == 200) {
+      var response = jsonDecode(res.body)['data'];
+      trophies = response
+          .map<Trophy>((trophyMap) => Trophy.fromJSON(trophyMap))
+          .toList();
+    } else {
+      throw Exception('Failed to load trophies.');
+    }
+
+    return trophies;
   }
 }
