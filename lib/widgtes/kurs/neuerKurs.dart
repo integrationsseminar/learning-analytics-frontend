@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:learning_analytics/data/http_helper.dart';
 import 'package:learning_analytics/widgtes/customappbar.dart';
 import 'package:learning_analytics/widgtes/profil/eineTrophaeen.dart';
 import 'package:learning_analytics/widgtes/shared/divider.dart';
 import '../../data/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
 
 class NeuerKurs extends StatefulWidget {
   const NeuerKurs({Key? key}) : super(key: key);
@@ -16,6 +19,13 @@ class _NeuerKursState extends State<NeuerKurs> {
   final kursname = TextEditingController();
   final hochschule = TextEditingController();
   final studiengang = TextEditingController();
+  late HttpHelper httpHelper;
+
+  @override
+  void initState() {
+    httpHelper = HttpHelper();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -143,6 +153,7 @@ class _NeuerKursState extends State<NeuerKurs> {
                               ]),
                           const DividerWidget(),
                           //------------------------------------------
+                          /*
                           Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -167,7 +178,7 @@ class _NeuerKursState extends State<NeuerKurs> {
                                       ),
                                     )),
                               ]),
-
+*/
                           Padding(
                             padding:
                                 const EdgeInsets.fromLTRB(8.0, 40.0, 8.0, 0.0),
@@ -185,7 +196,11 @@ class _NeuerKursState extends State<NeuerKurs> {
                                       minWidth: 120.0,
                                       color: Theme.of(context).highlightColor,
                                       textColor: Colors.black,
-                                      onPressed: () => {},
+                                      onPressed: () => {
+                                        Clipboard.setData(const ClipboardData(
+                                            text:
+                                                "Hier ist dein kopierter Text."))
+                                      },
                                       splashColor: Colors.redAccent,
                                       child: Text(
                                         "Link kopieren",
@@ -206,7 +221,10 @@ class _NeuerKursState extends State<NeuerKurs> {
                                       color:
                                           Theme.of(context).primaryColorLight,
                                       textColor: Colors.white,
-                                      onPressed: () => {},
+                                      onPressed: () => {
+                                        postCourse(kursname.text,
+                                            hochschule.text, studiengang.text)
+                                      },
                                       splashColor: Colors.redAccent,
                                       child: Text(
                                         "Kurs erstellen",
@@ -227,5 +245,26 @@ class _NeuerKursState extends State<NeuerKurs> {
             ),
           ]))
     ]);
+  }
+
+  void postCourse(
+      String kursname, String hochschule, String studiengang) async {
+    final prefs = await SharedPreferences.getInstance();
+    var jwt = prefs.getString("jwt");
+    jwt ??=
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzQ5NjI1YzRkMjRlODlhZTJkZjg0NzUiLCJyb2xlIjoiTGVjdHVyZXIiLCJpYXQiOjE2NjY4MDkzNTksImV4cCI6MTY2NjgyMzc1OX0.hPw63fzL_GP_hYpMwuaxpYbyxqSCtw4Su91s9ge51Qk";
+    Future<bool> response =
+        httpHelper.postCourse(jwt, kursname, hochschule, studiengang);
+    showInSnackbar(context, "Neuer Kurs wurde erstellt.");
+  }
+
+  void showInSnackbar(BuildContext context, String value) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Theme.of(context).primaryColorLight,
+        content: Text(value),
+      ),
+    );
   }
 }

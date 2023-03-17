@@ -175,6 +175,7 @@ class _MeinProfilDState extends State<MeinProfilD> {
   void changeUserData() async {
     final prefs = await SharedPreferences.getInstance();
     var jwt = prefs.getString("jwt");
+    print(jwt);
 
     var account = AccountName(username.text);
     await AccountHttpHelper().changeName(account, jwt);

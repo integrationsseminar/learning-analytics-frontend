@@ -26,7 +26,7 @@ class _MeinLernenSState extends State<MeinLernenS> {
   late User user;
 
   List<Course> courses = [
-    Course("0", "Alle Kurse", "", "", "", "", false),
+    Course("0", "Alle Kurse", "", "", "", "", false, "", ""),
   ];
   late Course dropdownValue = courses.first;
   List<Threadwithcomments> threads = [];
@@ -200,7 +200,7 @@ class _MeinLernenSState extends State<MeinLernenS> {
 
   void fetchData() async {
     courses = [
-      Course("0", "Alle Kurse", "", "", "", "", false),
+      Course("0", "Alle Kurse", "", "", "", "", false, "", ""),
     ];
     final prefs = await SharedPreferences.getInstance();
     var jwt = prefs.getString("jwt");

@@ -58,8 +58,7 @@ class _MeinFortschrittSState extends State<MeinFortschrittS> {
                 child: SizedBox(
                     height: 160,
                     child: CustomAppBar(
-                        title: "Mein Fortschritt",
-                        backToPage: "MeinFortschrittS")),
+                        title: "Mein Fortschritt", backToPage: "")),
               ),
             ]),
             Padding(
@@ -452,10 +451,10 @@ class _MeinFortschrittSState extends State<MeinFortschrittS> {
                                             ),
                                             legend: Legend(isVisible: true),
                                             palette: const [
-                                              Color.fromRGBO(236, 7, 163, 1),
-                                              Color.fromRGBO(228, 8, 92, 1),
+                                              Color.fromRGBO(195, 0, 255, 1),
+                                              Color.fromRGBO(255, 0, 195, 1),
                                               Color.fromRGBO(227, 6, 19, 1),
-                                              Color.fromRGBO(237, 65, 22, 1),
+                                              Color.fromRGBO(255, 98, 0, 1),
                                               Color.fromRGBO(247, 158, 4, 1),
                                               Color.fromRGBO(239, 239, 1, 1),
                                               Color.fromRGBO(6, 231, 10, 1),
@@ -564,6 +563,7 @@ class _MeinFortschrittSState extends State<MeinFortschrittS> {
     var jwt = prefs.getString("jwt");
     jwt ??=
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzQ5NjI1YzRkMjRlODlhZTJkZjg0NzUiLCJyb2xlIjoiTGVjdHVyZXIiLCJpYXQiOjE2NjY4MDkzNTksImV4cCI6MTY2NjgyMzc1OX0.hPw63fzL_GP_hYpMwuaxpYbyxqSCtw4Su91s9ge51Qk";
+    print(jwt);
     for (var value in dropDownValues) {
       int intValue = 0;
       switch (value) {
