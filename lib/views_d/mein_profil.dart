@@ -7,6 +7,7 @@ import 'package:learning_analytics/widgtes/profil/trophaeenView.dart';
 import 'package:learning_analytics/widgtes/profil/editierbaresItemProfil.dart';
 import 'package:learning_analytics/widgtes/shared/bottom_menu.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../app.dart';
 import '../data/user.dart';
 import '../data/http_helper.dart';
 import '../data/account_http_helper.dart';
@@ -55,7 +56,6 @@ class _MeinProfilDState extends State<MeinProfilD> {
                           padding: const EdgeInsets.all(8.0),
                           child: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.9,
-                              height: 190,
                               child: Card(
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20),
@@ -81,27 +81,49 @@ class _MeinProfilDState extends State<MeinProfilD> {
 
                                       Padding(
                                         padding: const EdgeInsets.fromLTRB(
-                                            8.0, 40.0, 8.0, 0.0),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: MaterialButton(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(8)),
-                                            height: 32.0,
-                                            minWidth: 120.0,
-                                            color: Theme.of(context)
-                                                .highlightColor,
-                                            textColor: Colors.black,
-                                            onPressed: () => {changeUserData()},
-                                            splashColor: Colors.redAccent,
-                                            child: Text(
-                                              "Speichern",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleSmall,
+                                            8.0, 40.0, 8.0, 12.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            MaterialButton(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8)),
+                                              height: 32.0,
+                                              minWidth: 120.0,
+                                              color: Theme.of(context)
+                                                  .highlightColor,
+                                              textColor: Colors.black,
+                                              onPressed: () =>
+                                                  {changeUserData()},
+                                              splashColor: Colors.redAccent,
+                                              child: Text(
+                                                "Speichern",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleSmall,
+                                              ),
                                             ),
-                                          ),
+                                            MaterialButton(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8)),
+                                              height: 32.0,
+                                              minWidth: 120.0,
+                                              color: Theme.of(context)
+                                                  .highlightColor,
+                                              textColor: Colors.black,
+                                              onPressed: () => {logOut()},
+                                              splashColor: Colors.redAccent,
+                                              child: Text(
+                                                "Ausloggen",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleSmall,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       )
                                     ],
@@ -178,6 +200,19 @@ class _MeinProfilDState extends State<MeinProfilD> {
     print(jwt);
 
     var account = AccountName(username.text);
-    await AccountHttpHelper().changeName(account, jwt);
+    await AccountHttpHelper().changeName(account, jwt).then((value) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => (App(
+                    currentIndex: 0,
+                  ))));
+    });
+  }
+
+  void logOut() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+    Navigator.pushNamed(context, "/");
   }
 }

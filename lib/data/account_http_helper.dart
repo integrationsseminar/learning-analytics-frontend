@@ -24,13 +24,12 @@ class AccountHttpHelper {
     };
 
     http.Response response = await http.post(uri, headers: headers, body: body);
-    var role = json.decode(response.body)["role"];
-
-    await prefs.setString("role", role);
 
     if (response.statusCode == 201) {
-      await loginAccount(Account(email, password));
-      return true;
+      var role = json.decode(response.body)["role"];
+
+      await prefs.setString("role", role);
+      return await loginAccount(Account(email, password));
     } else {
       return false;
     }
@@ -49,13 +48,13 @@ class AccountHttpHelper {
     };
 
     http.Response response = await http.post(uri, headers: headers, body: body);
-    var loginToken = json.decode(response.body)["token"]["token"];
-    await prefs.setString("jwt", loginToken);
-
-    var role = (await HttpHelper().getUser(loginToken)).role;
-    await prefs.setString("role", role);
 
     if (response.statusCode == 200) {
+      var loginToken = json.decode(response.body)["token"]["token"];
+      await prefs.setString("jwt", loginToken);
+
+      var role = (await HttpHelper().getUser(loginToken)).role;
+      await prefs.setString("role", role);
       return true;
     } else {
       return false;

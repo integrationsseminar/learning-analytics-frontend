@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:learning_analytics/app.dart';
 import 'package:learning_analytics/data/course.dart';
 import 'package:learning_analytics/data/http_helper.dart';
 import 'package:learning_analytics/views_d/meine_kurse.dart';
@@ -224,11 +225,6 @@ class _EinKursState extends State<EinKurs> {
                                       textColor: Colors.white,
                                       onPressed: () async {
                                         deleteCourse(widget.course.getId);
-                                        await Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    (const MeineKurseD())));
                                       },
                                       splashColor: Colors.redAccent,
                                       child: Text(
@@ -257,6 +253,25 @@ class _EinKursState extends State<EinKurs> {
     var jwt = prefs.getString("jwt");
     jwt ??=
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzQ5NjI1YzRkMjRlODlhZTJkZjg0NzUiLCJyb2xlIjoiTGVjdHVyZXIiLCJpYXQiOjE2NjY4MDkzNTksImV4cCI6MTY2NjgyMzc1OX0.hPw63fzL_GP_hYpMwuaxpYbyxqSCtw4Su91s9ge51Qk";
-    Future<bool> response = httpHelper.deleteCourse(jwt, courseId);
+    if (await httpHelper.deleteCourse(jwt, courseId)) {
+      await Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => (App(
+                    currentIndex: 2,
+                  ))));
+    } else {
+      showInSnackbar(context, "Löschen des Kurses fehlgeschlagen!");
+    }
+  }
+
+  void showInSnackbar(BuildContext context, String value) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Theme.of(context).primaryColorLight,
+        content: Text(value),
+      ),
+    );
   }
 }

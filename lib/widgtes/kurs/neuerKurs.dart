@@ -253,9 +253,11 @@ class _NeuerKursState extends State<NeuerKurs> {
     var jwt = prefs.getString("jwt");
     jwt ??=
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzQ5NjI1YzRkMjRlODlhZTJkZjg0NzUiLCJyb2xlIjoiTGVjdHVyZXIiLCJpYXQiOjE2NjY4MDkzNTksImV4cCI6MTY2NjgyMzc1OX0.hPw63fzL_GP_hYpMwuaxpYbyxqSCtw4Su91s9ge51Qk";
-    Future<bool> response =
-        httpHelper.postCourse(jwt, kursname, hochschule, studiengang);
-    showInSnackbar(context, "Neuer Kurs wurde erstellt.");
+    if (await httpHelper.postCourse(jwt, kursname, hochschule, studiengang)) {
+      showInSnackbar(context, "Neuer Kurs wurde erstellt.");
+    } else {
+      showInSnackbar(context, "Neuer Kurs konnte nicht erstellt werden.");
+    }
   }
 
   void showInSnackbar(BuildContext context, String value) {

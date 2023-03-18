@@ -60,7 +60,6 @@ class _MeinProfilSState extends State<MeinProfilS> {
                             padding: const EdgeInsets.all(8.0),
                             child: SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.9,
-                                height: 381,
                                 child: Card(
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20),
@@ -101,27 +100,51 @@ class _MeinProfilSState extends State<MeinProfilS> {
                                             content: branche, field: "Branche"),
                                         Padding(
                                           padding: const EdgeInsets.fromLTRB(
-                                              8.0, 40.0, 8.0, 0.0),
-                                          child: Align(
-                                            alignment: Alignment.center,
-                                            child: MaterialButton(
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8)),
-                                              height: 32.0,
-                                              minWidth: 120.0,
-                                              color: Theme.of(context)
-                                                  .highlightColor,
-                                              textColor: Colors.black,
-                                              onPressed: () => {},
-                                              splashColor: Colors.redAccent,
-                                              child: Text(
-                                                "Speichern",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleSmall,
+                                              8.0, 40.0, 8.0, 12.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              MaterialButton(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8)),
+                                                height: 32.0,
+                                                minWidth: 120.0,
+                                                color: Theme.of(context)
+                                                    .highlightColor,
+                                                textColor: Colors.black,
+                                                onPressed: () =>
+                                                    {changeUserData()},
+                                                splashColor: Colors.redAccent,
+                                                child: Text(
+                                                  "Speichern",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleSmall,
+                                                ),
                                               ),
-                                            ),
+                                              MaterialButton(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8)),
+                                                height: 32.0,
+                                                minWidth: 120.0,
+                                                color: Theme.of(context)
+                                                    .highlightColor,
+                                                textColor: Colors.black,
+                                                onPressed: () => {logOut()},
+                                                splashColor: Colors.redAccent,
+                                                child: Text(
+                                                  "Ausloggen",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleSmall,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         )
                                       ],
@@ -237,5 +260,11 @@ class _MeinProfilSState extends State<MeinProfilS> {
 
     var account = AccountName(username.text);
     await AccountHttpHelper().changeName(account, jwt);
+  }
+
+  void logOut() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+    Navigator.pushNamed(context, "/");
   }
 }

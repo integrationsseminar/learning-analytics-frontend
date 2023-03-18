@@ -48,7 +48,21 @@ class _MeinLernenSState extends State<MeinLernenS> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: fetching
-          ? const Center(child: CircularProgressIndicator())
+          ? Column(children: [
+              Stack(
+                children: const [
+                  Positioned(
+                    child: SizedBox(
+                        height: 140,
+                        child:
+                            CustomAppBar(title: "Mein Lernen", backToPage: "")),
+                  )
+                ],
+              ),
+              SizedBox(
+                  height: MediaQuery.of(context).size.height - 190,
+                  child: const Center(child: CircularProgressIndicator()))
+            ])
           : Column(children: [
               Stack(
                 children: const [
@@ -71,7 +85,7 @@ class _MeinLernenSState extends State<MeinLernenS> {
                         color: Theme.of(context).primaryColorLight,
                         borderRadius: BorderRadius.circular(5)),
                     child: DropdownButton(
-                        underline: SizedBox(),
+                        underline: const SizedBox(),
                         style: Theme.of(context).textTheme.headlineSmall,
                         icon: const Icon(Icons.arrow_drop_down_rounded,
                             color: Colors.white),
@@ -136,7 +150,7 @@ class _MeinLernenSState extends State<MeinLernenS> {
                           style: Theme.of(context).textTheme.headlineSmall)),
                 )
               ]),
-              Container(
+              SizedBox(
                 height: MediaQuery.of(context).size.height - 234,
                 child: ListView(children: [
                   Column(
@@ -224,11 +238,52 @@ class _MeinLernenSState extends State<MeinLernenS> {
     int counter = 0;
     int threadCounter = 0;
     List<Widget> learningThreads = [];
-    while (fragen && threadCounter < threads.length) {
-      Threadwithcomments thread = threads[threadCounter];
-      if (counter == surveys.length ||
-          DateTime.parse(thread.thread.createdAt)
-              .isAfter(DateTime.parse(surveys[counter].createdAt))) {
+    if (fragen && umfragen) {
+      while (threadCounter < threads.length) {
+        Threadwithcomments thread = threads[threadCounter];
+        if (counter == surveys.length ||
+            DateTime.parse(thread.thread.createdAt)
+                .isAfter(DateTime.parse(surveys[counter].createdAt))) {
+          if ((dropdownValue.getId == "0" ||
+                  thread.thread.course == dropdownValue.getId) &&
+              (courses.any((course) => course.getId == thread.thread.course))) {
+            learningThreads.add(Column(
+              children: [
+                Frage(
+                    user: user,
+                    threadwithcomments: thread,
+                    courseName: courses
+                        .firstWhere(
+                            (course) => course.getId == thread.thread.course)
+                        .name),
+                const SizedBox(height: 10)
+              ],
+            ));
+          }
+          threadCounter++;
+        } else {
+          Survey survey = surveys[counter];
+          if ((dropdownValue.getId == "0" ||
+                  survey.course == dropdownValue.getId) &&
+              (courses.any((course) => course.getId == survey.course))) {
+            learningThreads.add(Column(
+              children: [
+                Umfrage(
+                    user: user,
+                    survey: survey,
+                    courseName: courses
+                        .firstWhere((course) => course.getId == survey.course)
+                        .name),
+                const SizedBox(height: 10)
+              ],
+            ));
+          }
+          counter++;
+        }
+      }
+    } else if (fragen) {
+      while (threadCounter < surveys.length) {
+        Threadwithcomments thread = threads[threadCounter];
         if ((dropdownValue.getId == "0" ||
                 thread.thread.course == dropdownValue.getId) &&
             (courses.any((course) => course.getId == thread.thread.course))) {
@@ -246,7 +301,9 @@ class _MeinLernenSState extends State<MeinLernenS> {
           ));
         }
         threadCounter++;
-      } else if (umfragen) {
+      }
+    } else if (umfragen) {
+      while (counter < surveys.length) {
         Survey survey = surveys[counter];
         if ((dropdownValue.getId == "0" ||
                 survey.course == dropdownValue.getId) &&
@@ -265,25 +322,6 @@ class _MeinLernenSState extends State<MeinLernenS> {
         }
         counter++;
       }
-    }
-    while (counter < surveys.length && umfragen) {
-      Survey survey = surveys[counter];
-      if ((dropdownValue.getId == "0" ||
-              survey.course == dropdownValue.getId) &&
-          (courses.any((course) => course.getId == survey.course))) {
-        learningThreads.add(Column(
-          children: [
-            Umfrage(
-                user: user,
-                survey: survey,
-                courseName: courses
-                    .firstWhere((course) => course.getId == survey.course)
-                    .name),
-            const SizedBox(height: 10)
-          ],
-        ));
-      }
-      counter++;
     }
     return learningThreads;
   }
