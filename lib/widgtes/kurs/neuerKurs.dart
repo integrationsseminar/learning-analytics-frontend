@@ -206,7 +206,6 @@ class _NeuerKursState extends State<NeuerKurs> {
                                         textColor: Colors.black,
                                         onPressed: kursErstellt
                                             ? () {
-                                                print(kursErstellt);
                                                 Clipboard.setData(
                                                   ClipboardData(
                                                     text: createLink(courseId),

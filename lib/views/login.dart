@@ -145,7 +145,6 @@ class _LoginState extends State<Login> {
   void login(String? courseId) async {
     Account account = Account(email.text, passwort.text);
     if (await AccountHttpHelper().loginAccount(account, courseId)) {
-      print(courseId);
       showInSnackbar(context, "Login erfolgreich", false);
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => App(currentIndex: 1)));

@@ -169,7 +169,7 @@ class _EinKursState extends State<EinKurs> {
                                         child: RichText(
                                           text: WidgetSpan(
                                             child: Text(
-                                              "https://learning.25910.de",
+                                              createLink(widget.course.getId),
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .labelSmall,
@@ -199,9 +199,9 @@ class _EinKursState extends State<EinKurs> {
                                       color: Theme.of(context).highlightColor,
                                       textColor: Colors.black,
                                       onPressed: () => {
-                                        Clipboard.setData(const ClipboardData(
-                                            text:
-                                                "Hier ist dein kopierter Text."))
+                                        Clipboard.setData(ClipboardData(
+                                            text: createLink(
+                                                widget.course.getId)))
                                       },
                                       splashColor: Colors.redAccent,
                                       child: Text(
@@ -273,5 +273,10 @@ class _EinKursState extends State<EinKurs> {
         content: Text(value),
       ),
     );
+  }
+
+  String createLink(String courseId) {
+    String url = Uri.base.toString() + "courseLogin" + "?courseId=" + courseId;
+    return url.toString();
   }
 }
