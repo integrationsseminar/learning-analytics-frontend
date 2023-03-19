@@ -10,7 +10,8 @@ import 'package:learning_analytics/data/account_http_helper.dart';
 import 'package:learning_analytics/data/account.dart';
 
 class Register extends StatefulWidget {
-  const Register({Key? key}) : super(key: key);
+  const Register({Key? key, this.courseId = ""}) : super(key: key);
+  final courseId;
 
   @override
   State<Register> createState() => _RegisterState();
@@ -20,6 +21,7 @@ class _RegisterState extends State<Register> {
   final name = TextEditingController();
   final email = TextEditingController();
   final passwort = TextEditingController();
+  final kursId = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +90,23 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                   ),
+                  if (widget.courseId == "")
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(15.0, 0, 15, 15),
+                      child: TextField(
+                        obscureText: true,
+                        enableSuggestions: false,
+                        autocorrect: false,
+                        autofocus: false,
+                        cursorHeight: 5,
+                        style: Theme.of(context).textTheme.titleSmall,
+                        controller: kursId,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Kurs-ID',
+                        ),
+                      ),
+                    ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 20.0),
                     child: RichText(
@@ -99,7 +118,8 @@ class _RegisterState extends State<Register> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const Login()));
+                                      builder: (context) =>
+                                          Login(courseId: widget.courseId)));
                             }),
                     ),
                   ),
@@ -116,7 +136,11 @@ class _RegisterState extends State<Register> {
                           minWidth: MediaQuery.of(context).size.height * 0.15,
                           color: Theme.of(context).primaryColorLight,
                           textColor: Colors.white,
-                          onPressed: () => {register(courseId)},
+                          onPressed: () => {
+                            register(widget.courseId != ""
+                                ? widget.courseId
+                                : kursId.text)
+                          },
                           splashColor: Colors.redAccent,
                           child: Text(
                             "Registrieren",

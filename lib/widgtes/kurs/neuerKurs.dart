@@ -297,7 +297,7 @@ class _NeuerKursState extends State<NeuerKurs> {
   }
 
   String createLink(String courseId) {
-    Uri url = Uri.https('localhost:63249', '/login', {'courseId': courseId});
+    String url = Uri.base.toString() + "courseLogin" + "?courseId=" + courseId;
     return url.toString();
   }
 }

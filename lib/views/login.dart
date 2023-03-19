@@ -11,7 +11,8 @@ import 'package:learning_analytics/data/account.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+  const Login({Key? key, this.courseId = ""}) : super(key: key);
+  final courseId;
 
   @override
   State<Login> createState() => _LoginState();
@@ -24,10 +25,6 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    final routeName = ModalRoute.of(context)?.settings.name;
-    final uri = Uri.parse(routeName ?? '');
-    final courseId = uri.queryParameters['courseId'];
-
     return Scaffold(
         body: Center(
             child: Container(
@@ -65,7 +62,7 @@ class _LoginState extends State<Login> {
                       padding: const EdgeInsets.fromLTRB(15.0, 0, 15, 15),
                       child: TextField(
                         textInputAction: TextInputAction.go,
-                        onSubmitted: (value) => {login(courseId)},
+                        onSubmitted: (value) => {login(widget.courseId)},
                         obscureText: true,
                         enableSuggestions: false,
                         autocorrect: false,
@@ -90,8 +87,8 @@ class _LoginState extends State<Login> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            const Register()));
+                                        builder: (context) => Register(
+                                            courseId: widget.courseId)));
                               }),
                       ),
                     ),
@@ -129,7 +126,7 @@ class _LoginState extends State<Login> {
                                   MediaQuery.of(context).size.height * 0.15,
                               color: Theme.of(context).primaryColorLight,
                               textColor: Colors.white,
-                              onPressed: () => {login(courseId)},
+                              onPressed: () => {login(widget.courseId)},
                               splashColor: Colors.redAccent,
                               child: Text(
                                 "Einloggen",
