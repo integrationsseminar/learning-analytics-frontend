@@ -26,13 +26,12 @@ class _RegisterState extends State<Register> {
     return Scaffold(
         body: Center(
             child: Container(
-                alignment: Alignment.center,
-                height: MediaQuery.of(context).size.height * 0.45,
+                //height: MediaQuery.of(context).size.height * 0.45,
                 width: MediaQuery.of(context).size.height * 0.45,
                 decoration: BoxDecoration(
                     color: Theme.of(context).secondaryHeaderColor,
                     borderRadius: BorderRadius.circular(20)),
-                child: Column(children: [
+                child: Column(mainAxisSize: MainAxisSize.min, children: [
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(20.0, 15, 20, 20),
@@ -105,7 +104,7 @@ class _RegisterState extends State<Register> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
+                        padding: const EdgeInsets.fromLTRB(8.0, 0, 0, 12),
                         child: MaterialButton(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8)),
@@ -132,6 +131,21 @@ class _RegisterState extends State<Register> {
     if (await AccountHttpHelper().postAccount(newAccout)) {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => App(currentIndex: 1)));
+      showInSnackbar(context, "Registrierung erfolgreich", false);
+    } else {
+      showInSnackbar(context, "Registrierung fehlgeschlagen", false);
     }
+  }
+
+  //Snackbar für Alerts
+  void showInSnackbar(BuildContext context, String value, bool error) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor:
+            error ? Colors.red : Theme.of(context).primaryColorLight,
+        content: Text(value),
+      ),
+    );
   }
 }

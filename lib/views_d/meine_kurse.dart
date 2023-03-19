@@ -39,13 +39,13 @@ class _MeineKurseDState extends State<MeineKurseD> {
               Stack(children: const [
                 Positioned(
                   child: SizedBox(
-                      height: 160,
+                      height: 140,
                       child:
                           CustomAppBar(title: "Meine Kurse", backToPage: "")),
                 ),
               ]),
               Padding(
-                padding: const EdgeInsets.fromLTRB(15, 40, 15, 5),
+                padding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
                 child: SizedBox(
                     width: MediaQuery.of(context).size.width * 0.6,
                     height: 70,
