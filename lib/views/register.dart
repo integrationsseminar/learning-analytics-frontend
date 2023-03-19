@@ -23,6 +23,10 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+    final routeName = ModalRoute.of(context)?.settings.name;
+    final uri = Uri.parse(routeName ?? '');
+    final courseId = uri.queryParameters['courseId'];
+
     return Scaffold(
         body: Center(
             child: Container(
@@ -112,7 +116,7 @@ class _RegisterState extends State<Register> {
                           minWidth: MediaQuery.of(context).size.height * 0.15,
                           color: Theme.of(context).primaryColorLight,
                           textColor: Colors.white,
-                          onPressed: () => {register()},
+                          onPressed: () => {register(courseId)},
                           splashColor: Colors.redAccent,
                           child: Text(
                             "Registrieren",
@@ -125,10 +129,10 @@ class _RegisterState extends State<Register> {
                 ]))));
   }
 
-  void register() async {
+  void register(String? courseId) async {
     RegisterAccount newAccout =
         RegisterAccount(name.text, email.text, passwort.text, "leer");
-    if (await AccountHttpHelper().postAccount(newAccout)) {
+    if (await AccountHttpHelper().postAccount(newAccout, courseId)) {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => App(currentIndex: 1)));
       showInSnackbar(context, "Registrierung erfolgreich", false);

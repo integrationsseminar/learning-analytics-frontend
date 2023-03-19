@@ -229,14 +229,14 @@ class HttpHelper {
     return courses;
   }
 
-  Future<bool> postCourse(String jwt, String kursname, String hochschule,
-      String studiengang) async {
+  Future<http.Response> postCourse(String jwt, String kursname,
+      String hochschule, String studiengang) async {
     String newPath = '/courses';
     Course newCourse = Course(
         "",
         kursname,
         "2023-03-16T13:21:40.456Z",
-        "2023-03-16T13:21:40.456Z",
+        "2043-03-16T13:21:40.456Z",
         "string",
         "ByDate",
         false,
@@ -254,11 +254,7 @@ class HttpHelper {
 
     http.Response response = await http.post(uri, headers: headers, body: body);
 
-    if (response.statusCode == 200) {
-      return true;
-    } else {
-      return false;
-    }
+    return response;
   }
 
   Future<bool> deleteCourse(String jwt, String courseId) async {

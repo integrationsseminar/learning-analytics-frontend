@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:learning_analytics/data/http_helper.dart';
@@ -7,6 +9,7 @@ import 'package:learning_analytics/widgtes/shared/divider.dart';
 import '../../data/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 
 class NeuerKurs extends StatefulWidget {
   const NeuerKurs({Key? key}) : super(key: key);
@@ -19,6 +22,8 @@ class _NeuerKursState extends State<NeuerKurs> {
   final kursname = TextEditingController();
   final hochschule = TextEditingController();
   final studiengang = TextEditingController();
+  bool kursErstellt = false;
+  late String courseId = "";
   late HttpHelper httpHelper;
 
   @override
@@ -188,25 +193,38 @@ class _NeuerKursState extends State<NeuerKurs> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(right: 8.0),
-                                    child: MaterialButton(
-                                      shape: RoundedRectangleBorder(
+                                    child: IgnorePointer(
+                                      ignoring: !kursErstellt,
+                                      child: MaterialButton(
+                                        shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(8)),
-                                      height: 32.0,
-                                      minWidth: 120.0,
-                                      color: Theme.of(context).highlightColor,
-                                      textColor: Colors.black,
-                                      onPressed: () => {
-                                        Clipboard.setData(const ClipboardData(
-                                            text:
-                                                "Hier ist dein kopierter Text."))
-                                      },
-                                      splashColor: Colors.redAccent,
-                                      child: Text(
-                                        "Link kopieren",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleSmall,
+                                              BorderRadius.circular(8),
+                                        ),
+                                        height: 32.0,
+                                        minWidth: 120.0,
+                                        color: Theme.of(context).highlightColor,
+                                        textColor: Colors.black,
+                                        onPressed: kursErstellt
+                                            ? () {
+                                                print(kursErstellt);
+                                                Clipboard.setData(
+                                                  ClipboardData(
+                                                    text: createLink(courseId),
+                                                  ),
+                                                );
+                                              }
+                                            : null,
+                                        splashColor: Colors.redAccent,
+                                        disabledColor:
+                                            Theme.of(context).highlightColor,
+                                        disabledTextColor:
+                                            Color.fromARGB(255, 255, 255, 255),
+                                        child: Text(
+                                          "Link kopieren",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleSmall,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -223,7 +241,10 @@ class _NeuerKursState extends State<NeuerKurs> {
                                       textColor: Colors.white,
                                       onPressed: () => {
                                         postCourse(kursname.text,
-                                            hochschule.text, studiengang.text)
+                                            hochschule.text, studiengang.text),
+                                        setState(() {
+                                          kursErstellt = true;
+                                        }),
                                       },
                                       splashColor: Colors.redAccent,
                                       child: Text(
@@ -253,8 +274,13 @@ class _NeuerKursState extends State<NeuerKurs> {
     var jwt = prefs.getString("jwt");
     jwt ??=
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzQ5NjI1YzRkMjRlODlhZTJkZjg0NzUiLCJyb2xlIjoiTGVjdHVyZXIiLCJpYXQiOjE2NjY4MDkzNTksImV4cCI6MTY2NjgyMzc1OX0.hPw63fzL_GP_hYpMwuaxpYbyxqSCtw4Su91s9ge51Qk";
-    if (await httpHelper.postCourse(jwt, kursname, hochschule, studiengang)) {
+    http.Response response =
+        await httpHelper.postCourse(jwt, kursname, hochschule, studiengang);
+    if (response.statusCode == 200) {
       showInSnackbar(context, "Neuer Kurs wurde erstellt.");
+      setState(() {
+        courseId = json.decode(response.body)['_id'];
+      });
     } else {
       showInSnackbar(context, "Neuer Kurs konnte nicht erstellt werden.");
     }
@@ -268,5 +294,10 @@ class _NeuerKursState extends State<NeuerKurs> {
         content: Text(value),
       ),
     );
+  }
+
+  String createLink(String courseId) {
+    Uri url = Uri.https('localhost:63249', '/login', {'courseId': courseId});
+    return url.toString();
   }
 }

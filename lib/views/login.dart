@@ -24,6 +24,10 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    final routeName = ModalRoute.of(context)?.settings.name;
+    final uri = Uri.parse(routeName ?? '');
+    final courseId = uri.queryParameters['courseId'];
+
     return Scaffold(
         body: Center(
             child: Container(
@@ -61,7 +65,7 @@ class _LoginState extends State<Login> {
                       padding: const EdgeInsets.fromLTRB(15.0, 0, 15, 15),
                       child: TextField(
                         textInputAction: TextInputAction.go,
-                        onSubmitted: (value) => {login()},
+                        onSubmitted: (value) => {login(courseId)},
                         obscureText: true,
                         enableSuggestions: false,
                         autocorrect: false,
@@ -125,7 +129,7 @@ class _LoginState extends State<Login> {
                                   MediaQuery.of(context).size.height * 0.15,
                               color: Theme.of(context).primaryColorLight,
                               textColor: Colors.white,
-                              onPressed: () => {login()},
+                              onPressed: () => {login(courseId)},
                               splashColor: Colors.redAccent,
                               child: Text(
                                 "Einloggen",
@@ -141,9 +145,10 @@ class _LoginState extends State<Login> {
                 ))));
   }
 
-  void login() async {
+  void login(String? courseId) async {
     Account account = Account(email.text, passwort.text);
-    if (await AccountHttpHelper().loginAccount(account)) {
+    if (await AccountHttpHelper().loginAccount(account, courseId)) {
+      print(courseId);
       showInSnackbar(context, "Login erfolgreich", false);
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => App(currentIndex: 1)));
