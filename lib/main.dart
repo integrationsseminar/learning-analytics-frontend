@@ -23,12 +23,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final routeName = ModalRoute.of(context)?.settings.name;
-    print(routeName);
-    final uri = Uri.parse(routeName ?? '');
-    final courseId = uri.queryParameters['courseId'];
-    print(courseId);
-
     return MaterialApp(
       title: 'Learning Analytics',
       theme: laappTheme(),
@@ -38,11 +32,9 @@ class MyApp extends StatelessWidget {
         '/main': (context) => App(currentIndex: 1)
       },
       onGenerateRoute: (settings) {
-        print(settings.name);
         if (settings.name!.startsWith('/courseLogin')) {
           var uri = Uri.parse(settings.name ?? '');
           var courseId = uri.queryParameters['courseId'];
-          print(courseId);
           return MaterialPageRoute(builder: (_) => Login(courseId: courseId));
         }
         return MaterialPageRoute(builder: (_) => const Login());
