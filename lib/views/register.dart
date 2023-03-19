@@ -133,6 +133,5 @@ class _RegisterState extends State<Register> {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => App(currentIndex: 1)));
     }
-    ;
   }
 }
