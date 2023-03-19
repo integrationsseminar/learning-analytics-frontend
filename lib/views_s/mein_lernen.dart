@@ -1,5 +1,9 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:learning_analytics/data/threadwithcomments.dart';
+import 'package:learning_analytics/widgtes/lernen/animationContainerFrage.dart';
+import '../app.dart';
+import '../widgtes/lernen/animationContainerUmfrage.dart';
 import '../widgtes/lernen/frage.dart';
 import '../widgtes/lernen/umfrage.dart';
 import '../data/course.dart';
@@ -249,7 +253,7 @@ class _MeinLernenSState extends State<MeinLernenS> {
               (courses.any((course) => course.getId == thread.thread.course))) {
             learningThreads.add(Column(
               children: [
-                Frage(
+                AnimationContainerFrage(
                     user: user,
                     threadwithcomments: thread,
                     courseName: courses
@@ -268,7 +272,7 @@ class _MeinLernenSState extends State<MeinLernenS> {
               (courses.any((course) => course.getId == survey.course))) {
             learningThreads.add(Column(
               children: [
-                Umfrage(
+                AnimationContainerUmfrage(
                     user: user,
                     survey: survey,
                     courseName: courses
@@ -289,7 +293,7 @@ class _MeinLernenSState extends State<MeinLernenS> {
             (courses.any((course) => course.getId == thread.thread.course))) {
           learningThreads.add(Column(
             children: [
-              Frage(
+              AnimationContainerFrage(
                   user: user,
                   threadwithcomments: thread,
                   courseName: courses
@@ -310,7 +314,7 @@ class _MeinLernenSState extends State<MeinLernenS> {
             (courses.any((course) => course.getId == survey.course))) {
           learningThreads.add(Column(
             children: [
-              Umfrage(
+              AnimationContainerUmfrage(
                   user: user,
                   survey: survey,
                   courseName: courses

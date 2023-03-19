@@ -185,7 +185,7 @@ class _UmfragenViewState extends State<UmfragenView> {
     if (response) {
       Survey reloadedSurvey =
           await HttpHelper().getSurvey(jwt, widget.survey.getId);
-      setState(() {
+      super.setState(() {
         widget.survey = reloadedSurvey;
       });
     } else {

@@ -53,12 +53,13 @@ class CustomAppBar extends StatelessWidget {
                             color: Colors.white,
                           ),
                           iconSize: 32,
-                          onPressed: () async {
-                            await Navigator.push(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            /*await Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        (getSide(backToPage))));
+                                        (getSide(backToPage))));*/
                           }),
                     ),
                     Flexible(
