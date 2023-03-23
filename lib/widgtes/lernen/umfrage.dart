@@ -4,9 +4,15 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import '../../data/antwort.dart';
 import '../../data/survey.dart';
 import '../../views_s/umfragen_view.dart';
+import '../../data/user.dart';
 
 class Umfrage extends StatefulWidget {
-  const Umfrage({super.key, required this.survey, required this.courseName});
+  final User user;
+  const Umfrage(
+      {super.key,
+      required this.survey,
+      required this.courseName,
+      required this.user});
   final Survey survey;
   final String courseName;
 
@@ -22,6 +28,7 @@ class _UmfrageState extends State<Umfrage> {
             context,
             MaterialPageRoute(
               builder: (context) => UmfragenView(
+                user: widget.user,
                 survey: widget.survey,
                 courseName: widget.courseName,
               ),
@@ -45,7 +52,7 @@ class _UmfrageState extends State<Umfrage> {
                     child: Text(
                         textAlign: TextAlign.center,
                         widget.survey.title,
-                        style: Theme.of(context).textTheme.headlineMedium),
+                        style: Theme.of(context).textTheme.titleMedium),
                   ),
                 ),
                 SimpleBarChart(
@@ -69,8 +76,7 @@ class _UmfrageState extends State<Umfrage> {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(tag,
-                                style:
-                                    Theme.of(context).textTheme.headlineSmall),
+                                style: Theme.of(context).textTheme.titleSmall),
                           )),
                     ),
                   Flexible(
@@ -88,10 +94,11 @@ class _UmfrageState extends State<Umfrage> {
                                 child: SizedBox(
                                   width: 15,
                                   child: Text(
+                                      textAlign: TextAlign.center,
                                       widget.survey.answers.length.toString(),
                                       style: Theme.of(context)
                                           .textTheme
-                                          .headlineSmall),
+                                          .titleSmall),
                                 ))),
                       ),
                     ),

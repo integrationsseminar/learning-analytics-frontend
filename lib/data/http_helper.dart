@@ -14,7 +14,8 @@ class HttpHelper {
     List<Thread> threads = [];
 
     String newPath = '/threads';
-    Uri uri = Uri.https(authority, newPath);
+
+    Uri uri = Uri.parse("https://$authority$newPath?\$orderby=createdAt desc");
 
     var headers = {
       "Content-Type": "application/json",
@@ -117,7 +118,7 @@ class HttpHelper {
     List<Survey> surveys = [];
 
     String newPath = '/surveys';
-    Uri uri = Uri.https(authority, newPath);
+    Uri uri = Uri.parse("https://$authority$newPath?\$orderby=createdAt desc");
 
     var headers = {
       "Content-Type": "application/json",
@@ -137,6 +138,28 @@ class HttpHelper {
     return surveys;
   }
 
+  Future<Survey> getSurvey(String jwt, String surveyId) async {
+    Survey survey;
+
+    String newPath = '/surveys/$surveyId';
+    Uri uri = Uri.https(authority, newPath);
+
+    var headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $jwt"
+    };
+
+    http.Response res = await http.get(uri, headers: headers);
+
+    if (res.statusCode == 200) {
+      var response = jsonDecode(res.body);
+      survey = Survey.fromJSON(response);
+    } else {
+      throw Exception('Failed to load survey');
+    }
+    return survey;
+  }
+
   Future<bool> postSurvey(String jwt, Survey survey) async {
     String newPath = '/surveys';
     Uri uri = Uri.https(authority, newPath);
@@ -151,6 +174,28 @@ class HttpHelper {
     http.Response response = await http.post(uri, headers: headers, body: body);
 
     if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> submitAnswer(String jwt, String answer, String surveyId) async {
+    String newPath = '/surveys/$surveyId/answers';
+    Uri uri = Uri.https(authority, newPath);
+
+    var body = jsonEncode(<String, String>{
+      'answer': answer,
+    });
+
+    var headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $jwt"
+    };
+
+    http.Response response = await http.post(uri, headers: headers, body: body);
+
+    if (response.statusCode == 204) {
       return true;
     } else {
       return false;

@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:learning_analytics/widgtes/customappbar.dart';
 import 'package:learning_analytics/widgtes/profil/eineTrophaeen.dart';
 import 'package:learning_analytics/widgtes/shared/divider.dart';
+import '../../data/user.dart';
 
 class NeuerKurs extends StatefulWidget {
   const NeuerKurs({Key? key}) : super(key: key);
@@ -18,14 +19,15 @@ class _NeuerKursState extends State<NeuerKurs> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Column(children: [
+    return Column(children: [
       Stack(children: const [
         Positioned(
           child: SizedBox(
               height: 160,
               child: CustomAppBar(
-                  title: "Meine Kurse", backToPage: "MeineKurseD")),
+                title: "Meine Kurse",
+                backToPage: "MeineKurseD",
+              )),
         ),
       ]),
       Padding(
@@ -224,6 +226,6 @@ class _NeuerKursState extends State<NeuerKurs> {
                   )),
             ),
           ]))
-    ]));
+    ]);
   }
 }

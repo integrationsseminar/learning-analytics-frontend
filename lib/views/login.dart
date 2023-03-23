@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:learning_analytics/app.dart';
+import 'package:learning_analytics/views/register.dart';
 import 'package:learning_analytics/views_s/mein_lernen.dart';
 import 'package:learning_analytics/widgtes/customappbar.dart';
 import 'package:learning_analytics/widgtes/profil/eineTrophaeen.dart';
 import 'package:learning_analytics/widgtes/shared/divider.dart';
 import 'package:learning_analytics/data/account_http_helper.dart';
 import 'package:learning_analytics/data/account.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginView extends StatefulWidget {
-  const LoginView({Key? key}) : super(key: key);
+class Login extends StatefulWidget {
+  const Login({Key? key}) : super(key: key);
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  State<Login> createState() => _LoginState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _LoginState extends State<Login> {
   final name = TextEditingController();
   final email = TextEditingController();
   final passwort = TextEditingController();
@@ -48,19 +51,6 @@ class _LoginViewState extends State<LoginView> {
                         autofocus: true,
                         cursorHeight: 20,
                         style: Theme.of(context).textTheme.titleSmall,
-                        controller: name,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Name',
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(15.0, 0, 15, 5),
-                      child: TextField(
-                        autofocus: true,
-                        cursorHeight: 20,
-                        style: Theme.of(context).textTheme.titleSmall,
                         controller: email,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
@@ -71,6 +61,8 @@ class _LoginViewState extends State<LoginView> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(15.0, 0, 15, 15),
                       child: TextField(
+                        textInputAction: TextInputAction.go,
+                        onSubmitted: (value) => {login()},
                         obscureText: true,
                         enableSuggestions: false,
                         autocorrect: false,
@@ -86,9 +78,18 @@ class _LoginViewState extends State<LoginView> {
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 20.0),
-                      child: Text(
-                        "Du hast schon einen Account?",
-                        style: Theme.of(context).textTheme.titleSmall,
+                      child: RichText(
+                        text: TextSpan(
+                            text: "Du hast noch keinen Account?",
+                            style: Theme.of(context).textTheme.titleSmall,
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const Register()));
+                              }),
                       ),
                     ),
                     Row(
@@ -136,11 +137,10 @@ class _LoginViewState extends State<LoginView> {
   }
 
   void login() async {
-    RegisterAccount newAccout =
-        RegisterAccount(name.text, email.text, passwort.text, "leer");
-    if (await AccountHttpHelper().postAccount(newAccout)) {
+    Account account = Account(email.text, passwort.text);
+    if (await AccountHttpHelper().loginAccount(account)) {
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const MeinLernenS()));
+          MaterialPageRoute(builder: (context) => App(currentIndex: 1)));
     }
     ;
   }

@@ -18,15 +18,14 @@ class _AngabenState extends State<Angaben> {
     'Sehr gering'
   ];
 
+  late String dropdownValue = list[0];
+
   @override
   Widget build(BuildContext context) {
-    String dropdownValue = list.first;
-
     return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
       Text(
         widget.text,
-        style: const TextStyle(
-            fontFamily: 'Raleway', fontSize: 13, fontWeight: FontWeight.bold),
+        style: Theme.of(context).textTheme.titleSmall,
       ),
       SizedBox(
         height: 15,
@@ -43,11 +42,10 @@ class _AngabenState extends State<Angaben> {
               dropdownValue = value!;
             });
           },
-          style: const TextStyle(
-              fontFamily: 'Raleway',
-              fontSize: 13,
-              fontWeight: FontWeight.bold,
-              color: Colors.black),
+          style: Theme.of(context).textTheme.titleSmall,
+          underline: const SizedBox(),
+          icon: const Icon(Icons.arrow_drop_down_rounded),
+          iconSize: 15,
         ),
       ),
     ]);

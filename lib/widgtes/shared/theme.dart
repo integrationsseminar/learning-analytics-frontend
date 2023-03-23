@@ -21,7 +21,7 @@ ThemeData laappTheme() {
           shape: MaterialStateProperty.all(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0))),
           backgroundColor: MaterialStateProperty.all<Color>(
-            const Color(0xffE30613),
+            const Color(0xffF54F59),
           )),
     ),
 
