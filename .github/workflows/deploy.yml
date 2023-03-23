@@ -30,4 +30,4 @@ jobs:
             echo ${{ secrets.SSH_PASSWORD }} | sudo -S \
             docker pull ghcr.io/integrationsseminar/learning-analytics-frontend:latest
             # Replace the container
-            docker-compose -f ./hosting/docker-compose.yml up -d --no-deps learning-analytics-frontend
+            docker compose -f ./hosting/docker-compose.yml up -d --no-deps learning-analytics-frontend
