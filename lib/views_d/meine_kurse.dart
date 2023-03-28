@@ -36,7 +36,7 @@ class _MeineKurseDState extends State<MeineKurseD> {
         ? const Center(child: CircularProgressIndicator())
         : SingleChildScrollView(
             child: Column(children: [
-              Stack(children: const [
+              Stack(children: [
                 Positioned(
                   child: SizedBox(
                       height: 140,

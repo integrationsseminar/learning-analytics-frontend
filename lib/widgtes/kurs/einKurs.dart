@@ -31,7 +31,7 @@ class _EinKursState extends State<EinKurs> {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      Stack(children: const [
+      Stack(children: [
         Positioned(
           child: SizedBox(
               height: 160,

@@ -38,7 +38,7 @@ class _MeinProfilDState extends State<MeinProfilD> {
     return fetching
         ? const Center(child: CircularProgressIndicator())
         : Column(children: [
-            Stack(children: const [
+            Stack(children: [
               Positioned(
                 child: SizedBox(
                     height: 160,

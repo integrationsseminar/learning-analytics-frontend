@@ -53,7 +53,7 @@ class _MeinFortschrittSState extends State<MeinFortschrittS> {
     return fetching
         ? const Center(child: CircularProgressIndicator())
         : Column(children: [
-            Stack(children: const [
+            Stack(children: [
               Positioned(
                 child: SizedBox(
                     height: 160,
@@ -593,8 +593,11 @@ class _MeinFortschrittSState extends State<MeinFortschrittS> {
       }
       answers.add(intValue);
     }
-    Future<bool> resultPostLearningprogress =
-        httpHelper.postLearningprogress(jwt, answers);
+    if (await httpHelper.postLearningprogress(jwt, answers)) {
+      showInSnackbar(context, "Speichern erfolgreich", false);
+    } else {
+      showInSnackbar(context, "Speichern nicht erfolgreich", true);
+    }
 
     setState(() {});
   }
@@ -611,5 +614,17 @@ class _MeinFortschrittSState extends State<MeinFortschrittS> {
       chartData = resultGetLearningprogress;
       fetching = false;
     });
+  }
+
+  //Snackbar für Alerts
+  void showInSnackbar(BuildContext context, String value, bool error) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor:
+            error ? Colors.red : Theme.of(context).primaryColorLight,
+        content: Text(value),
+      ),
+    );
   }
 }

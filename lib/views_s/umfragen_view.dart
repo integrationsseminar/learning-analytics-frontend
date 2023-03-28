@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learning_analytics/data/answer.dart';
 import 'package:learning_analytics/data/http_helper.dart';
 import '../widgtes/customappbar.dart';
 import '../widgtes/shared/bottom_menu.dart';
@@ -33,7 +34,7 @@ class _UmfragenViewState extends State<UmfragenView> {
     return Scaffold(
       body: Column(
         children: [
-          Stack(children: const [
+          Stack(children: [
             Positioned(
               child: SizedBox(
                   height: 140,
@@ -182,12 +183,14 @@ class _UmfragenViewState extends State<UmfragenView> {
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzQ5NjI1YzRkMjRlODlhZTJkZjg0NzUiLCJyb2xlIjoiTGVjdHVyZXIiLCJpYXQiOjE2NjY4MDkzNTksImV4cCI6MTY2NjgyMzc1OX0.hPw63fzL_GP_hYpMwuaxpYbyxqSCtw4Su91s9ge51Qk";
     var response = await HttpHelper()
         .submitAnswer(jwt, dropdownValue, widget.survey.getId);
+    widget.survey.answers.add(Answer("", dropdownValue));
     if (response) {
-      Survey reloadedSurvey =
-          await HttpHelper().getSurvey(jwt, widget.survey.getId);
-      super.setState(() {
-        widget.survey = reloadedSurvey;
-      });
+      await HttpHelper()
+          .getSurvey(jwt, widget.survey.getId)
+          .then((value) => setState(() {
+                print(value.answers.toString());
+                widget.survey = value;
+              }));
     } else {
       showInSnackbar(context, "Sie haben diese Umfrage bereits beantwortet.");
     }

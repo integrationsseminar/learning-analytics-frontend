@@ -24,7 +24,7 @@ class _AddFrageTemplateState extends State<AddFrageTemplate> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(children: [
-        Stack(children: const [
+        Stack(children: [
           Positioned(
             child: SizedBox(
                 height: 160,

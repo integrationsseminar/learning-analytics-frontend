@@ -23,7 +23,8 @@ class MeinLernenS extends StatefulWidget {
   State<MeinLernenS> createState() => _MeinLernenSState();
 }
 
-class _MeinLernenSState extends State<MeinLernenS> {
+class _MeinLernenSState extends State<MeinLernenS>
+    with AutomaticKeepAliveClientMixin<MeinLernenS> {
   bool umfragen = true;
   bool fragen = true;
   int counter = 0;
@@ -40,9 +41,13 @@ class _MeinLernenSState extends State<MeinLernenS> {
   bool fetching = true;
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   initState() {
     httpHelper = HttpHelper();
     fetchData();
+    print("initState");
     super.initState();
   }
 
@@ -50,11 +55,12 @@ class _MeinLernenSState extends State<MeinLernenS> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: fetching
           ? Column(children: [
               Stack(
-                children: const [
+                children: [
                   Positioned(
                     child: SizedBox(
                         height: 140,
@@ -69,7 +75,7 @@ class _MeinLernenSState extends State<MeinLernenS> {
             ])
           : Column(children: [
               Stack(
-                children: const [
+                children: [
                   Positioned(
                     child: SizedBox(
                         height: 140,
@@ -221,6 +227,7 @@ class _MeinLernenSState extends State<MeinLernenS> {
       Course("0", "Alle Kurse", "", "", "", "", false, "", ""),
     ];
     final prefs = await SharedPreferences.getInstance();
+
     var jwt = prefs.getString("jwt");
     jwt ??=
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzQ5NjI1YzRkMjRlODlhZTJkZjg0NzUiLCJyb2xlIjoiTGVjdHVyZXIiLCJpYXQiOjE2NjY4MDkzNTksImV4cCI6MTY2NjgyMzc1OX0.hPw63fzL_GP_hYpMwuaxpYbyxqSCtw4Su91s9ge51Qk";

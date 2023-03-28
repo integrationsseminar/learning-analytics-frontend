@@ -77,7 +77,7 @@ class _AddFrageState extends State<AddFrage> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(mainAxisSize: MainAxisSize.min, children: [
-          Stack(children: const [
+          Stack(children: [
             Positioned(
               child: SizedBox(
                   height: 160,

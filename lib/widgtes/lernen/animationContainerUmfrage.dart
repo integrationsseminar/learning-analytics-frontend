@@ -41,15 +41,22 @@ class _AnimationContainerUmfrageState extends State<AnimationContainerUmfrage> {
             side: BorderSide.none, borderRadius: BorderRadius.circular(20)),
         transitionType: ContainerTransitionType.fade,
         transitionDuration: const Duration(seconds: 1),
-        openBuilder: (_, closeContainer) => UmfragenView(
+        openBuilder: (context, closeContainer) => UmfragenView(
             user: widget.user,
             survey: widget.survey,
             courseName: widget.courseName),
-        onClosed: (res) => setState(() {}),
+        onClosed: ((res) {
+          print(res);
+          print(widget.survey.answers.toString());
+          setState(() {});
+        }),
         tappable: true,
-        closedBuilder: (_, openContainer) => Umfrage(
-            user: widget.user,
-            survey: widget.survey,
-            courseName: widget.courseName));
+        closedBuilder: ((context, openContainer) {
+          print(widget.survey.answers.toString());
+          return Umfrage(
+              user: widget.user,
+              survey: widget.survey,
+              courseName: widget.courseName);
+        }));
   }
 }

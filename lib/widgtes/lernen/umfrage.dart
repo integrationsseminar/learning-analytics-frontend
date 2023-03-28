@@ -22,6 +22,12 @@ class Umfrage extends StatefulWidget {
 
 class _UmfrageState extends State<Umfrage> {
   @override
+  initState() {
+    print(widget.survey.answers.toString());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) => Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),

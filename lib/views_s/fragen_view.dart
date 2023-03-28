@@ -46,7 +46,7 @@ class _FragenViewState extends State<FragenView> {
     return Scaffold(
       body: Column(
         children: [
-          Stack(children: const [
+          Stack(children: [
             Positioned(
               child: SizedBox(
                   height: 140,
