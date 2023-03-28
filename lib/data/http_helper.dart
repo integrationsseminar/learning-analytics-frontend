@@ -1,3 +1,6 @@
+import 'package:learning_analytics/data/progressValues.dart';
+import 'package:learning_analytics/data/trophy.dart';
+
 import './thread.dart';
 import './threadcomment.dart';
 import './threadwithcomments.dart';
@@ -226,6 +229,52 @@ class HttpHelper {
     return courses;
   }
 
+  Future<http.Response> postCourse(String jwt, String kursname,
+      String hochschule, String studiengang) async {
+    String newPath = '/courses';
+    Course newCourse = Course(
+        "",
+        kursname,
+        "2023-03-16T13:21:40.456Z",
+        "2043-03-16T13:21:40.456Z",
+        "string",
+        "ByDate",
+        false,
+        hochschule,
+        studiengang);
+    Uri uri = Uri.https(authority, newPath);
+    //DateTime.now().toString(),
+    // DateTime.now().add(const Duration(days: 365 * 100)).toString(),
+    var body = jsonEncode(newCourse.toJson());
+
+    var headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $jwt"
+    };
+
+    http.Response response = await http.post(uri, headers: headers, body: body);
+
+    return response;
+  }
+
+  Future<bool> deleteCourse(String jwt, String courseId) async {
+    String newPath = '/courses/$courseId';
+    Uri uri = Uri.https(authority, newPath);
+
+    var headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $jwt"
+    };
+
+    http.Response res = await http.delete(uri, headers: headers);
+
+    if (res.statusCode == 204) {
+      return true;
+    } else {
+      throw Exception('Failed to delete course');
+    }
+  }
+
   Future<User> getUser(String jwt) async {
     User user;
 
@@ -246,5 +295,80 @@ class HttpHelper {
       throw Exception('Failed to load user');
     }
     return user;
+  }
+
+  Future<bool> postLearningprogress(String jwt, List<int> answer) async {
+    String newPath = '/learningprogress';
+    Uri uri = Uri.https(authority, newPath);
+
+    var body = json.encode({"progressValues": answer});
+
+    var headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $jwt"
+    };
+
+    http.Response response = await http.post(uri, headers: headers, body: body);
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<List<ProgressValues>> getLearningprogress(String jwt) async {
+    List<ProgressValues> progressValues = [];
+
+    String newPath = '/learningprogress';
+
+    var headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $jwt"
+    };
+
+    Uri uri = Uri.parse("https://$authority$newPath?orderby=data/createdAt");
+
+    //Uri uri = Uri.https(authority, newPath);
+
+    http.Response res = await http.get(uri, headers: headers);
+
+    if (res.statusCode == 200) {
+      var response = jsonDecode(res.body)['data'];
+
+      progressValues = response
+          .map<ProgressValues>(
+              (progressMap) => ProgressValues.fromJSON(progressMap))
+          .toList();
+    } else {
+      throw Exception('Failed to load progress Values.');
+    }
+    return progressValues;
+  }
+
+  Future<List<Trophy>> getUserTrophys(String jwt) async {
+    List<Trophy> trophies = [];
+
+    String newPath = '/usertrophys';
+
+    var headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $jwt"
+    };
+
+    Uri uri = Uri.https(authority, newPath);
+
+    http.Response res = await http.get(uri, headers: headers);
+
+    if (res.statusCode == 200) {
+      var response = jsonDecode(res.body)['data'];
+      trophies = response
+          .map<Trophy>((trophyMap) => Trophy.fromJSON(trophyMap))
+          .toList();
+    } else {
+      throw Exception('Failed to load trophies.');
+    }
+
+    return trophies;
   }
 }

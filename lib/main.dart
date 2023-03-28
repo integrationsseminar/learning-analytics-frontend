@@ -27,10 +27,17 @@ class MyApp extends StatelessWidget {
       title: 'Learning Analytics',
       theme: laappTheme(),
       routes: {
-        '/': (context) => const Login(),
         '/login': (context) => const Login(),
         '/register': (context) => const Register(),
-        '/main': (context) => App(currentIndex: 1),
+        '/main': (context) => App(currentIndex: 1)
+      },
+      onGenerateRoute: (settings) {
+        if (settings.name!.startsWith('/courseLogin')) {
+          var uri = Uri.parse(settings.name ?? '');
+          var courseId = uri.queryParameters['courseId'];
+          return MaterialPageRoute(builder: (_) => Login(courseId: courseId));
+        }
+        return MaterialPageRoute(builder: (_) => const Login());
       },
     );
   }

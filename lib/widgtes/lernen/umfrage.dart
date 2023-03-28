@@ -22,19 +22,7 @@ class Umfrage extends StatefulWidget {
 
 class _UmfrageState extends State<Umfrage> {
   @override
-  Widget build(BuildContext context) => GestureDetector(
-      onTap: () async {
-        await Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => UmfragenView(
-                user: widget.user,
-                survey: widget.survey,
-                courseName: widget.courseName,
-              ),
-            ));
-      },
-      child: Card(
+  Widget build(BuildContext context) => Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
           side: BorderSide(
@@ -106,7 +94,7 @@ class _UmfrageState extends State<Umfrage> {
                 ])),
           ],
         ),
-      ));
+      );
 
   static List<charts.Series<AntwortClass, String>> createSeriesList(
       Survey survey) {

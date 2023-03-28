@@ -11,7 +11,8 @@ import 'package:learning_analytics/data/account.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+  const Login({Key? key, this.courseId = ""}) : super(key: key);
+  final courseId;
 
   @override
   State<Login> createState() => _LoginState();
@@ -27,13 +28,12 @@ class _LoginState extends State<Login> {
     return Scaffold(
         body: Center(
             child: Container(
-                alignment: Alignment.center,
-                height: MediaQuery.of(context).size.height * 0.45,
                 width: MediaQuery.of(context).size.height * 0.45,
                 decoration: BoxDecoration(
                     color: Theme.of(context).secondaryHeaderColor,
                     borderRadius: BorderRadius.circular(20)),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Center(
                       child: Padding(
@@ -62,7 +62,7 @@ class _LoginState extends State<Login> {
                       padding: const EdgeInsets.fromLTRB(15.0, 0, 15, 15),
                       child: TextField(
                         textInputAction: TextInputAction.go,
-                        onSubmitted: (value) => {login()},
+                        onSubmitted: (value) => {login(widget.courseId)},
                         obscureText: true,
                         enableSuggestions: false,
                         autocorrect: false,
@@ -87,61 +87,81 @@ class _LoginState extends State<Login> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            const Register()));
+                                        builder: (context) => Register(
+                                            courseId: widget.courseId)));
                               }),
                       ),
                     ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: MaterialButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)),
-                            height: MediaQuery.of(context).size.height * 0.05,
-                            minWidth: MediaQuery.of(context).size.height * 0.15,
-                            color: Theme.of(context).highlightColor,
-                            textColor: Colors.black,
-                            onPressed: () => {},
-                            splashColor: Colors.redAccent,
-                            child: Text(
-                              "Passwort vergessen",
-                              style: Theme.of(context).textTheme.titleSmall,
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 12.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: MaterialButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                              height: MediaQuery.of(context).size.height * 0.05,
+                              minWidth:
+                                  MediaQuery.of(context).size.height * 0.15,
+                              color: Theme.of(context).highlightColor,
+                              textColor: Colors.black,
+                              onPressed: () => {},
+                              splashColor: Colors.redAccent,
+                              child: Text(
+                                "Passwort vergessen",
+                                style: Theme.of(context).textTheme.titleSmall,
+                              ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: MaterialButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)),
-                            height: MediaQuery.of(context).size.height * 0.05,
-                            minWidth: MediaQuery.of(context).size.height * 0.15,
-                            color: Theme.of(context).primaryColorLight,
-                            textColor: Colors.white,
-                            onPressed: () => {login()},
-                            splashColor: Colors.redAccent,
-                            child: Text(
-                              "Einloggen",
-                              style: Theme.of(context).textTheme.headlineSmall,
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: MaterialButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                              height: MediaQuery.of(context).size.height * 0.05,
+                              minWidth:
+                                  MediaQuery.of(context).size.height * 0.15,
+                              color: Theme.of(context).primaryColorLight,
+                              textColor: Colors.white,
+                              onPressed: () => {login(widget.courseId)},
+                              splashColor: Colors.redAccent,
+                              child: Text(
+                                "Einloggen",
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall,
+                              ),
                             ),
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      ),
                     ),
                   ],
                 ))));
   }
 
-  void login() async {
+  void login(String? courseId) async {
     Account account = Account(email.text, passwort.text);
-    if (await AccountHttpHelper().loginAccount(account)) {
+    if (await AccountHttpHelper().loginAccount(account, courseId)) {
+      showInSnackbar(context, "Login erfolgreich", false);
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => App(currentIndex: 1)));
+    } else {
+      showInSnackbar(context, "Anmeldedaten falsch", true);
     }
-    ;
+  }
+
+  //Snackbar für Alerts
+  void showInSnackbar(BuildContext context, String value, bool error) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor:
+            error ? Colors.red : Theme.of(context).primaryColorLight,
+        content: Text(value),
+      ),
+    );
   }
 }

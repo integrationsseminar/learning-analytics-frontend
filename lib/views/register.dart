@@ -10,7 +10,8 @@ import 'package:learning_analytics/data/account_http_helper.dart';
 import 'package:learning_analytics/data/account.dart';
 
 class Register extends StatefulWidget {
-  const Register({Key? key}) : super(key: key);
+  const Register({Key? key, this.courseId = ""}) : super(key: key);
+  final courseId;
 
   @override
   State<Register> createState() => _RegisterState();
@@ -20,19 +21,23 @@ class _RegisterState extends State<Register> {
   final name = TextEditingController();
   final email = TextEditingController();
   final passwort = TextEditingController();
+  final kursId = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final routeName = ModalRoute.of(context)?.settings.name;
+    final uri = Uri.parse(routeName ?? '');
+    final courseId = uri.queryParameters['courseId'];
+
     return Scaffold(
         body: Center(
             child: Container(
-                alignment: Alignment.center,
-                height: MediaQuery.of(context).size.height * 0.45,
+                //height: MediaQuery.of(context).size.height * 0.45,
                 width: MediaQuery.of(context).size.height * 0.45,
                 decoration: BoxDecoration(
                     color: Theme.of(context).secondaryHeaderColor,
                     borderRadius: BorderRadius.circular(20)),
-                child: Column(children: [
+                child: Column(mainAxisSize: MainAxisSize.min, children: [
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(20.0, 15, 20, 20),
@@ -85,6 +90,23 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                   ),
+                  if (widget.courseId == "")
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(15.0, 0, 15, 15),
+                      child: TextField(
+                        obscureText: true,
+                        enableSuggestions: false,
+                        autocorrect: false,
+                        autofocus: false,
+                        cursorHeight: 5,
+                        style: Theme.of(context).textTheme.titleSmall,
+                        controller: kursId,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Kurs-ID',
+                        ),
+                      ),
+                    ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 20.0),
                     child: RichText(
@@ -96,7 +118,8 @@ class _RegisterState extends State<Register> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const Login()));
+                                      builder: (context) =>
+                                          Login(courseId: widget.courseId)));
                             }),
                     ),
                   ),
@@ -105,7 +128,7 @@ class _RegisterState extends State<Register> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
+                        padding: const EdgeInsets.fromLTRB(8.0, 0, 0, 12),
                         child: MaterialButton(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8)),
@@ -113,7 +136,11 @@ class _RegisterState extends State<Register> {
                           minWidth: MediaQuery.of(context).size.height * 0.15,
                           color: Theme.of(context).primaryColorLight,
                           textColor: Colors.white,
-                          onPressed: () => {register()},
+                          onPressed: () => {
+                            register(widget.courseId != ""
+                                ? widget.courseId
+                                : kursId.text)
+                          },
                           splashColor: Colors.redAccent,
                           child: Text(
                             "Registrieren",
@@ -126,13 +153,27 @@ class _RegisterState extends State<Register> {
                 ]))));
   }
 
-  void register() async {
+  void register(String? courseId) async {
     RegisterAccount newAccout =
         RegisterAccount(name.text, email.text, passwort.text, "leer");
-    if (await AccountHttpHelper().postAccount(newAccout)) {
+    if (await AccountHttpHelper().postAccount(newAccout, courseId)) {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => App(currentIndex: 1)));
+      showInSnackbar(context, "Registrierung erfolgreich", false);
+    } else {
+      showInSnackbar(context, "Registrierung fehlgeschlagen", false);
     }
-    ;
+  }
+
+  //Snackbar für Alerts
+  void showInSnackbar(BuildContext context, String value, bool error) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor:
+            error ? Colors.red : Theme.of(context).primaryColorLight,
+        content: Text(value),
+      ),
+    );
   }
 }

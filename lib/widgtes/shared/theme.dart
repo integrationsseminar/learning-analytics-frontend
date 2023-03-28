@@ -8,7 +8,7 @@ ThemeData laappTheme() {
 
     // Colors
     backgroundColor: Colors.white,
-    primaryColor: const Color(0xffE30613),
+    primaryColor: Color.fromARGB(255, 227, 6, 19),
     primaryColorLight: const Color(0xffF54F59),
     accentColor: const Color(0xffD9D9D9),
     secondaryHeaderColor: const Color(0xfff0f0f0),

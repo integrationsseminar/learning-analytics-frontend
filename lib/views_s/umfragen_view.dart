@@ -33,111 +33,101 @@ class _UmfragenViewState extends State<UmfragenView> {
     return Scaffold(
       body: Column(
         children: [
-          Expanded(
-            child: ListView(shrinkWrap: true, children: [
-              Stack(children: const [
-                Positioned(
-                  child: SizedBox(
-                      height: 140,
-                      child: CustomAppBar(
-                        title: "Mein Lernen",
-                        backToPage: "MeinLernenS",
-                        difColor: true,
-                      )),
-                ),
-              ]),
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(20),
-                        bottomRight: Radius.circular(20)),
-                    color: Theme.of(context).secondaryHeaderColor),
-                child: Column(children: [
-                  Padding(
-                      padding: const EdgeInsets.only(top: 15.0),
-                      child: Text(getDate(widget.survey.createdAt),
-                          style: Theme.of(context).textTheme.bodySmall)),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Text(widget.survey.title,
-                        style: Theme.of(context).textTheme.bodyLarge),
-                  ),
-                  SimpleBarChart(
-                      seriesList: createSeriesList(widget.survey),
-                      animate: true),
-                ]),
-              ),
-              Spacer(),
+          Stack(children: const [
+            Positioned(
+              child: SizedBox(
+                  height: 140,
+                  child: CustomAppBar(
+                    title: "Mein Lernen",
+                    backToPage: "MeinLernenS",
+                    difColor: true,
+                  )),
+            ),
+          ]),
+          Container(
+            decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20)),
+                color: Theme.of(context).secondaryHeaderColor),
+            child: Column(children: [
               Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      color: Theme.of(context).secondaryHeaderColor,
-                      child: Column(children: [
-                        Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(20.0, 5.0, 8.0, 5.0),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("Meine Antwort",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleMedium),
-                                Container(
-                                    height: 35,
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 5),
-                                    decoration: BoxDecoration(
-                                        color: Colors.transparent,
-                                        borderRadius: BorderRadius.circular(5)),
-                                    child: DropdownButton(
-                                        underline: const SizedBox(),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelMedium,
-                                        icon: const Icon(
-                                            Icons.arrow_drop_down_rounded),
-                                        iconSize: 25,
-                                        dropdownColor:
-                                            Theme.of(context).backgroundColor,
-                                        borderRadius: BorderRadius.circular(5),
-                                        value: dropdownValue,
-                                        items: answers
-                                            .map<DropdownMenuItem<String>>(
-                                                (String answer) {
-                                          return DropdownMenuItem<String>(
-                                            value: answer,
-                                            child: Text(answer),
-                                          );
-                                        }).toList(),
-                                        onChanged: (String? value) {
-                                          setState(() {
-                                            dropdownValue = value!;
-                                          });
-                                        }))
-                              ]),
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: FloatingActionButton.extended(
-                                  label: Text("Antwort einreichen",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium),
-                                  onPressed: () {
-                                    newAnswer();
-                                  }),
-                            ),
-                          ],
-                        ),
-                      ]))),
-              const SizedBox(
-                height: 20,
+                  padding: const EdgeInsets.only(top: 15.0),
+                  child: Text(getDate(widget.survey.createdAt),
+                      style: Theme.of(context).textTheme.bodySmall)),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Text(widget.survey.title,
+                    style: Theme.of(context).textTheme.bodyLarge),
               ),
+              SimpleBarChart(
+                  seriesList: createSeriesList(widget.survey), animate: true),
             ]),
+          ),
+          const Spacer(),
+          Padding(
+              padding: const EdgeInsets.all(15),
+              child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  color: Theme.of(context).secondaryHeaderColor,
+                  child: Column(children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20.0, 5.0, 8.0, 5.0),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Meine Antwort",
+                                style: Theme.of(context).textTheme.titleMedium),
+                            Container(
+                                height: 35,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: DropdownButton(
+                                    underline: const SizedBox(),
+                                    style:
+                                        Theme.of(context).textTheme.labelMedium,
+                                    icon: const Icon(
+                                        Icons.arrow_drop_down_rounded),
+                                    iconSize: 25,
+                                    dropdownColor:
+                                        Theme.of(context).backgroundColor,
+                                    borderRadius: BorderRadius.circular(5),
+                                    value: dropdownValue,
+                                    items: answers
+                                        .map<DropdownMenuItem<String>>(
+                                            (String answer) {
+                                      return DropdownMenuItem<String>(
+                                        value: answer,
+                                        child: Text(answer),
+                                      );
+                                    }).toList(),
+                                    onChanged: (String? value) {
+                                      setState(() {
+                                        dropdownValue = value!;
+                                      });
+                                    }))
+                          ]),
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: FloatingActionButton.extended(
+                              label: Text("Antwort einreichen",
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium),
+                              onPressed: () {
+                                newAnswer();
+                              }),
+                        ),
+                      ],
+                    ),
+                  ]))),
+          const SizedBox(
+            height: 20,
           ),
         ],
       ),
@@ -195,7 +185,7 @@ class _UmfragenViewState extends State<UmfragenView> {
     if (response) {
       Survey reloadedSurvey =
           await HttpHelper().getSurvey(jwt, widget.survey.getId);
-      setState(() {
+      super.setState(() {
         widget.survey = reloadedSurvey;
       });
     } else {

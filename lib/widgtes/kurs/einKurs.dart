@@ -1,19 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:learning_analytics/app.dart';
+import 'package:learning_analytics/data/course.dart';
+import 'package:learning_analytics/data/http_helper.dart';
+import 'package:learning_analytics/views_d/meine_kurse.dart';
 import 'package:learning_analytics/widgtes/customappbar.dart';
 import 'package:learning_analytics/widgtes/profil/eineTrophaeen.dart';
 import 'package:learning_analytics/widgtes/shared/divider.dart';
 import '../../data/user.dart';
+import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EinKurs extends StatefulWidget {
-  final String kursname;
-  const EinKurs({Key? key, required this.kursname}) : super(key: key);
+  final Course course;
+  const EinKurs({Key? key, required this.course}) : super(key: key);
 
   @override
   State<EinKurs> createState() => _EinKursState();
 }
 
 class _EinKursState extends State<EinKurs> {
+  late HttpHelper httpHelper;
+
+  @override
+  void initState() {
+    httpHelper = HttpHelper();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(children: [
@@ -64,7 +78,7 @@ class _EinKursState extends State<EinKurs> {
                                         child: RichText(
                                           text: WidgetSpan(
                                             child: Text(
-                                              widget.kursname,
+                                              widget.course.name,
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .labelSmall,
@@ -94,7 +108,7 @@ class _EinKursState extends State<EinKurs> {
                                       child: RichText(
                                         text: WidgetSpan(
                                           child: Text(
-                                            "DHBW Mannheim",
+                                            "DHBW Mannheim", //widget.course.hochschule
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .labelSmall,
@@ -125,7 +139,7 @@ class _EinKursState extends State<EinKurs> {
                                         child: RichText(
                                           text: WidgetSpan(
                                             child: Text(
-                                              "Bachelor Software Engineering",
+                                              "Bachelor Software Engineering", //widget.course.studiengang
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .labelSmall,
@@ -155,7 +169,7 @@ class _EinKursState extends State<EinKurs> {
                                         child: RichText(
                                           text: WidgetSpan(
                                             child: Text(
-                                              "https://learning.25910.de",
+                                              createLink(widget.course.getId),
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .labelSmall,
@@ -184,7 +198,11 @@ class _EinKursState extends State<EinKurs> {
                                       minWidth: 120.0,
                                       color: Theme.of(context).highlightColor,
                                       textColor: Colors.black,
-                                      onPressed: () => {},
+                                      onPressed: () => {
+                                        Clipboard.setData(ClipboardData(
+                                            text: createLink(
+                                                widget.course.getId)))
+                                      },
                                       splashColor: Colors.redAccent,
                                       child: Text(
                                         "Link kopieren",
@@ -205,7 +223,9 @@ class _EinKursState extends State<EinKurs> {
                                       color:
                                           Theme.of(context).primaryColorLight,
                                       textColor: Colors.white,
-                                      onPressed: () => {},
+                                      onPressed: () async {
+                                        deleteCourse(widget.course.getId);
+                                      },
                                       splashColor: Colors.redAccent,
                                       child: Text(
                                         "Kurs löschen",
@@ -226,5 +246,37 @@ class _EinKursState extends State<EinKurs> {
             ),
           ]))
     ]);
+  }
+
+  void deleteCourse(String courseId) async {
+    final prefs = await SharedPreferences.getInstance();
+    var jwt = prefs.getString("jwt");
+    jwt ??=
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzQ5NjI1YzRkMjRlODlhZTJkZjg0NzUiLCJyb2xlIjoiTGVjdHVyZXIiLCJpYXQiOjE2NjY4MDkzNTksImV4cCI6MTY2NjgyMzc1OX0.hPw63fzL_GP_hYpMwuaxpYbyxqSCtw4Su91s9ge51Qk";
+    if (await httpHelper.deleteCourse(jwt, courseId)) {
+      await Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => (App(
+                    currentIndex: 2,
+                  ))));
+    } else {
+      showInSnackbar(context, "Löschen des Kurses fehlgeschlagen!");
+    }
+  }
+
+  void showInSnackbar(BuildContext context, String value) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Theme.of(context).primaryColorLight,
+        content: Text(value),
+      ),
+    );
+  }
+
+  String createLink(String courseId) {
+    String url = Uri.base.toString() + "courseLogin" + "?courseId=" + courseId;
+    return url.toString();
   }
 }
