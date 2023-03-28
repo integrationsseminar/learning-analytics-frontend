@@ -82,7 +82,7 @@ class AccountStudent {
     university = importMap['university'] ?? '';
     courseOfStudy = importMap['courseOfStudy'] ?? '';
     semester = importMap['semester'] ?? '';
-    branche = importMap['branche'] ?? '';
+    branche = importMap['industry'] ?? '';
   }
 
   Map toJson() {
@@ -92,7 +92,7 @@ class AccountStudent {
       'university': university,
       'courseOfStudy': courseOfStudy,
       'semester': semester,
-      'branche': branche,
+      'industry': branche,
     };
   }
 }

@@ -21,7 +21,7 @@ class User {
     hochschule = importMap['university'] ?? '';
     courseOfStudy = importMap['courseOfStudy'] ?? '';
     semester = importMap['semester'] ?? '';
-    branche = importMap['branche'] ?? '';
+    branche = importMap['industry'] ?? '';
   }
 
   String get getId {
@@ -39,6 +39,6 @@ class User {
         'profilePicture': profilePicture,
         'courseOfStudy': courseOfStudy,
         'semester': semester,
-        'branche': branche,
+        'industry': branche,
       };
 }
