@@ -72,7 +72,7 @@ class _LoginState extends State<Login> {
                         controller: passwort,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
-                          hintText: 'Deine Passwort',
+                          hintText: 'Dein Passwort',
                         ),
                       ),
                     ),

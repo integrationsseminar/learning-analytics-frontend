@@ -116,7 +116,7 @@ class _MeinProfilSState extends State<MeinProfilS> {
                                                     .highlightColor,
                                                 textColor: Colors.black,
                                                 onPressed: () =>
-                                                    {changeUserData()},
+                                                    {changeUserData(context)},
                                                 splashColor: Colors.redAccent,
                                                 child: Text(
                                                   "Speichern",
@@ -246,25 +246,47 @@ class _MeinProfilSState extends State<MeinProfilS> {
     var jwt = prefs.getString("jwt");
     jwt ??=
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzQ5NjI1YzRkMjRlODlhZTJkZjg0NzUiLCJyb2xlIjoiTGVjdHVyZXIiLCJpYXQiOjE2NjY4MDkzNTksImV4cCI6MTY2NjgyMzc1OX0.hPw63fzL_GP_hYpMwuaxpYbyxqSCtw4Su91s9ge51Qk";
+    print(jwt);
     User initUser = await HttpHelper().getUser(jwt);
     setState(() {
       username.text = initUser.name;
       email.text = initUser.email;
+      hochschule.text = initUser.hochschule;
+      studiengang.text = initUser.courseOfStudy;
+      semester.text = initUser.semester;
+      branche.text = initUser.branche;
       fetching = false;
     });
   }
 
-  void changeUserData() async {
+  void changeUserData(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
     var jwt = prefs.getString("jwt");
 
-    var account = AccountName(username.text);
-    await AccountHttpHelper().changeName(account, jwt);
+    var account = AccountStudent(username.text, email.text, hochschule.text,
+        studiengang.text, semester.text, branche.text);
+    bool result = await AccountHttpHelper().changeNameStudent(account, jwt);
+    if (!result) {
+      showInSnackbar(context, "Änderungen gespeichert", false);
+    }
+    ;
   }
 
   void logOut() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.clear();
     Navigator.pushNamed(context, "/");
+  }
+
+  //Snackbar für Alerts
+  void showInSnackbar(BuildContext context, String value, bool error) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor:
+            error ? Colors.red : Theme.of(context).primaryColorLight,
+        content: Text(value),
+      ),
+    );
   }
 }

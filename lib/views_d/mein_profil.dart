@@ -199,8 +199,8 @@ class _MeinProfilDState extends State<MeinProfilD> {
     var jwt = prefs.getString("jwt");
     print(jwt);
 
-    var account = AccountName(username.text);
-    await AccountHttpHelper().changeName(account, jwt).then((value) {
+    var account = AccountLecturer(username.text, hochschule.text);
+    await AccountHttpHelper().changeNameLecturer(account, jwt).then((value) {
       Navigator.push(
           context,
           MaterialPageRoute(

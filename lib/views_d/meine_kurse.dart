@@ -126,7 +126,7 @@ class _MeineKurseDState extends State<MeineKurseD> {
     List<Course> resultCourses = await httpHelper.getCourses(jwt);
 
     setState(() {
-      courseList = resultCourses;
+      courseList = resultCourses.reversed.toList();
       fetching = false;
     });
   }

@@ -417,7 +417,8 @@ class _MeinFortschrittSState extends State<MeinFortschrittS> {
                                                           dropDownValue2,
                                                           dropDownValue3,
                                                           dropDownValue4
-                                                        ])
+                                                        ]),
+                                                        getProgressValues(),
                                                       },
                                                       splashColor:
                                                           Colors.redAccent,

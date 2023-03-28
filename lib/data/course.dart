@@ -6,11 +6,11 @@ class Course {
       color,
       progressType,
       universityName,
-      courseName;
+      className;
   late bool deleted;
 
   Course(this._id, this.name, this.start, this.end, this.color,
-      this.progressType, this.deleted, this.universityName, this.courseName);
+      this.progressType, this.deleted, this.universityName, this.className);
 
   set setId(String id) {
     _id = id;
@@ -28,7 +28,7 @@ class Course {
     color = importMap['color'] ?? '';
     progressType = importMap['progressType'] ?? '';
     universityName = importMap['universityName'] ?? '';
-    courseName = importMap['courseName'] ?? '';
+    className = importMap['className'] ?? '';
     deleted = importMap['deleted'] ?? false;
   }
 
@@ -40,7 +40,7 @@ class Course {
         'color': color,
         'progressTpye': progressType,
         'universityName': universityName,
-        'courseName': courseName,
+        'className': className,
         'deleted': deleted,
       };
 }

@@ -371,4 +371,31 @@ class HttpHelper {
 
     return trophies;
   }
+
+  Future<List<OneOfAllTrophies>> getAllTrophys(String jwt) async {
+    List<OneOfAllTrophies> trophies = [];
+
+    String newPath = '/trophys';
+
+    var headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $jwt"
+    };
+
+    Uri uri = Uri.https(authority, newPath);
+
+    http.Response res = await http.get(uri, headers: headers);
+
+    if (res.statusCode == 200) {
+      var response = jsonDecode(res.body)['data'];
+      trophies = response
+          .map<OneOfAllTrophies>(
+              (trophyMap) => OneOfAllTrophies.fromJSON(trophyMap))
+          .toList();
+    } else {
+      throw Exception('Failed to load trophies.');
+    }
+
+    return trophies;
+  }
 }

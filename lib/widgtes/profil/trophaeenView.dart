@@ -16,6 +16,7 @@ class TrophaeenWidget extends StatefulWidget {
 class _TrophaeenWidgetState extends State<TrophaeenWidget> {
   late HttpHelper httpHelper;
   late List<Trophy> trophies = [];
+  late List<OneOfAllTrophies> allTrophies = [];
   bool fetching = true;
 
   @override
@@ -70,7 +71,8 @@ class _TrophaeenWidgetState extends State<TrophaeenWidget> {
                             ),
                             for (var oneTrophy in trophies)
                               EineTrophaee(
-                                text: oneTrophy.trophy,
+                                text: getTrophyDesription(
+                                    allTrophies, oneTrophy.trophy),
                                 tier: oneTrophy.tier,
                               ),
                           ],
@@ -83,14 +85,30 @@ class _TrophaeenWidgetState extends State<TrophaeenWidget> {
   void getTrophies() async {
     final prefs = await SharedPreferences.getInstance();
     var jwt = prefs.getString("jwt");
+    print(jwt);
+
     jwt ??=
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzQ5NjI1YzRkMjRlODlhZTJkZjg0NzUiLCJyb2xlIjoiTGVjdHVyZXIiLCJpYXQiOjE2NjY4MDkzNTksImV4cCI6MTY2NjgyMzc1OX0.hPw63fzL_GP_hYpMwuaxpYbyxqSCtw4Su91s9ge51Qk";
 
+    List<OneOfAllTrophies> resultAllTrophies =
+        await httpHelper.getAllTrophys(jwt);
+    print(allTrophies);
     List<Trophy> resultGetUserTrophies = await httpHelper.getUserTrophys(jwt);
 
     setState(() {
       fetching = false;
       trophies = resultGetUserTrophies;
+      allTrophies = resultAllTrophies;
     });
   }
+}
+
+String getTrophyDesription(
+    List<OneOfAllTrophies> allTrophies, String identfier) {
+  for (OneOfAllTrophies trophy in allTrophies) {
+    if (trophy.identfier == identfier) {
+      return trophy.description;
+    }
+  }
+  return "no description found";
 }

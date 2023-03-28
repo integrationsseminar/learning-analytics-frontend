@@ -46,18 +46,53 @@ class RegisterAccount {
   }
 }
 
-class AccountName {
+class AccountLecturer {
   late String? name;
+  late String? email;
 
-  AccountName(this.name);
+  AccountLecturer(this.name, this.email);
 
-  AccountName.fromJSON(Map<String, dynamic> importMap) {
+  AccountLecturer.fromJSON(Map<String, dynamic> importMap) {
     name = importMap['name'] ?? '';
+    email = importMap['email'] ?? '';
   }
 
   Map toJson() {
     return {
       'name': name,
+      'email': email,
+    };
+  }
+}
+
+class AccountStudent {
+  late String? name;
+  late String? email;
+  late String? university;
+  late String? courseOfStudy;
+  late String? semester;
+  late String? branche;
+
+  AccountStudent(this.name, this.email, this.university, this.courseOfStudy,
+      this.semester, this.branche);
+
+  AccountStudent.fromJSON(Map<String, dynamic> importMap) {
+    name = importMap['name'] ?? '';
+    email = importMap['email'] ?? '';
+    university = importMap['university'] ?? '';
+    courseOfStudy = importMap['courseOfStudy'] ?? '';
+    semester = importMap['semester'] ?? '';
+    branche = importMap['branche'] ?? '';
+  }
+
+  Map toJson() {
+    return {
+      'name': name,
+      'email': email,
+      'university': university,
+      'courseOfStudy': courseOfStudy,
+      'semester': semester,
+      'branche': branche,
     };
   }
 }
