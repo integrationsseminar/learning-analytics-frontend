@@ -51,6 +51,11 @@ class _MeinLernenSState extends State<MeinLernenS>
     super.initState();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   var selectedItem = true;
 
   @override
@@ -162,64 +167,90 @@ class _MeinLernenSState extends State<MeinLernenS>
               ]),
               SizedBox(
                 height: MediaQuery.of(context).size.height - 234,
-                child: ListView(children: [
-                  Column(
-                    children: [
-                      const SizedBox(height: 15),
-                      FloatingActionButton.extended(
-                          icon: PopupMenuButton(
-                              icon: const Icon(Icons.arrow_drop_down_outlined),
-                              onSelected: (bool value) async {
-                                setState(() {
-                                  selectedItem = value;
-                                });
-                                await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => selectedItem
-                                          ? AddFrage(user: user)
-                                          : AddFrageTemplate(user: user),
-                                    ));
-                              },
-                              itemBuilder: (BuildContext bc) {
-                                return [
-                                  PopupMenuItem(
-                                    value: false,
-                                    child: Text("Eintrag mit Vorlage erstellen",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleSmall),
-                                  ),
-                                  PopupMenuItem(
-                                    value: true,
-                                    child: Text(
-                                        "Eintrag ohne Vorlage erstellen",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleSmall),
-                                  )
-                                ];
-                              }),
-                          onPressed: () async {
-                            await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => AddFrage(user: user),
-                                ));
-                          },
-                          label: Text("Neuen Eintrag hinzufügen",
-                              style: Theme.of(context).textTheme.titleSmall)),
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Column(
-                            children: getLearningWidgets(threads, surveys)),
-                      ),
-                    ],
-                  ),
-                ]),
+                child: RefreshIndicator(
+                  onRefresh: _pullRefresh,
+                  child: ListView(children: [
+                    Column(
+                      children: [
+                        const SizedBox(height: 15),
+                        FloatingActionButton.extended(
+                            icon: PopupMenuButton(
+                                icon:
+                                    const Icon(Icons.arrow_drop_down_outlined),
+                                onSelected: (bool value) async {
+                                  setState(() {
+                                    selectedItem = value;
+                                  });
+                                  await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => selectedItem
+                                            ? AddFrage(user: user)
+                                            : AddFrageTemplate(user: user),
+                                      ));
+                                },
+                                itemBuilder: (BuildContext bc) {
+                                  return [
+                                    PopupMenuItem(
+                                      value: false,
+                                      child: Text(
+                                          "Eintrag mit Vorlage erstellen",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleSmall),
+                                    ),
+                                    PopupMenuItem(
+                                      value: true,
+                                      child: Text(
+                                          "Eintrag ohne Vorlage erstellen",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleSmall),
+                                    )
+                                  ];
+                                }),
+                            onPressed: () async {
+                              await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AddFrage(user: user),
+                                  ));
+                            },
+                            label: Text("Neuen Eintrag hinzufügen",
+                                style: Theme.of(context).textTheme.titleSmall)),
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Column(
+                              children: getLearningWidgets(threads, surveys)),
+                        ),
+                      ],
+                    ),
+                  ]),
+                ),
               ),
             ]),
     );
+  }
+
+  Future<void> _pullRefresh() async {
+    setState(() {
+      fetching = true;
+    });
+    final prefs = await SharedPreferences.getInstance();
+
+    var jwt = prefs.getString("jwt");
+    jwt ??=
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzQ5NjI1YzRkMjRlODlhZTJkZjg0NzUiLCJyb2xlIjoiTGVjdHVyZXIiLCJpYXQiOjE2NjY4MDkzNTksImV4cCI6MTY2NjgyMzc1OX0.hPw63fzL_GP_hYpMwuaxpYbyxqSCtw4Su91s9ge51Qk";
+    List<Threadwithcomments> initThreads =
+        await httpHelper.getThreadswithcomments(jwt);
+    List<Survey> initSurveys = await httpHelper.getSurveys(jwt);
+    User initUser = await httpHelper.getUser(jwt);
+    setState(() {
+      user = initUser;
+      threads = initThreads;
+      surveys = initSurveys;
+      fetching = false;
+    });
   }
 
   void fetchData() async {
