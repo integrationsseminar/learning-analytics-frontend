@@ -23,7 +23,6 @@ class Umfrage extends StatefulWidget {
 class _UmfrageState extends State<Umfrage> {
   @override
   initState() {
-    print(widget.survey.answers.toString());
     super.initState();
   }
 
