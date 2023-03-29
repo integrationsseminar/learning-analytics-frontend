@@ -46,13 +46,10 @@ class _AnimationContainerUmfrageState extends State<AnimationContainerUmfrage> {
             survey: widget.survey,
             courseName: widget.courseName),
         onClosed: ((res) {
-          print(res);
-          print(widget.survey.answers.toString());
           setState(() {});
         }),
         tappable: true,
         closedBuilder: ((context, openContainer) {
-          print(widget.survey.answers.toString());
           return Umfrage(
               user: widget.user,
               survey: widget.survey,

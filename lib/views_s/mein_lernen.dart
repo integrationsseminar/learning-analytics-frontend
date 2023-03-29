@@ -89,82 +89,93 @@ class _MeinLernenSState extends State<MeinLernenS>
                   )
                 ],
               ),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(4.0, 8, 0, 8),
-                  child: Container(
-                    height: 28,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColorLight,
-                        borderRadius: BorderRadius.circular(5)),
-                    child: DropdownButton(
-                        underline: const SizedBox(),
-                        style: Theme.of(context).textTheme.headlineSmall,
-                        icon: const Icon(Icons.arrow_drop_down_rounded,
-                            color: Colors.white),
-                        iconSize: 15,
-                        dropdownColor: Theme.of(context).primaryColorLight,
-                        borderRadius: BorderRadius.circular(5),
-                        value: dropdownValue,
-                        items: courses
-                            .map<DropdownMenuItem<Course>>((Course course) {
-                          return DropdownMenuItem<Course>(
-                            value: course,
-                            child: Text(course.name,
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(4.0, 8, 0, 8),
+                        child: Container(
+                          height: 28,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColorLight,
+                              borderRadius: BorderRadius.circular(5)),
+                          child: DropdownButton(
+                              underline: const SizedBox(),
+                              style: Theme.of(context).textTheme.headlineSmall,
+                              icon: const Icon(Icons.arrow_drop_down_rounded,
+                                  color: Colors.white),
+                              iconSize: 15,
+                              dropdownColor:
+                                  Theme.of(context).primaryColorLight,
+                              borderRadius: BorderRadius.circular(5),
+                              value: dropdownValue,
+                              items: courses.map<DropdownMenuItem<Course>>(
+                                  (Course course) {
+                                return DropdownMenuItem<Course>(
+                                  value: course,
+                                  child: Text(course.name,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineSmall),
+                                );
+                              }).toList(),
+                              onChanged: (Course? course) {
+                                setState(() {
+                                  dropdownValue = course!;
+                                });
+                              }),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(8.0, 8, 0, 8),
+                        child: ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                umfragen = !umfragen;
+                              });
+                            },
+                            style: umfragen
+                                ? Theme.of(context).elevatedButtonTheme.style
+                                : ButtonStyle(
+                                    shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5.0))),
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            const Color(0xffD9D9D9))),
+                            child: Text("Umfragen",
                                 style:
-                                    Theme.of(context).textTheme.headlineSmall),
-                          );
-                        }).toList(),
-                        onChanged: (Course? course) {
-                          setState(() {
-                            dropdownValue = course!;
-                          });
-                        }),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8.0, 8, 0, 8),
-                  child: ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          umfragen = !umfragen;
-                        });
-                      },
-                      style: umfragen
-                          ? Theme.of(context).elevatedButtonTheme.style
-                          : ButtonStyle(
-                              shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(5.0))),
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  const Color(0xffD9D9D9))),
-                      child: Text("Umfragen",
-                          style: Theme.of(context).textTheme.headlineSmall)),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8.0, 8, 0, 8),
-                  child: ElevatedButton(
-                      style: fragen
-                          ? Theme.of(context).elevatedButtonTheme.style
-                          : ButtonStyle(
-                              shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(5.0))),
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  const Color(0xffD9D9D9))),
-                      onPressed: () {
-                        setState(() {
-                          fragen = !fragen;
-                        });
-                      },
-                      child: Text("Unterhaltung",
-                          style: Theme.of(context).textTheme.headlineSmall)),
-                )
-              ]),
+                                    Theme.of(context).textTheme.headlineSmall)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(8.0, 8, 0, 8),
+                        child: ElevatedButton(
+                            style: fragen
+                                ? Theme.of(context).elevatedButtonTheme.style
+                                : ButtonStyle(
+                                    shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5.0))),
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            const Color(0xffD9D9D9))),
+                            onPressed: () {
+                              setState(() {
+                                fragen = !fragen;
+                              });
+                            },
+                            child: Text("Unterhaltung",
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall)),
+                      )
+                    ]),
+              ),
               SizedBox(
                 height: MediaQuery.of(context).size.height - 234,
                 child: RefreshIndicator(
@@ -324,7 +335,7 @@ class _MeinLernenSState extends State<MeinLernenS>
         }
       }
     } else if (fragen) {
-      while (threadCounter < surveys.length) {
+      while (threadCounter < threads.length) {
         Threadwithcomments thread = threads[threadCounter];
         if ((dropdownValue.getId == "0" ||
                 thread.thread.course == dropdownValue.getId) &&
