@@ -74,10 +74,11 @@ class _FragenViewState extends State<FragenView> {
                 child: Text(widget.threadwithcomments.thread.title,
                     style: Theme.of(context).textTheme.titleLarge),
               ),
-              Row(children: [
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 for (var tag in [widget.courseName, "Unterhaltung"])
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10.0, bottom: 10.0),
+                  (Padding(
+                    padding: const EdgeInsets.only(
+                        left: 10.0, bottom: 10.0, top: 10),
                     child: Container(
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
@@ -87,7 +88,14 @@ class _FragenViewState extends State<FragenView> {
                           child: Text(tag,
                               style: Theme.of(context).textTheme.titleSmall),
                         )),
-                  )
+                  )),
+                Spacer(),
+                if (widget.user.role != "Student")
+                  IconButton(
+                      onPressed: () async {
+                        deleteThread();
+                      },
+                      icon: Icon(Icons.delete))
               ]),
             ]),
           ),
@@ -173,5 +181,31 @@ class _FragenViewState extends State<FragenView> {
     DateTime dateLong = DateTime.parse(date);
     DateTime dateShort = DateTime(dateLong.year, dateLong.month, dateLong.day);
     return dateShort.toString().replaceAll("00:00:00.000", "");
+  }
+
+  void deleteThread() async {
+    final prefs = await SharedPreferences.getInstance();
+    var jwt = prefs.getString("jwt");
+    jwt ??=
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzQ5NjI1YzRkMjRlODlhZTJkZjg0NzUiLCJyb2xlIjoiTGVjdHVyZXIiLCJpYXQiOjE2NjY4MDkzNTksImV4cCI6MTY2NjgyMzc1OX0.hPw63fzL_GP_hYpMwuaxpYbyxqSCtw4Su91s9ge51Qk";
+    if (await httpHelper.deleteThread(
+        jwt, widget.threadwithcomments.thread.getId)) {
+      showInSnackbar(context, "Löschen erfolgreich", false);
+      Navigator.pop(context);
+    } else {
+      showInSnackbar(context, "Löschen fehlgeschlagen", true);
+    }
+  }
+
+  //Snackbar für Alerts
+  void showInSnackbar(BuildContext context, String value, bool error) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor:
+            error ? Colors.red : Theme.of(context).primaryColorLight,
+        content: Text(value),
+      ),
+    );
   }
 }

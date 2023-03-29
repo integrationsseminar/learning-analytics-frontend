@@ -96,6 +96,24 @@ class HttpHelper {
     }
   }
 
+  Future<bool> deleteThread(String jwt, String threadId) async {
+    String newPath = '/threads/$threadId';
+    Uri uri = Uri.https(authority, newPath);
+
+    var headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $jwt"
+    };
+
+    http.Response response = await http.delete(uri, headers: headers);
+
+    if (response.statusCode == 204) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   Future<bool> postThreadcomment(
       String jwt, Threadcomment threadcomment) async {
     String newPath = '/threadcomments';
@@ -111,6 +129,24 @@ class HttpHelper {
     http.Response response = await http.post(uri, headers: headers, body: body);
 
     if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> deleteSurvey(String jwt, String threadId) async {
+    String newPath = '/surveys/$threadId';
+    Uri uri = Uri.https(authority, newPath);
+
+    var headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $jwt"
+    };
+
+    http.Response response = await http.delete(uri, headers: headers);
+
+    if (response.statusCode == 204) {
       return true;
     } else {
       return false;
