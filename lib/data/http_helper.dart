@@ -229,6 +229,27 @@ class HttpHelper {
     return courses;
   }
 
+  Future<Course> getCourse(String jwt, String courseId) async {
+    Course course = Course("", "", "", "", "", "", false, "", "");
+
+    String newPath = '/courses/$courseId';
+    Uri uri = Uri.https(authority, newPath);
+
+    var headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $jwt"
+    };
+
+    http.Response res = await http.get(uri, headers: headers);
+
+    if (res.statusCode == 200) {
+      course = Course.fromJSON(jsonDecode(res.body));
+    } else {
+      throw Exception('Failed to load courses');
+    }
+    return course;
+  }
+
   Future<http.Response> postCourse(String jwt, String kursname,
       String hochschule, String studiengang) async {
     String newPath = '/courses';
@@ -364,6 +385,33 @@ class HttpHelper {
       var response = jsonDecode(res.body)['data'];
       trophies = response
           .map<Trophy>((trophyMap) => Trophy.fromJSON(trophyMap))
+          .toList();
+    } else {
+      throw Exception('Failed to load trophies.');
+    }
+
+    return trophies;
+  }
+
+  Future<List<OneOfAllTrophies>> getAllTrophys(String jwt) async {
+    List<OneOfAllTrophies> trophies = [];
+
+    String newPath = '/trophys';
+
+    var headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $jwt"
+    };
+
+    Uri uri = Uri.https(authority, newPath);
+
+    http.Response res = await http.get(uri, headers: headers);
+
+    if (res.statusCode == 200) {
+      var response = jsonDecode(res.body)['data'];
+      trophies = response
+          .map<OneOfAllTrophies>(
+              (trophyMap) => OneOfAllTrophies.fromJSON(trophyMap))
           .toList();
     } else {
       throw Exception('Failed to load trophies.');

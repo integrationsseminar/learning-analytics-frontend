@@ -90,11 +90,32 @@ class AccountHttpHelper {
     }
   }
 
-  Future<bool> changeName(AccountName account, String? jwt) async {
+  Future<bool> changeNameLecturer(AccountLecturer account, String? jwt) async {
     String newPath = '/users/my';
     Uri uri = Uri.https(authority, newPath);
 
     var body = jsonEncode(account.toJson());
+
+    var headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $jwt"
+    };
+
+    http.Response response = await http.put(uri, headers: headers, body: body);
+
+    if (response.statusCode == 201) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> changeNameStudent(
+      AccountStudent accountName, String? jwt) async {
+    String newPath = '/users/my';
+    Uri uri = Uri.https(authority, newPath);
+
+    var body = jsonEncode(accountName.toJson());
 
     var headers = {
       "Content-Type": "application/json",

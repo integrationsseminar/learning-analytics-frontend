@@ -31,7 +31,7 @@ class _EinKursState extends State<EinKurs> {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      Stack(children: const [
+      Stack(children: [
         Positioned(
           child: SizedBox(
               height: 160,
@@ -108,7 +108,8 @@ class _EinKursState extends State<EinKurs> {
                                       child: RichText(
                                         text: WidgetSpan(
                                           child: Text(
-                                            "DHBW Mannheim", //widget.course.hochschule
+                                            widget.course
+                                                .universityName, //widget.course.hochschule
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .labelSmall,
@@ -139,7 +140,8 @@ class _EinKursState extends State<EinKurs> {
                                         child: RichText(
                                           text: WidgetSpan(
                                             child: Text(
-                                              "Bachelor Software Engineering", //widget.course.studiengang
+                                              widget.course
+                                                  .className, //widget.course.studiengang
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .labelSmall,

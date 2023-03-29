@@ -9,12 +9,12 @@ import 'package:learning_analytics/views_s/mein_profil.dart';
 import 'package:learning_analytics/views_s/mein_fortschritt.dart';
 
 class CustomAppBar extends StatelessWidget {
-  const CustomAppBar(
-      {Key? key,
-      required this.title,
-      required this.backToPage,
-      this.difColor = false})
-      : super(
+  CustomAppBar({
+    Key? key,
+    required this.title,
+    required this.backToPage,
+    this.difColor = false,
+  }) : super(
           key: key,
         );
   final String title;
@@ -55,6 +55,7 @@ class CustomAppBar extends StatelessWidget {
                           iconSize: 32,
                           onPressed: () {
                             Navigator.pop(context);
+
                             /*await Navigator.push(
                                 context,
                                 MaterialPageRoute(

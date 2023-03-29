@@ -6,10 +6,13 @@ import 'package:learning_analytics/data/http_helper.dart';
 import 'package:learning_analytics/widgtes/customappbar.dart';
 import 'package:learning_analytics/widgtes/profil/eineTrophaeen.dart';
 import 'package:learning_analytics/widgtes/shared/divider.dart';
+import '../../data/course.dart';
 import '../../data/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+
+import 'einKurs.dart';
 
 class NeuerKurs extends StatefulWidget {
   const NeuerKurs({Key? key}) : super(key: key);
@@ -35,7 +38,7 @@ class _NeuerKursState extends State<NeuerKurs> {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      Stack(children: const [
+      Stack(children: [
         Positioned(
           child: SizedBox(
               height: 160,
@@ -191,7 +194,7 @@ class _NeuerKursState extends State<NeuerKurs> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Padding(
+                                  /*Padding(
                                     padding: const EdgeInsets.only(right: 8.0),
                                     child: IgnorePointer(
                                       ignoring: !kursErstellt,
@@ -226,7 +229,7 @@ class _NeuerKursState extends State<NeuerKurs> {
                                         ),
                                       ),
                                     ),
-                                  ),
+                                  ),*/
                                   Padding(
                                     padding: const EdgeInsets.only(left: 8.0),
                                     child: MaterialButton(
@@ -276,10 +279,18 @@ class _NeuerKursState extends State<NeuerKurs> {
     http.Response response =
         await httpHelper.postCourse(jwt, kursname, hochschule, studiengang);
     if (response.statusCode == 200) {
+      print(response.body);
       showInSnackbar(context, "Neuer Kurs wurde erstellt.");
       setState(() {
         courseId = json.decode(response.body)['_id'];
       });
+      Course course = await httpHelper.getCourse(jwt, courseId);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => EinKurs(course: course),
+        ),
+      );
     } else {
       showInSnackbar(context, "Neuer Kurs konnte nicht erstellt werden.");
     }

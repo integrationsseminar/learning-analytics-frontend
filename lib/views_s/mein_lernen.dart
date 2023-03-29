@@ -23,7 +23,8 @@ class MeinLernenS extends StatefulWidget {
   State<MeinLernenS> createState() => _MeinLernenSState();
 }
 
-class _MeinLernenSState extends State<MeinLernenS> {
+class _MeinLernenSState extends State<MeinLernenS>
+    with AutomaticKeepAliveClientMixin<MeinLernenS> {
   bool umfragen = true;
   bool fragen = true;
   int counter = 0;
@@ -40,21 +41,30 @@ class _MeinLernenSState extends State<MeinLernenS> {
   bool fetching = true;
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   initState() {
     httpHelper = HttpHelper();
     fetchData();
     super.initState();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   var selectedItem = true;
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: fetching
           ? Column(children: [
               Stack(
-                children: const [
+                children: [
                   Positioned(
                     child: SizedBox(
                         height: 140,
@@ -67,153 +77,190 @@ class _MeinLernenSState extends State<MeinLernenS> {
                   height: MediaQuery.of(context).size.height - 190,
                   child: const Center(child: CircularProgressIndicator()))
             ])
-          : Column(children: [
-              Stack(
-                children: const [
-                  Positioned(
-                    child: SizedBox(
-                        height: 140,
-                        child:
-                            CustomAppBar(title: "Mein Lernen", backToPage: "")),
-                  )
-                ],
-              ),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(4.0, 8, 0, 8),
-                  child: Container(
-                    height: 28,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColorLight,
-                        borderRadius: BorderRadius.circular(5)),
-                    child: DropdownButton(
-                        underline: const SizedBox(),
-                        style: Theme.of(context).textTheme.headlineSmall,
-                        icon: const Icon(Icons.arrow_drop_down_rounded,
-                            color: Colors.white),
-                        iconSize: 15,
-                        dropdownColor: Theme.of(context).primaryColorLight,
-                        borderRadius: BorderRadius.circular(5),
-                        value: dropdownValue,
-                        items: courses
-                            .map<DropdownMenuItem<Course>>((Course course) {
-                          return DropdownMenuItem<Course>(
-                            value: course,
-                            child: Text(course.name,
+          : Column(
+              children: [
+                SizedBox(
+                    height: 140,
+                    child: CustomAppBar(title: "Mein Lernen", backToPage: "")),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(4.0, 8, 0, 8),
+                          child: Container(
+                            height: 28,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColorLight,
+                                borderRadius: BorderRadius.circular(5)),
+                            child: DropdownButton(
+                                underline: const SizedBox(),
                                 style:
-                                    Theme.of(context).textTheme.headlineSmall),
-                          );
-                        }).toList(),
-                        onChanged: (Course? course) {
-                          setState(() {
-                            dropdownValue = course!;
-                          });
-                        }),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8.0, 8, 0, 8),
-                  child: ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          umfragen = !umfragen;
-                        });
-                      },
-                      style: umfragen
-                          ? Theme.of(context).elevatedButtonTheme.style
-                          : ButtonStyle(
-                              shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(5.0))),
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  const Color(0xffD9D9D9))),
-                      child: Text("Umfragen",
-                          style: Theme.of(context).textTheme.headlineSmall)),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8.0, 8, 0, 8),
-                  child: ElevatedButton(
-                      style: fragen
-                          ? Theme.of(context).elevatedButtonTheme.style
-                          : ButtonStyle(
-                              shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(5.0))),
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  const Color(0xffD9D9D9))),
-                      onPressed: () {
-                        setState(() {
-                          fragen = !fragen;
-                        });
-                      },
-                      child: Text("Unterhaltung",
-                          style: Theme.of(context).textTheme.headlineSmall)),
-                )
-              ]),
-              SizedBox(
-                height: MediaQuery.of(context).size.height - 234,
-                child: ListView(children: [
-                  Column(
-                    children: [
-                      const SizedBox(height: 15),
-                      FloatingActionButton.extended(
-                          icon: PopupMenuButton(
-                              icon: const Icon(Icons.arrow_drop_down_outlined),
-                              onSelected: (bool value) async {
+                                    Theme.of(context).textTheme.headlineSmall,
+                                icon: const Icon(Icons.arrow_drop_down_rounded,
+                                    color: Colors.white),
+                                iconSize: 15,
+                                dropdownColor:
+                                    Theme.of(context).primaryColorLight,
+                                borderRadius: BorderRadius.circular(5),
+                                value: dropdownValue,
+                                items: courses.map<DropdownMenuItem<Course>>(
+                                    (Course course) {
+                                  return DropdownMenuItem<Course>(
+                                    value: course,
+                                    child: Text(course.name,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineSmall),
+                                  );
+                                }).toList(),
+                                onChanged: (Course? course) {
+                                  setState(() {
+                                    dropdownValue = course!;
+                                  });
+                                }),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(8.0, 8, 0, 8),
+                          child: ElevatedButton(
+                              onPressed: () {
                                 setState(() {
-                                  selectedItem = value;
+                                  umfragen = !umfragen;
                                 });
+                              },
+                              style: umfragen
+                                  ? Theme.of(context).elevatedButtonTheme.style
+                                  : ButtonStyle(
+                                      shape: MaterialStateProperty.all(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5.0))),
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              const Color(0xffD9D9D9))),
+                              child: Text("Umfragen",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineSmall)),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(8.0, 8, 0, 8),
+                          child: ElevatedButton(
+                              style: fragen
+                                  ? Theme.of(context).elevatedButtonTheme.style
+                                  : ButtonStyle(
+                                      shape: MaterialStateProperty.all(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5.0))),
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              const Color(0xffD9D9D9))),
+                              onPressed: () {
+                                setState(() {
+                                  fragen = !fragen;
+                                });
+                              },
+                              child: Text("Unterhaltung",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineSmall)),
+                        )
+                      ]),
+                ),
+                Expanded(
+                  child: RefreshIndicator(
+                    onRefresh: _pullRefresh,
+                    child: ListView(
+                      shrinkWrap: true,
+                      children: [
+                        Column(children: [
+                          const SizedBox(height: 15),
+                          FloatingActionButton.extended(
+                              icon: PopupMenuButton(
+                                  icon: const Icon(
+                                      Icons.arrow_drop_down_outlined),
+                                  onSelected: (bool value) async {
+                                    setState(() {
+                                      selectedItem = value;
+                                    });
+                                    await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => selectedItem
+                                              ? AddFrage(user: user)
+                                              : AddFrageTemplate(user: user),
+                                        ));
+                                  },
+                                  itemBuilder: (BuildContext bc) {
+                                    return [
+                                      PopupMenuItem(
+                                        value: false,
+                                        child: Text(
+                                            "Eintrag mit Vorlage erstellen",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleSmall),
+                                      ),
+                                      PopupMenuItem(
+                                        value: true,
+                                        child: Text(
+                                            "Eintrag ohne Vorlage erstellen",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleSmall),
+                                      )
+                                    ];
+                                  }),
+                              onPressed: () async {
                                 await Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => selectedItem
-                                          ? AddFrage(user: user)
-                                          : AddFrageTemplate(user: user),
+                                      builder: (context) =>
+                                          AddFrage(user: user),
                                     ));
                               },
-                              itemBuilder: (BuildContext bc) {
-                                return [
-                                  PopupMenuItem(
-                                    value: false,
-                                    child: Text("Eintrag mit Vorlage erstellen",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleSmall),
-                                  ),
-                                  PopupMenuItem(
-                                    value: true,
-                                    child: Text(
-                                        "Eintrag ohne Vorlage erstellen",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleSmall),
-                                  )
-                                ];
-                              }),
-                          onPressed: () async {
-                            await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => AddFrage(user: user),
-                                ));
-                          },
-                          label: Text("Neuen Eintrag hinzufügen",
-                              style: Theme.of(context).textTheme.titleSmall)),
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Column(
-                            children: getLearningWidgets(threads, surveys)),
-                      ),
-                    ],
+                              label: Text("Neuen Eintrag hinzufügen",
+                                  style:
+                                      Theme.of(context).textTheme.titleSmall)),
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                                children: getLearningWidgets(threads, surveys)),
+                          ),
+                        ]),
+                      ],
+                    ),
                   ),
-                ]),
-              ),
-            ]),
+                ),
+              ],
+            ),
     );
+  }
+
+  Future<void> _pullRefresh() async {
+    setState(() {
+      fetching = true;
+    });
+    final prefs = await SharedPreferences.getInstance();
+
+    var jwt = prefs.getString("jwt");
+    jwt ??=
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzQ5NjI1YzRkMjRlODlhZTJkZjg0NzUiLCJyb2xlIjoiTGVjdHVyZXIiLCJpYXQiOjE2NjY4MDkzNTksImV4cCI6MTY2NjgyMzc1OX0.hPw63fzL_GP_hYpMwuaxpYbyxqSCtw4Su91s9ge51Qk";
+    List<Threadwithcomments> initThreads =
+        await httpHelper.getThreadswithcomments(jwt);
+    List<Survey> initSurveys = await httpHelper.getSurveys(jwt);
+    User initUser = await httpHelper.getUser(jwt);
+    setState(() {
+      user = initUser;
+      threads = initThreads;
+      surveys = initSurveys;
+      fetching = false;
+    });
   }
 
   void fetchData() async {
@@ -221,6 +268,7 @@ class _MeinLernenSState extends State<MeinLernenS> {
       Course("0", "Alle Kurse", "", "", "", "", false, "", ""),
     ];
     final prefs = await SharedPreferences.getInstance();
+
     var jwt = prefs.getString("jwt");
     jwt ??=
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzQ5NjI1YzRkMjRlODlhZTJkZjg0NzUiLCJyb2xlIjoiTGVjdHVyZXIiLCJpYXQiOjE2NjY4MDkzNTksImV4cCI6MTY2NjgyMzc1OX0.hPw63fzL_GP_hYpMwuaxpYbyxqSCtw4Su91s9ge51Qk";
@@ -286,7 +334,7 @@ class _MeinLernenSState extends State<MeinLernenS> {
         }
       }
     } else if (fragen) {
-      while (threadCounter < surveys.length) {
+      while (threadCounter < threads.length) {
         Threadwithcomments thread = threads[threadCounter];
         if ((dropdownValue.getId == "0" ||
                 thread.thread.course == dropdownValue.getId) &&

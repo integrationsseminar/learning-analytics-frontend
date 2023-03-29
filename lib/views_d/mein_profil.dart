@@ -38,7 +38,7 @@ class _MeinProfilDState extends State<MeinProfilD> {
     return fetching
         ? const Center(child: CircularProgressIndicator())
         : Column(children: [
-            Stack(children: const [
+            Stack(children: [
               Positioned(
                 child: SizedBox(
                     height: 160,
@@ -199,8 +199,8 @@ class _MeinProfilDState extends State<MeinProfilD> {
     var jwt = prefs.getString("jwt");
     print(jwt);
 
-    var account = AccountName(username.text);
-    await AccountHttpHelper().changeName(account, jwt).then((value) {
+    var account = AccountLecturer(username.text, hochschule.text);
+    await AccountHttpHelper().changeNameLecturer(account, jwt).then((value) {
       Navigator.push(
           context,
           MaterialPageRoute(
