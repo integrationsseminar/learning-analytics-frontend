@@ -63,6 +63,32 @@ class _UmfragenViewState extends State<UmfragenView> {
               ),
               SimpleBarChart(
                   seriesList: createSeriesList(widget.survey), animate: true),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                for (var tag in [widget.courseName, "Unterhaltung"])
+                  (Padding(
+                    padding: const EdgeInsets.only(
+                        left: 10.0, bottom: 10.0, top: 10),
+                    child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Theme.of(context).highlightColor),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(tag,
+                              style: Theme.of(context).textTheme.titleSmall),
+                        )),
+                  )),
+                Spacer(),
+                if (widget.user.role != "Student")
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: IconButton(
+                        onPressed: () async {
+                          deleteThread();
+                        },
+                        icon: Icon(Icons.delete)),
+                  )
+              ]),
             ]),
           ),
           const Spacer(),
@@ -193,6 +219,19 @@ class _UmfragenViewState extends State<UmfragenView> {
               }));
     } else {
       showInSnackbar(context, "Sie haben diese Umfrage bereits beantwortet.");
+    }
+  }
+
+  void deleteThread() async {
+    final prefs = await SharedPreferences.getInstance();
+    var jwt = prefs.getString("jwt");
+    jwt ??=
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzQ5NjI1YzRkMjRlODlhZTJkZjg0NzUiLCJyb2xlIjoiTGVjdHVyZXIiLCJpYXQiOjE2NjY4MDkzNTksImV4cCI6MTY2NjgyMzc1OX0.hPw63fzL_GP_hYpMwuaxpYbyxqSCtw4Su91s9ge51Qk";
+    if (await HttpHelper().deleteSurvey(jwt, widget.survey.getId)) {
+      showInSnackbar(context, "Löschen erfolgreich");
+      Navigator.pop(context);
+    } else {
+      showInSnackbar(context, "Löschen fehlgeschlagen");
     }
   }
 }
